@@ -31,7 +31,13 @@ emcc .libs/crf_test.bc .libs/libcrfpp.dylib -o crf_test.js
 
 #
 emcc .libs/crf_test.bc .libs/libcrfpp.dylib -o crf_test.html --preload-file ../model/model_file@model_file --preload-file ../ing.txt@ing.txt -s ALLOW_MEMORY_GROWTH=1 -s ENVIRONMENT=web --emrun
-emrun crf_test.html -v 1 -m model_file ing.txt
+emrun --browser chrome crf_test.html -v 1 -m model_file ing.txt
+emrun --browser chrome crf_test.html -v 1 -m model_file -
+
+emcc .libs/crf_test.bc .libs/libcrfpp.dylib -o crf_test.html --preload-file ../model/model_file@model_file --preload-file ../ing.txt@ing.txt -s TOTAL_MEMORY=512MB -s ENVIRONMENT=web --no-heap-copy
+python ../server.py # fixes wasm mimetype
+# open http://localhost:8080/crf_test.html
+
 
 # Bundle the model file (doesn't work yet)
 #emcc .libs/crf_test.bc .libs/libcrfpp.dylib -o crf_test.js --preload-file ../model/model_file@model_file
