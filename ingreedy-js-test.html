@@ -21,7 +21,7 @@
 
    'tokenize': function() {
      arrayEq(["100", "grams", "flour"], tokenize("100 grams flour"));
-     arrayEq(["100", "grams", "big", "green", "apples"], tokenize("100 grams big, green apples"));
+     arrayEq(["100", "grams", "big", ",", "green", "apples"], tokenize("100 grams big, green apples"));
    },
 
  });

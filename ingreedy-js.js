@@ -17,5 +17,7 @@ function clumpFractions(s) {
 }
 
 function tokenize(s) {
-  return clumpFractions(s).split(/[,()]?\s+/)
+  return clumpFractions(s).split(/([,()]|\s+)/).filter(function(e) {
+    return String(e).trim();
+  })
 }
