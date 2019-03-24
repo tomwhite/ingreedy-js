@@ -1,0 +1,14 @@
+<script src="tinytest.js"></script>
+<script src="ingreedy-js.js"></script>
+<script>
+ tests({
+
+   'cleanUnicodeFractions': function() {
+     eq("1 7/8", cleanUnicodeFractions("1\u215e"));
+   },
+   'clumpFractions': function() {
+     eq("aaa 1$2/3 bbb", clumpFractions("aaa 1 2/3 bbb"));
+   }
+
+ });
+</script>
