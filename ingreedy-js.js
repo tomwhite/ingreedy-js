@@ -13,5 +13,9 @@ function cleanUnicodeFractions(s) {
 }
 
 function clumpFractions(s) {
-    return s.replace(/(\d+)\s+(\d)\/(\d)/, '$1$$$2/$3')
+  return s.replace(/(\d+)\s+(\d)\/(\d)/, '$1$$$2/$3')
+}
+
+function tokenize(s) {
+  return clumpFractions(s).split(/[,()]?\s+/)
 }
