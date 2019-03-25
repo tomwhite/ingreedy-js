@@ -22,6 +22,16 @@ function tokenize(s) {
   })
 }
 
+function getFeatures(token, index, tokens) {
+  var l = tokens.length;
+  return [
+    (`I${index}`),
+    (`L${lengthGroup(length)}`),
+    (isCapitalized(token) ? "Yes" : "No") + "CAP",
+    (insideParenthesis(token, tokens) ? "Yes" : "No") + "PAREN"
+  ];
+}
+
 function isCapitalized(token) {
   return /^[A-Z]/.test(token)
 }
