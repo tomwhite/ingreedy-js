@@ -35,3 +35,12 @@ function lengthGroup(actualLength) {
   }
   return "X";
 }
+
+function insideParenthesis(token, tokens) {
+    if (token === '(' || token === ')') {
+      return true;
+    }
+    var line = tokens.join(' ');
+    // TODO: should escape token in line below
+    return RegExp('.*\\(.*'+token+'.*\\).*').test(line);
+}

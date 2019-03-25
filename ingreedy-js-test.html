@@ -37,6 +37,14 @@
      eq("X", lengthGroup(20));
    },
 
+   'insideParenthesis': function() {
+     var tokens = ["100", "grams", "big", ",", "green", "apples", "(", "not", "rotten", ")"]
+     eq(true, insideParenthesis("(", tokens));
+     eq(true, insideParenthesis(")", tokens));
+     eq(true, insideParenthesis("rotten", tokens));
+     eq(false, insideParenthesis("green", tokens));
+   },
+
 
  });
 </script>
