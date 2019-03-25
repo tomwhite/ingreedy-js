@@ -24,5 +24,19 @@
      arrayEq(["100", "grams", "big", ",", "green", "apples", "(", "not", "rotten", ")"], tokenize("100 grams big, green apples (not rotten)"));
    },
 
+   'isCapitalized': function() {
+     eq(true, isCapitalized("Apple"));
+     eq(false, isCapitalized("apple"));
+     eq(false, isCapitalized("aPple"));
+   },
+
+   'lengthGroup': function() {
+     eq("4", lengthGroup(0));
+     eq("4", lengthGroup(1));
+     eq("8", lengthGroup(4));
+     eq("X", lengthGroup(20));
+   },
+
+
  });
 </script>

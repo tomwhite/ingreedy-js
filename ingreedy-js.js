@@ -21,3 +21,17 @@ function tokenize(s) {
     return String(e).trim();
   })
 }
+
+function isCapitalized(token) {
+  return /^[A-Z]/.test(token)
+}
+
+function lengthGroup(actualLength) {
+  var lengths = [4, 8, 12, 16, 20];
+  for (var i = 0; i < lengths.length; i++) {
+    if (actualLength < lengths[i]) {
+      return lengths[i].toString();
+    }
+  }
+  return "X";
+}
