@@ -31,6 +31,10 @@ function clumpFractions(s) {
   return s.replace(/(\d+)\s+(\d)\/(\d)/, '$1$$$2/$3')
 }
 
+function unclump(s) {
+  return s.replace(/\$/, ' ')
+}
+
 function tokenize(s) {
   return clumpFractions(s).split(/([,()]|\s+)/).filter(function(e) {
     return String(e).trim();

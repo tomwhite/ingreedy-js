@@ -20,6 +20,10 @@
      eq("aaa 1$2/3 bbb", clumpFractions("aaa 1 2/3 bbb"));
    },
 
+   'unclump': function() {
+     eq("aaa 1 2/3 bbb", unclump("aaa 1$2/3 bbb"));
+   },
+
    'tokenize': function() {
      arrayEq(["100", "grams", "flour"], tokenize("100 grams flour"));
      arrayEq(["100", "grams", "big", ",", "green", "apples", "(", "not", "rotten", ")"], tokenize("100 grams big, green apples (not rotten)"));
