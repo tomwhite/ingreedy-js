@@ -186,6 +186,14 @@ function import_data(lines) {
         output[i]["display"] = displayIngredient(display[i]);
     }
 
+    for (var i = 0; i < output.length; i++) {
+        var all_tokens = [];
+        for (var j = 0; j < display[i].length; j++) {
+            all_tokens.push(display[i][j][1].join(" "));
+        }
+        output[i]["input"] = smartJoin(all_tokens);
+    }
+
     return output;
 }
 
