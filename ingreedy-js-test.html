@@ -91,9 +91,11 @@
      eq("1/2", output[0]['qty']);
      eq("teaspoon", output[0]['unit']);
      eq("fresh, finely chopped", output[0]['comment']);
+     eq("<span class='qty'>1/2</span><span class='unit'>teaspoon</span><span class='comment'>fresh</span><span class='name'>thyme leaves</span><span class='comment'>, finely chopped</span>", output[0]['display']);
 
      eq("Black pepper", output[1]['name']);
      eq("to taste", output[1]['comment']);
+     eq("<span class='name'>Black pepper</span><span class='other'>,</span><span class='comment'>to taste</span>", output[1]['display']);
 
    },
 

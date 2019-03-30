@@ -109,6 +109,17 @@ function insideParenthesis(token, tokens) {
     return RegExp('.*\\(.*'+token+'.*\\).*').test(line);
 }
 
+function displayIngredient(ingredient) {
+    var str = "";
+    for (var i = 0; i < ingredient.length; i++) {
+        var tag_tokens = ingredient[i];
+        var tag = tag_tokens[0];
+        var tokens = tag_tokens[1].join(" ");
+        str += `<span class='${tag}'>${tokens}</span>`;
+    }
+    return str;
+}
+
 function smartJoin(words) {
     var input = words.join(" ");
     input = input.replace(" , ", ", ")
@@ -119,11 +130,13 @@ function smartJoin(words) {
 
 function import_data(lines) {
     var data = [{}];
+    var display = [[]];
     var prevTag = null;
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i];
         if (line == '' || line == '\n') {
             data.push({});
+            display.push([]);
             prevTag = null;
         } else if (line[0] == "#") {
             continue;
@@ -137,6 +150,14 @@ function import_data(lines) {
             tag = tag_confidence[0];
             confidence = tag_confidence[1];
             tag = tag.replace(/^[BI]\-/, '').toLowerCase();
+
+            if (prevTag != tag) {
+                display[display.length - 1].push([tag, [token]]);
+                prevTag = tag;
+            } else {
+                var ingredient = display[display.length - 1];
+                ingredient[ingredient.length - 1][1].push(token);
+            }
 
             if (!(tag in data[data.length - 1])) {
                 data[data.length - 1][tag] = [];
@@ -159,6 +180,10 @@ function import_data(lines) {
             dict[k] = smartJoin(tokens);
         }
         output.push(dict);
+    }
+
+    for (var i = 0; i < output.length; i++) {
+        output[i]["display"] = displayIngredient(display[i]);
     }
 
     return output;
