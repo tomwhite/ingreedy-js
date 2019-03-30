@@ -86,14 +86,15 @@
      lines = lines.map(line => line.replace(/ +/g, '\t')); // replace spaces with tabs
      var output = import_data(lines);
      eq(2, output.length);
-     /*
-     eq({
-       "comment": "fresh, finely chopped",
-       "name": "thyme leaves",
-       "qty": "1/2",
-       "unit": "teaspoon"
-     }, output[0]);
-     */
+
+     eq("thyme leaves", output[0]['name']);
+     eq("1/2", output[0]['qty']);
+     eq("teaspoon", output[0]['unit']);
+     eq("fresh, finely chopped", output[0]['comment']);
+
+     eq("Black pepper", output[1]['name']);
+     eq("to taste", output[1]['comment']);
+
    },
 
    'export_data': function() {
