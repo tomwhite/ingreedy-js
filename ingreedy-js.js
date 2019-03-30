@@ -41,6 +41,41 @@ function tokenize(s) {
   })
 }
 
+function singularize(word) {
+    units = {
+        "cups": "cup",
+        "tablespoons": "tablespoon",
+        "teaspoons": "teaspoon",
+        "pounds": "pound",
+        "ounces": "ounce",
+        "cloves": "clove",
+        "sprigs": "sprig",
+        "pinches": "pinch",
+        "bunches": "bunch",
+        "slices": "slice",
+        "grams": "gram",
+        "heads": "head",
+        "quarts": "quart",
+        "stalks": "stalk",
+        "pints": "pint",
+        "pieces": "piece",
+        "sticks": "stick",
+        "dashes": "dash",
+        "fillets": "fillet",
+        "cans": "can",
+        "ears": "ear",
+        "packages": "package",
+        "strips": "strip",
+        "bulbs": "bulb",
+        "bottles": "bottle"
+    }
+    if (word in units) {
+        return units[word];
+    } else {
+        return word;
+    }
+}
+
 function getFeatures(token, index, tokens) {
   var l = tokens.length;
   return [

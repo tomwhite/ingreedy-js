@@ -29,6 +29,11 @@
      arrayEq(["100", "grams", "big", ",", "green", "apples", "(", "not", "rotten", ")"], tokenize("100 grams big, green apples (not rotten)"));
    },
 
+   'singularize': function() {
+     eq("gram", singularize("grams"));
+     eq("nights", singularize("nights"));
+   },
+
    'getFeatures': function() {
      var tokens = ["100", "grams", "potatoes"]
      arrayEq(["I2", "L4", "NoCAP", "NoPAREN"], getFeatures("grams", 2, tokens));
