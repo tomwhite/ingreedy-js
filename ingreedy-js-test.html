@@ -13,6 +13,7 @@
 
    'cleanUnicodeFractions': function() {
      eq("1 7/8", cleanUnicodeFractions("1\u215e"));
+     eq(" 1/2", cleanUnicodeFractions("\u00bd"));
    },
 
    'clumpFractions': function() {

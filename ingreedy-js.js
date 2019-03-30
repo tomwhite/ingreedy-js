@@ -1,10 +1,21 @@
 function cleanUnicodeFractions(s) {
   var fractions = {
-              '\u215b': '1/8',
-              '\u215c': '3/8',
-              '\u215d': '5/8',
-              '\u215e': '7/8',
-              }
+      '\u215b': '1/8',
+      '\u215c': '3/8',
+      '\u215d': '5/8',
+      '\u215e': '7/8',
+      '\u2159': '1/6',
+      '\u215a': '5/6',
+      '\u2155': '1/5',
+      '\u2156': '2/5',
+      '\u2157': '3/5',
+      '\u2158': '4/5',
+      '\u00bc': '1/4',
+      '\u00be': '3/4',
+      '\u2153': '1/3',
+      '\u2154': '2/3',
+      '\u00bd': '1/2',
+  }
   for(var unicode in fractions) {
     var ascii = fractions[unicode];
     s = s.replace(unicode, ' ' + ascii)
