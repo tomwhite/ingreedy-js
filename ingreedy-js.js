@@ -12,6 +12,10 @@ function cleanUnicodeFractions(s) {
   return s;
 }
 
+function joinLine(columns) {
+    return columns.join("\t");
+}
+
 function clumpFractions(s) {
   return s.replace(/(\d+)\s+(\d)\/(\d)/, '$1$$$2/$3')
 }
@@ -26,7 +30,7 @@ function getFeatures(token, index, tokens) {
   var l = tokens.length;
   return [
     (`I${index}`),
-    (`L${lengthGroup(length)}`),
+    (`L${lengthGroup(l)}`),
     (isCapitalized(token) ? "Yes" : "No") + "CAP",
     (insideParenthesis(token, tokens) ? "Yes" : "No") + "PAREN"
   ];
@@ -54,3 +58,20 @@ function insideParenthesis(token, tokens) {
     // TODO: should escape token in line below
     return RegExp('.*\\(.*'+token+'.*\\).*').test(line);
 }
+
+function export_data(lines) {
+    var output = [];
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i];
+        var line_clean = cleanUnicodeFractions(line);
+        var tokens = tokenize(line_clean);
+        for (var j = 0; j < tokens.length; j++) {
+            var token = tokens[j];
+            var features = getFeatures(token, j+1, tokens);
+            output.push(joinLine([token].concat(features)));
+        }
+        output.push('');
+    }
+    return output.join('\n');
+}
+

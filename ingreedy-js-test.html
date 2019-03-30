@@ -50,6 +50,20 @@
      eq(false, insideParenthesis("green", tokens));
    },
 
+   'export_data': function() {
+     var lines = ["100 grams potatoes", "2 large eggs, freshly laid"]
+     eq([`100	I1	L4	NoCAP	NoPAREN
+grams	I2	L4	NoCAP	NoPAREN
+potatoes	I3	L4	NoCAP	NoPAREN
+
+2	I1	L8	NoCAP	NoPAREN
+large	I2	L8	NoCAP	NoPAREN
+eggs	I3	L8	NoCAP	NoPAREN
+,	I4	L8	NoCAP	NoPAREN
+freshly	I5	L8	NoCAP	NoPAREN
+laid	I6	L8	NoCAP	NoPAREN
+`], export_data(lines));
+   },
 
  });
 </script>
