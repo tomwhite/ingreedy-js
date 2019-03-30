@@ -117,6 +117,53 @@ function smartJoin(words) {
     return input
 }
 
+function import_data(lines) {
+    var data = [{}];
+    var prevTag = null;
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i];
+        if (line == '' || line == '\n') {
+            data.push({});
+            prevTag = null;
+        } else if (line[0] == "#") {
+            continue;
+        } else {
+            columns = line.trim().split('\t')
+            token = columns[0].trim()
+
+            token = unclump(token)
+
+            tag_confidence = columns[columns.length - 1].split('/', 2);
+            tag = tag_confidence[0];
+            confidence = tag_confidence[1];
+            tag = tag.replace(/^[BI]\-/, '').toLowerCase();
+
+            if (!(tag in data[data.length - 1])) {
+                data[data.length - 1][tag] = [];
+            }
+
+            if (tag === "unit") {
+                token = singularize(token);
+            }
+
+            data[data.length - 1][tag].push(token);
+        }
+    }
+
+    var output = [];
+    for (var i = 0; i < data.length; i++) {
+        var ingredient = data[i];
+        var dict = {};
+        for (var k in ingredient) {
+            var tokens = ingredient[k];
+            dict[k] = smartJoin(tokens);
+        }
+        output.push(dict);
+    }
+
+    return output;
+}
+
 function export_data(lines) {
     var output = [];
     for (var i = 0; i < lines.length; i++) {
