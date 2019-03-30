@@ -74,6 +74,14 @@ function insideParenthesis(token, tokens) {
     return RegExp('.*\\(.*'+token+'.*\\).*').test(line);
 }
 
+function smartJoin(words) {
+    var input = words.join(" ");
+    input = input.replace(" , ", ", ")
+    input = input.replace("( ", "(")
+    input = input.replace(" )", ")")
+    return input
+}
+
 function export_data(lines) {
     var output = [];
     for (var i = 0; i < lines.length; i++) {

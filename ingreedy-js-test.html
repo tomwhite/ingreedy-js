@@ -55,6 +55,10 @@
      eq(false, insideParenthesis("green", tokens));
    },
 
+   'smartJoin': function() {
+     eq("big, green apples (not rotten)", smartJoin(["big", ",", "green", "apples", "(", "not", "rotten", ")"]));
+   },
+
    'export_data': function() {
      var lines = ["100 grams potatoes", "2 large eggs, freshly laid"]
      eq([`100	I1	L4	NoCAP	NoPAREN
