@@ -1,3 +1,17 @@
+function tokenize(s) {
+  return clumpFractions(s).split(/([,()]|\s+)/).filter(function(e) {
+    return String(e).trim();
+  })
+}
+
+function joinLine(columns) {
+    return columns.join("\t");
+}
+
+function clumpFractions(s) {
+  return s.replace(/(\d+)\s+(\d)\/(\d)/, '$1$$$2/$3')
+}
+
 function cleanUnicodeFractions(s) {
   var fractions = {
       '\u215b': '1/8',
@@ -23,22 +37,18 @@ function cleanUnicodeFractions(s) {
   return s;
 }
 
-function joinLine(columns) {
-    return columns.join("\t");
-}
-
-function clumpFractions(s) {
-  return s.replace(/(\d+)\s+(\d)\/(\d)/, '$1$$$2/$3')
-}
-
 function unclump(s) {
   return s.replace(/\$/, ' ')
 }
 
-function tokenize(s) {
-  return clumpFractions(s).split(/([,()]|\s+)/).filter(function(e) {
-    return String(e).trim();
-  })
+function getFeatures(token, index, tokens) {
+  var l = tokens.length;
+  return [
+    (`I${index}`),
+    (`L${lengthGroup(l)}`),
+    (isCapitalized(token) ? "Yes" : "No") + "CAP",
+    (insideParenthesis(token, tokens) ? "Yes" : "No") + "PAREN"
+  ];
 }
 
 function singularize(word) {
@@ -74,16 +84,6 @@ function singularize(word) {
     } else {
         return word;
     }
-}
-
-function getFeatures(token, index, tokens) {
-  var l = tokens.length;
-  return [
-    (`I${index}`),
-    (`L${lengthGroup(l)}`),
-    (isCapitalized(token) ? "Yes" : "No") + "CAP",
-    (insideParenthesis(token, tokens) ? "Yes" : "No") + "PAREN"
-  ];
 }
 
 function isCapitalized(token) {

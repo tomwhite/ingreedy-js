@@ -11,32 +11,32 @@
 
  tests({
 
-   'cleanUnicodeFractions': function() {
-     eq("1 7/8", cleanUnicodeFractions("1\u215e"));
-     eq(" 1/2", cleanUnicodeFractions("\u00bd"));
+   'tokenize': function() {
+     arrayEq(["100", "grams", "flour"], tokenize("100 grams flour"));
+     arrayEq(["100", "grams", "big", ",", "green", "apples", "(", "not", "rotten", ")"], tokenize("100 grams big, green apples (not rotten)"));
    },
 
    'clumpFractions': function() {
      eq("aaa 1$2/3 bbb", clumpFractions("aaa 1 2/3 bbb"));
    },
 
+   'cleanUnicodeFractions': function() {
+     eq("1 7/8", cleanUnicodeFractions("1\u215e"));
+     eq(" 1/2", cleanUnicodeFractions("\u00bd"));
+   },
+
    'unclump': function() {
      eq("aaa 1 2/3 bbb", unclump("aaa 1$2/3 bbb"));
-   },
-
-   'tokenize': function() {
-     arrayEq(["100", "grams", "flour"], tokenize("100 grams flour"));
-     arrayEq(["100", "grams", "big", ",", "green", "apples", "(", "not", "rotten", ")"], tokenize("100 grams big, green apples (not rotten)"));
-   },
-
-   'singularize': function() {
-     eq("gram", singularize("grams"));
-     eq("nights", singularize("nights"));
    },
 
    'getFeatures': function() {
      var tokens = ["100", "grams", "potatoes"]
      arrayEq(["I2", "L4", "NoCAP", "NoPAREN"], getFeatures("grams", 2, tokens));
+   },
+
+   'singularize': function() {
+     eq("gram", singularize("grams"));
+     eq("nights", singularize("nights"));
    },
 
    'isCapitalized': function() {
