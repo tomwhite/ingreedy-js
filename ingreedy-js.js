@@ -1,4 +1,17 @@
 function tokenize(s) {
+  // handle abbreviation like "100g" by treating it as "100 grams"
+  s = s.replace(/(\d+)g/, '$1 grams');
+  s = s.replace(/(\d+)oz/, '$1 ounces');
+  s = s.replace(/(\d+)ml/, '$1 millilitre');
+  s = s.replace(/(\d+)lb/, '$1 pound');
+  // handle abbreviation like "100 g" (with space) by treating it as "100 grams"
+  s = s.replace(/(\d+) +g /, '$1 grams ');
+  s = s.replace(/(\d+) +oz /, '$1 ounces ');
+  s = s.replace(/(\d+) +ml /, '$1 millilitre ');
+  s = s.replace(/(\d+) +lb /, '$1 pound ');
+  // handle abbreviations like tsp and tbsp
+  s = s.replace(/tsp\.?/, 'teaspoon');
+  s = s.replace(/tbsp\.?/, 'tablespoon');
   return clumpFractions(s).split(/([,()]|\s+)/).filter(function(e) {
     return String(e).trim();
   })
