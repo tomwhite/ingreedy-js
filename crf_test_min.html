@@ -7,18 +7,22 @@
   </head>
   <body>
     <script type='text/javascript'>
+      function parseIngredients(line) {
+        var lines = [line];
+        return import_data(callIt(export_data(lines)))[0];
+      }
       function callIt(input) {
         FS.writeFile('input.txt', input);
         args = ['-v', '1', '-m', 'model_file', '-o', 'output.txt', 'input.txt'];
         Module['callMain'](args);
-        return FS.readFile('output.txt', { encoding: 'utf8' });
+        return FS.readFile('output.txt', { encoding: 'utf8' }).split(/\n/);
       }
 
       function whenReady() {
         // can start the program here
-        var output = callIt('150	I1	L4	NoCAP	NoPAREN\ngrams	I2	L4	NoCAP	NoPAREN\nflour	I3	L4	NoCAP	NoPAREN');
+        var output = parseIngredients('150 grams flour');
         console.log(output);
-        var output = callIt('300	I1	L4	NoCAP	NoPAREN\nteaspoons	I2	L4	NoCAP	NoPAREN\npotatoes	I3	L4	NoCAP	NoPAREN');
+        var output = parseIngredients('300 teaspoons potatoes');
         console.log(output);
       }
 
@@ -65,6 +69,7 @@
         };
       };
     </script>
+    <script async type="text/javascript" src="ingreedy-js.js"></script>
     <script async type="text/javascript" src="crf_test.js"></script>
 
   </body>
