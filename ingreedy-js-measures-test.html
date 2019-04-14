@@ -18,5 +18,18 @@
      eq(true, isNaN(normalizeQuantity("1blah")));
    },
 
+   'calculateMass': function() {
+     eq(2, calculateMass("2", "gram", "onion"));
+     eq(56.6, calculateMass("2", "ounce", "onion"));
+     eq(908, calculateMass("2", "pound", "onion"));
+     eq(true, isNaN(calculateMass("2", "hundredweight", "onion")));
+     eq(350, calculateMass("2", null, "apple"));
+     eq(350, calculateMass("2", "", "apple"));
+     eq(true, isNaN(calculateMass("2", null, "rabbit")));
+     eq(true, isNaN(calculateMass("2", "", "rabbit")));
+     eq(true, isNaN(calculateMass("", "", "salt")));
+     eq(true, isNaN(calculateMass("2blah", "blah", "onion")));
+   },
+
  });
 </script>
