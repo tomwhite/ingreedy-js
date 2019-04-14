@@ -6,9 +6,26 @@
 // Foods tab
 // https://spreadsheets.google.com/feeds/list/1wBrknNKxX_-lmR0ZS0L3pEGvJqe4uOsRI9VrhfrnpVQ/omyqap3/public/values?alt=json
 
+function indexFoods() {
+  var idx = lunr(function () {
+    this.ref('name')
+    this.field('name')
+
+    foods.forEach(function (food) {
+      this.add(food);
+    }, this)
+  });
+  return idx;
+}
+
+var idx = indexFoods();
 
 function normalize(name) {
-  return name;
+  var hits = idx.search(name);
+  if (hits.length == 0) {
+    return name;
+  }
+  return hits[0].ref;
 }
 
 function tsvToJson(tsv) {
