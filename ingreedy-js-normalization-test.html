@@ -1,5 +1,6 @@
 <script src="tinytest.js"></script>
 <script src="ingreedy-js-normalization.js"></script>
+<script src="ingreedy_food.js"></script>
 <script>
 
   function arrayEq(expected, actual) {
@@ -22,7 +23,7 @@ Pecans\t691\t14\t72\t9.6\t9.2`);
    },
 
    'normalize': function() {
-     eq("a", normalize("a"));
+     eq("Celeriac, raw", normalize("celeriac"));
    },
 
  });
