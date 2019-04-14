@@ -1,0 +1,23 @@
+<script src="tinytest.js"></script>
+<script src="ingreedy-js-measures.js"></script>
+<script>
+
+  function arrayEq(expected, actual) {
+    eq(expected.length, actual.length);
+    for (var i = 0; i < expected.length; i++) {
+      eq(expected[i], actual[i]);
+    }
+  }
+
+ tests({
+
+   'normalizeQuantity': function() {
+     eq(1, normalizeQuantity("1"));
+     eq(1.5, normalizeQuantity("1 1/2"));
+     eq(5.5, normalizeQuantity("11/2"));
+     console.log(normalizeQuantity("1blah"))
+     eq(true, isNaN(normalizeQuantity("1blah")));
+   },
+
+ });
+</script>
