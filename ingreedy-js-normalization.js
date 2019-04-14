@@ -28,6 +28,19 @@ function normalize(name) {
   return hits[0].ref;
 }
 
+function lookup(name) {
+  var hits = idx.search(name);
+  if (hits.length == 0) {
+    return null;
+  }
+  for (var i = 0; i < foods.length; i++) {
+    if (foods[i]['name'] === hits[0].ref) {
+      return foods[i];
+    }
+  }
+  return null;
+}
+
 function tsvToJson(tsv) {
   var lines = tsv.split('\n');
   var result = [];

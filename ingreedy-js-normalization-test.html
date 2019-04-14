@@ -27,5 +27,10 @@ Pecans\t691\t14\t72\t9.6\t9.2`);
      eq("Celeriac, raw", normalize("celeriac"));
    },
 
+   'lookup': function() {
+     eq("Celeriac, raw", lookup("celeriac").name);
+     eq(9.2, lookup("celeriac").carbohydrate_content);
+   },
+
  });
 </script>
