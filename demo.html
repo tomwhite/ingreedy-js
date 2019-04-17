@@ -67,11 +67,32 @@
                         lastModified: Date.now()
                     });
                 }, 'image/png', 1);
-                document.getElementById('output').src = elem.toDataURL('image/png');
-                console.log(document.getElementById('output').src);
+                const dataUrl = elem.toDataURL('image/png');
+                document.getElementById('output').src = dataUrl;
+                const base64Img = dataUrl.replace('data:image/png;base64,', '');
+                console.log(base64Img);
+                createVisionRequest(base64Img);
             },
             reader.onerror = error => console.log(error);
     };
+
+    function createVisionRequest(base64Img) {
+        const data = {
+            "requests":[
+                {
+                    "image": {
+                        "content": base64Img
+                    },
+                    "features": [
+                      {
+                        "type": "DOCUMENT_TEXT_DETECTION"
+                      }
+                    ]
+                }
+            ]
+        }
+        console.log(data);
+    }
 }
 </script>
 </body>
