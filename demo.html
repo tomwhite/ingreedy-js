@@ -3,10 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Ingreedy demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .imgbox {
+            display: grid;
+            height: 100%;
+        }
+        .center-fit {
+            max-width: 100%;
+            max-height: 100vh;
+            margin: auto;
+        }
+    </style>
 </head>
 <body>
 <input type="file" accept="image/*" id="file-input">
-<img id="output">
+<div class="imgbox">
+    <img class="center-fit" id="output">
+</div>
 <script>
   const fileInput = document.getElementById('file-input');
   fileInput.addEventListener('change', (e) => doSomethingWithFiles(e.target.files));
