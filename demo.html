@@ -25,25 +25,54 @@
     <img class="center-fit" id="output">
 </div>
 <script>
+
   const fileInput = document.getElementById('file-input');
-  fileInput.addEventListener('change', (e) => doSomethingWithFiles(e.target.files));
+  fileInput.addEventListener('change', (e) => compress(e));
 
-  const output = document.getElementById('output');
+  function compress(e) {
+    var MAX_WIDTH = 1024;
+    var MAX_HEIGHT = 768;
+    const fileName = e.target.files[0].name;
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = event => {
+        const img = new Image();
+        img.src = event.target.result;
 
-  function doSomethingWithFiles(fileList) {
-    let file = null;
+        img.onload = () => {
+                var width = img.width;
+                var height = img.height;
 
-    for (let i = 0; i < fileList.length; i++) {
-      if (fileList[i].type.match(/^image\//)) {
-        file = fileList[i];
-        break;
-      }
-    }
+                if (width > height) {
+                   if (width > MAX_WIDTH) {
+                      height *= MAX_WIDTH / width;
+                      width = MAX_WIDTH;
+                   }
+                } else {
+                   if (height > MAX_HEIGHT) {
+                      width *= MAX_HEIGHT / height;
+                      height = MAX_HEIGHT;
+                   }
+                }
 
-    if (file !== null) {
-      output.src = URL.createObjectURL(file);
-    }
-  }
+                const elem = document.createElement('canvas');
+                elem.width = width;
+                elem.height = height;
+                const ctx = elem.getContext('2d');
+                // img.width and img.height will contain the original dimensions
+                ctx.drawImage(img, 0, 0, width, height);
+                ctx.canvas.toBlob((blob) => {
+                    const file = new File([blob], fileName, {
+                        type: 'image/png',
+                        lastModified: Date.now()
+                    });
+                }, 'image/png', 1);
+                document.getElementById('output').src = elem.toDataURL('image/png');
+                console.log(document.getElementById('output').src);
+            },
+            reader.onerror = error => console.log(error);
+    };
+}
 </script>
 </body>
 </html>
