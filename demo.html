@@ -24,6 +24,7 @@
 <div class="imgbox">
     <img class="center-fit" id="output">
 </div>
+<textarea id="text"></textarea>
 <script>
 
   const fileInput = document.getElementById('file-input');
@@ -96,17 +97,59 @@
         var http = new XMLHttpRequest();
         var url = 'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyC4zxRw4GIxO1RuUAezGwtnBl-KLkfRJ2E';
 
-        http.open('POST', url, true);
-        http.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+        //http.open('POST', url, true);
+        //http.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
 
-        http.onreadystatechange = function() {
-            if (http.readyState == 4 && http.status == 200) {
-                console.log(http.responseText);
-            }
+        //http.onreadystatechange = function() {
+        //    if (http.readyState == 4 && http.status == 200) {
+        //        console.log(http.responseText);
+        //    }
+        //}
+
+        //http.send(JSON.stringify(data));
+
+        var response = fakeResponse();
+        console.log(response);
+        var text = response["responses"][0]["textAnnotations"][0]["description"];
+        console.log(text);
+
+        const textArea = document.getElementById('text');
+        textArea.value = text;
+    }
+
+    function fakeResponse() {
+        return {
+  "responses": [
+    {
+      "textAnnotations": [
+        {
+          "locale": "en",
+          "description": "the mince will make the hamburgers\nsweet and juicy. The egg is not essential,\nalthough it helps to bind the burgers and\nincreases the food value.\n10g (1/202) butter\n50g (202) onion, very finely chopped\n450g (11b) beef (flank, chump or shin would be\nperfect), freshly minced\n1/2 teaspoon fresh thyme leaves\n1/2 teaspoon finely chopped parsley\n1 small organic egg, beaten\nsalt and freshly ground pepper\npork caul fat (optional)\noil or dripping\nMelt the butter in a saucepan and toss\nin the onion, sweating until soft but not\ncoloured. Leave to get cold. Meanwhile mix\nthe mince with the herbs and beaten egg,\nid the\n",
+          "boundingPoly": {
+            "vertices": [
+              {
+                "x": 21,
+                "y": -7
+              },
+              {
+                "x": 543,
+                "y": -7
+              },
+              {
+                "x": 543,
+                "y": 769
+              },
+              {
+                "x": 21,
+                "y": 769
+              }
+            ]
+          }
         }
-
-        http.send(JSON.stringify(data));
-
+        ]
+        }
+        ]
+        }
     }
 }
 </script>
