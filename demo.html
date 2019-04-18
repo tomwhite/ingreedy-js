@@ -71,12 +71,12 @@
                 document.getElementById('output').src = dataUrl;
                 const base64Img = dataUrl.replace('data:image/png;base64,', '');
                 console.log(base64Img);
-                createVisionRequest(base64Img);
+                makeVisionRequest(base64Img);
             },
             reader.onerror = error => console.log(error);
     };
 
-    function createVisionRequest(base64Img) {
+    function makeVisionRequest(base64Img) {
         const data = {
             "requests":[
                 {
@@ -92,6 +92,21 @@
             ]
         }
         console.log(data);
+
+        var http = new XMLHttpRequest();
+        var url = 'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyC4zxRw4GIxO1RuUAezGwtnBl-KLkfRJ2E';
+
+        http.open('POST', url, true);
+        http.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+
+        http.onreadystatechange = function() {
+            if (http.readyState == 4 && http.status == 200) {
+                console.log(http.responseText);
+            }
+        }
+
+        http.send(JSON.stringify(data));
+
     }
 }
 </script>
