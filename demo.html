@@ -24,7 +24,7 @@
 <div class="imgbox">
     <img class="center-fit" id="output">
 </div>
-<textarea id="text"></textarea>
+<textarea id="ingredients_box" rows="20" cols="40"></textarea>
 <script>
 
   const fileInput = document.getElementById('file-input');
@@ -113,7 +113,7 @@
         var text = response["responses"][0]["textAnnotations"][0]["description"];
         console.log(text);
 
-        const textArea = document.getElementById('text');
+        const textArea = document.getElementById('ingredients_box');
         textArea.value = text;
     }
 
