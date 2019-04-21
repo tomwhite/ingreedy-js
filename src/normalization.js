@@ -1,9 +1,9 @@
 function indexFoods() {
-  var idx = lunr(function () {
-    this.ref('name')
-    this.field('name')
+  var idx = lunr(function() {
+    this.ref('name');
+    this.field('name');
 
-    foods.forEach(function (food) {
+    foods.forEach(function(food) {
       this.add(food);
     }, this)
   });
@@ -39,10 +39,10 @@ function tsvToJson(tsv) {
   var headers = lines[0].split('\t');
   for (var i = 1; i < lines.length; i++) {
     var obj = {};
-	var line = lines[i].split('\t');
-	for (var j = 0; j < headers.length; j++) {
-	  obj[headers[j]] = line[j];
-	}
+    var line = lines[i].split('\t');
+    for (var j = 0; j < headers.length; j++) {
+      obj[headers[j]] = line[j];
+    }
     result.push(obj);
   }
   return result;
