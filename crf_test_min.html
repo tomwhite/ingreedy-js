@@ -6,8 +6,15 @@
     <title>crf_test_min</title>
   </head>
   <body>
-    <textarea id="ingredients_box" rows="20" cols="40">1 1/2 grams flour
-300 teaspoons potatoes</textarea>
+    <textarea id="ingredients_box" rows="20" cols="40">10g (1/202) butter
+50g (202) onion, very finely chopped
+450g (11b) beef (flank, chump or shin would be perfect), freshly minced
+1/2 teaspoon fresh thyme leaves
+1/2 teaspoon finely chopped parsley
+1 small organic egg, beaten
+salt and freshly ground pepper
+pork caul fat (optional)
+oil or dripping</textarea>
     <script type='text/javascript'>
       function parseIngredients(lines) {
         return import_data(callIt(export_data(lines)));
@@ -45,6 +52,9 @@
         for (var i = 0; i < foods.length; i++) {
           var food = foods[i];
           if ('weight' in food && 'food' in food) {
+            if (food['food']['carbohydrate_content'] === "0") {
+              continue;
+            }
             carbsTotal += food['weight'] * food['food']['carbohydrate_content'] / 100.0;
           }
         }
