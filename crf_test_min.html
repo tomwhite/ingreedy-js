@@ -26,31 +26,16 @@ oil or dripping</textarea>
         return FS.readFile('output.txt', { encoding: 'utf8' }).split(/\n/);
       }
 
-      function lookupFoods(foods) {
-        for (var i = 0; i < foods.length; i++) {
-          var food = foods[i];
+      function calculateCarbs(foods) {
+        var carbsTotal = 0.0;
+        for (const food of foods) {
           if ('name' in food) {
             food['food'] = lookup(food['name']);
           }
-        }
-        return foods;
-      }
-
-      function calculateWeights(foods) {
-        for (var i = 0; i < foods.length; i++) {
-          var food = foods[i];
           if ('qty' in food) {
             // TODO: won't normally match
             food['weight'] = calculateMass(food['qty'], food['unit'], food['name']);
           }
-        }
-        return foods;
-      }
-
-      function calculateCarbs(foods) {
-        var carbsTotal = 0.0;
-        for (var i = 0; i < foods.length; i++) {
-          var food = foods[i];
           if ('weight' in food && 'food' in food) {
             if (food['food']['carbohydrate_content'] === "0") {
               continue;
@@ -66,9 +51,8 @@ oil or dripping</textarea>
         var text = document.getElementById('ingredients_box').value;
         var lines = text.split(/\n/);
         var foods = parseIngredients(lines);
-        var output = calculateWeights(lookupFoods(foods));
-        console.log(output);
         var carbs = calculateCarbs(foods);
+        console.log(foods);
         console.log(carbs);
       }
 
