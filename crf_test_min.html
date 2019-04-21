@@ -6,10 +6,11 @@
     <title>crf_test_min</title>
   </head>
   <body>
+    <textarea id="ingredients_box" rows="20" cols="40">150 grams flour
+300 teaspoons potatoes</textarea>
     <script type='text/javascript'>
-      function parseIngredients(line) {
-        var lines = [line];
-        return import_data(callIt(export_data(lines)))[0];
+      function parseIngredients(lines) {
+        return import_data(callIt(export_data(lines)));
       }
       function callIt(input) {
         FS.writeFile('input.txt', input);
@@ -20,9 +21,9 @@
 
       function whenReady() {
         // can start the program here
-        var output = parseIngredients('150 grams flour');
-        console.log(output);
-        var output = parseIngredients('300 teaspoons potatoes');
+        var text = '150 grams flour\n300 teaspoons potatoes';
+        var lines = text.split(/\n/);
+        var output = parseIngredients(lines);
         console.log(output);
       }
 
