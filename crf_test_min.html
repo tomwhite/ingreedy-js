@@ -53,7 +53,7 @@
 
       function whenReady() {
         // can start the program here
-        var text = '1 1/2 grams flour\n300 teaspoons potatoes';
+        var text = document.getElementById('ingredients_box').value;
         var lines = text.split(/\n/);
         var foods = parseIngredients(lines);
         var output = calculateWeights(lookupFoods(foods));
