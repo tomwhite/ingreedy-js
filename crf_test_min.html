@@ -6,7 +6,7 @@
     <title>crf_test_min</title>
   </head>
   <body>
-    <textarea id="ingredients_box" rows="20" cols="40">150 grams flour
+    <textarea id="ingredients_box" rows="20" cols="40">1 1/2 grams flour
 300 teaspoons potatoes</textarea>
     <script type='text/javascript'>
       function parseIngredients(lines) {
@@ -19,12 +19,55 @@
         return FS.readFile('output.txt', { encoding: 'utf8' }).split(/\n/);
       }
 
+      function normalizeQuantities(foods) {
+        for (var i = 0; i < foods.length; i++) {
+          if ('qty' in foods[i]) {
+            foods[i]['qty'] = normalizeQuantity(foods[i]['qty']);
+          }
+        }
+        return foods;
+      }
+
+      function lookupFoods(foods) {
+        for (var i = 0; i < foods.length; i++) {
+          if ('name' in foods[i]) {
+            foods[i]['food'] = lookup(foods[i]['name']);
+          }
+        }
+        return foods;
+      }
+
+      function calculateWeights(foods) {
+        for (var i = 0; i < foods.length; i++) {
+          if ('qty' in foods[i]) {
+            var qty = foods[i]['qty'];
+            var unit = foods[i]['unit'];
+            var name = foods[i]['name']; // TODO: won't normally match
+            foods[i]['weight'] = calculateMass(qty, unit, name);
+          }
+        }
+        return foods;
+      }
+
+      function calculateCarbs(foods) {
+        var carbsTotal = 0.0;
+        for (var i = 0; i < foods.length; i++) {
+          if ('weight' in foods[i] && 'food' in foods[i]) {
+            carbsTotal += foods[i]['weight'] * foods[i]['food']['carbohydrate_content'] / 100.0;
+          }
+        }
+        return carbsTotal;
+      }
+
       function whenReady() {
         // can start the program here
-        var text = '150 grams flour\n300 teaspoons potatoes';
+        var text = '1 1/2 grams flour\n300 teaspoons potatoes';
         var lines = text.split(/\n/);
-        var output = parseIngredients(lines);
+        var foods = parseIngredients(lines);
+        var output = calculateWeights(lookupFoods(foods));
         console.log(output);
+        var carbs = calculateCarbs(foods);
+        console.log(carbs);
       }
 
       var Module = {
