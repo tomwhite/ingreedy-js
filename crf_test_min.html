@@ -19,19 +19,11 @@
         return FS.readFile('output.txt', { encoding: 'utf8' }).split(/\n/);
       }
 
-      function normalizeQuantities(foods) {
-        for (var i = 0; i < foods.length; i++) {
-          if ('qty' in foods[i]) {
-            foods[i]['qty'] = normalizeQuantity(foods[i]['qty']);
-          }
-        }
-        return foods;
-      }
-
       function lookupFoods(foods) {
         for (var i = 0; i < foods.length; i++) {
-          if ('name' in foods[i]) {
-            foods[i]['food'] = lookup(foods[i]['name']);
+          var food = foods[i];
+          if ('name' in food) {
+            food['food'] = lookup(food['name']);
           }
         }
         return foods;
@@ -39,11 +31,10 @@
 
       function calculateWeights(foods) {
         for (var i = 0; i < foods.length; i++) {
-          if ('qty' in foods[i]) {
-            var qty = foods[i]['qty'];
-            var unit = foods[i]['unit'];
-            var name = foods[i]['name']; // TODO: won't normally match
-            foods[i]['weight'] = calculateMass(qty, unit, name);
+          var food = foods[i];
+          if ('qty' in food) {
+            // TODO: won't normally match
+            food['weight'] = calculateMass(food['qty'], food['unit'], food['name']);
           }
         }
         return foods;
@@ -52,8 +43,9 @@
       function calculateCarbs(foods) {
         var carbsTotal = 0.0;
         for (var i = 0; i < foods.length; i++) {
-          if ('weight' in foods[i] && 'food' in foods[i]) {
-            carbsTotal += foods[i]['weight'] * foods[i]['food']['carbohydrate_content'] / 100.0;
+          var food = foods[i];
+          if ('weight' in food && 'food' in food) {
+            carbsTotal += food['weight'] * food['food']['carbohydrate_content'] / 100.0;
           }
         }
         return carbsTotal;
