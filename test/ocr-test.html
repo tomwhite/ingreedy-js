@@ -1,0 +1,27 @@
+<script src="tinytest.js"></script>
+<script src="../src/ocr.js"></script>
+<script src="IMG_0220.JPG.google.js"></script>
+<script>
+
+ tests({
+
+   'getBlocks': function() {
+     eq(5, getBlocks(response).length);
+   },
+
+   'getTextFromBlock': function() {
+     const centerBlock = getCenterBlock(response);
+     eq(`10g (1/202) butter
+50g (20z) onion, very finely chopped
+450g (11b) beef (flank, chump or shin would be
+perfect), freshly minced
+1/2 teaspoon fresh thyme leaves
+1/2 teaspoon finely chopped parsley
+1 small organic egg, beaten
+salt and freshly ground pepper
+pork caul fat (optional)
+oil or dripping`, getTextFromBlock(centerBlock).trim());
+   },
+
+ });
+</script>
