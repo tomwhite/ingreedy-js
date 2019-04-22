@@ -156,7 +156,56 @@
         ]
         }
     }
-}
+
+  }
+
+  function getBlocks(response) {
+    return response['responses'][0]['fullTextAnnotation']['pages'][0]['blocks'];
+  }
+
+  function getTextFromBlock(block) {
+    let text = '';
+    block['paragraphs'].forEach(function(paragraph) {
+        paragraph['words'].forEach(function(word) {
+            word['symbols'].forEach(function(symbol) {
+                text += symbol['text'];
+                if ('detectedBreak' in symbol['property']) {
+                    const detectedBreakType = symbol['property']['detectedBreak']['type'];
+                    if (detectedBreakType === 'SPACE' || detectedBreakType === 'SURE_SPACE') {
+                        text += ' ';
+                    } else if (detectedBreakType === 'EOL_SURE_SPACE' || detectedBreakType === 'LINE_BREAK') {
+                        text += '\n';
+                    }
+                }
+            });
+        });
+    });
+    return text;
+  }
+
+    var http = new XMLHttpRequest();
+    var url = 'IMG_0220.JPG.google.json';
+
+    http.open('GET', url, true);
+
+    http.onreadystatechange = function() {
+        if (http.readyState == 4 && http.status == 200) {
+            const responseText = http.responseText;
+            console.log(responseText);
+            const response = JSON.parse(responseText);
+            const blocks = getBlocks(response);
+            console.log(blocks);
+            blocks.forEach(function(block) {
+                const text = getTextFromBlock(block);
+                console.log(text);
+            });
+        }
+    }
+
+    http.send();
+
+
+
 </script>
 </body>
 </html>
