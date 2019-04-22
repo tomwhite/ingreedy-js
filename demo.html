@@ -97,24 +97,29 @@
         var http = new XMLHttpRequest();
         var url = 'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyC4zxRw4GIxO1RuUAezGwtnBl-KLkfRJ2E';
 
-        //http.open('POST', url, true);
-        //http.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+        http.open('POST', url, true);
+        http.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
 
-        //http.onreadystatechange = function() {
-        //    if (http.readyState == 4 && http.status == 200) {
-        //        console.log(http.responseText);
-        //    }
-        //}
+        http.onreadystatechange = function() {
+            if (http.readyState == 4 && http.status == 200) {
+                const responseText = http.responseText;
+                console.log(responseText);
+                const response = JSON.parse(responseText);
+                const text = response["responses"][0]["textAnnotations"][0]["description"];
+                console.log(text);
+                const textArea = document.getElementById('ingredients_box');
+                textArea.value = text;
+            }
+        }
 
-        //http.send(JSON.stringify(data));
+        http.send(JSON.stringify(data));
 
-        var response = fakeResponse();
-        console.log(response);
-        var text = response["responses"][0]["textAnnotations"][0]["description"];
-        console.log(text);
-
-        const textArea = document.getElementById('ingredients_box');
-        textArea.value = text;
+        //var response = fakeResponse();
+        //console.log(response);
+        //var text = response["responses"][0]["textAnnotations"][0]["description"];
+        //console.log(text);
+        //const textArea = document.getElementById('ingredients_box');
+        //textArea.value = text;
     }
 
     function fakeResponse() {
