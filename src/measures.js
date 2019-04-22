@@ -1,4 +1,4 @@
-var unitToGrams = {
+const unitToGrams = {
   'clove': 5,
   'gram': 1,
   'millilitre': 1,
@@ -8,7 +8,7 @@ var unitToGrams = {
   'tablespoon': 15
 };
 
-var foodMeasures = {
+const foodMeasures = {
   'apple': 175,
   'banana': 151,
   'mandarin': 78,
@@ -30,7 +30,7 @@ var foodMeasures = {
 };
 
 function normalizeQuantity(quantity) {
-  var match = quantity.match(/(\d+) (\d+)\/(\d+)/)
+  let match = quantity.match(/(\d+) (\d+)\/(\d+)/)
   if (match != null) {
     return Number(match[1]) + Number(match[2]) / Number(match[3])
   }
