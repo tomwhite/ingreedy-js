@@ -105,7 +105,9 @@
                 const responseText = http.responseText;
                 console.log(responseText);
                 const response = JSON.parse(responseText);
-                const text = response["responses"][0]["textAnnotations"][0]["description"];
+                const centerBlock = getCenterBlock(response);
+                console.log(centerBlock);
+                const text = getTextFromBlock(centerBlock);
                 console.log(text);
                 const textArea = document.getElementById('ingredients_box');
                 textArea.value = text;
@@ -244,7 +246,7 @@
         }
     }
 
-    http.send();
+    //http.send();
 
 
 
