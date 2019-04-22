@@ -27,7 +27,7 @@ oil or dripping</textarea>
       }
 
       function calculateCarbs(foods) {
-        var carbsTotal = 0.0;
+        let carbsTotal = 0.0;
         for (const food of foods) {
           if ('name' in food) {
             food['food'] = lookup(food['name']);
@@ -48,10 +48,10 @@ oil or dripping</textarea>
 
       function whenReady() {
         // can start the program here
-        var text = document.getElementById('ingredients_box').value;
-        var lines = text.split(/\n/);
-        var foods = parseIngredients(lines);
-        var carbs = calculateCarbs(foods);
+        const text = document.getElementById('ingredients_box').value;
+        const lines = text.split(/\n/);
+        const foods = parseIngredients(lines);
+        const carbs = calculateCarbs(foods);
         console.log(foods);
         console.log(carbs);
       }

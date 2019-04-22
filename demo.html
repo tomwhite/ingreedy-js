@@ -30,8 +30,8 @@ const fileInput = document.getElementById('file-input');
 fileInput.addEventListener('change', (e) => compress(e));
 
 function compress(e) {
-  var MAX_WIDTH = 1024;
-  var MAX_HEIGHT = 768;
+  const MAX_WIDTH = 1024;
+  const MAX_HEIGHT = 768;
   const fileName = e.target.files[0].name;
   const reader = new FileReader();
   reader.readAsDataURL(e.target.files[0]);
@@ -40,8 +40,8 @@ function compress(e) {
     img.src = event.target.result;
 
     img.onload = () => {
-      var width = img.width;
-      var height = img.height;
+      let width = img.width;
+      let height = img.height;
 
       if (width > height) {
         if (width > MAX_WIDTH) {
@@ -66,16 +66,15 @@ function compress(e) {
             [blob], fileName, {type: 'image/png', lastModified: Date.now()});
       }, 'image/png', 1);
       const dataUrl = elem.toDataURL('image/png');
+
+      // TODO: pass in callback to give dataUrl to
       document.getElementById('output').src = dataUrl;
       const base64Img = dataUrl.replace('data:image/png;base64,', '');
-      console.log(base64Img);
       makeVisionRequest(
           base64Img, 'AIzaSyC4zxRw4GIxO1RuUAezGwtnBl-KLkfRJ2E',
           function(response) {
             const centerBlock = getCenterBlock(response);
-            console.log(centerBlock);
             const text = getTextFromBlock(centerBlock);
-            console.log(text);
             const textArea = document.getElementById('ingredients_box');
             textArea.value = text;
           });
@@ -83,30 +82,6 @@ function compress(e) {
   };
 }
 
-var http = new XMLHttpRequest();
-var url = 'IMG_0220.JPG.google.json';
-
-http.open('GET', url, true);
-
-http.onreadystatechange =
-    function() {
-  if (http.readyState == 4 && http.status == 200) {
-    const responseText = http.responseText;
-    console.log(responseText);
-    const response = JSON.parse(responseText);
-    const blocks = getBlocks(response);
-    console.log(blocks);
-    blocks.forEach(function(block) {
-      const text = getTextFromBlock(block);
-      console.log(text);
-    });
-    const centerBlock = getCenterBlock(response);
-    console.log(centerBlock);
-    console.log(getTextFromBlock(centerBlock));
-  }
-}
-
-// http.send();
 </script>
 <script src="src/ocr.js"></script>
 </body>
