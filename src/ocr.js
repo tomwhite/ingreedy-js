@@ -1,3 +1,23 @@
+function makeVisionRequest(base64Img, key, successCallback) {
+  const http = new XMLHttpRequest();
+  const url = 'https://vision.googleapis.com/v1/images:annotate?key=' + key;
+  const data = {
+    'requests': [{
+      'image': {'content': base64Img},
+      'features': [{'type': 'DOCUMENT_TEXT_DETECTION'}]
+    }]
+  };
+
+  http.open('POST', url, true);
+  http.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+  http.onreadystatechange = function() {
+    if (http.readyState == 4 && http.status == 200) {
+      successCallback(JSON.parse(http.responseText));
+    }
+  };
+  http.send(JSON.stringify(data));
+}
+
 function getBlocks(response) {
   // get all the blocks on the first page of the response JSON
   return response['responses'][0]['fullTextAnnotation']['pages'][0]['blocks'];

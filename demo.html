@@ -72,92 +72,17 @@
                 document.getElementById('output').src = dataUrl;
                 const base64Img = dataUrl.replace('data:image/png;base64,', '');
                 console.log(base64Img);
-                makeVisionRequest(base64Img);
+                makeVisionRequest(base64Img, 'AIzaSyC4zxRw4GIxO1RuUAezGwtnBl-KLkfRJ2E', function(response) {
+      const centerBlock = getCenterBlock(response);
+      console.log(centerBlock);
+      const text = getTextFromBlock(centerBlock);
+      console.log(text);
+      const textArea = document.getElementById('ingredients_box');
+      textArea.value = text;
+  });
             },
             reader.onerror = error => console.log(error);
     };
-
-    function makeVisionRequest(base64Img) {
-        const data = {
-            "requests":[
-                {
-                    "image": {
-                        "content": base64Img
-                    },
-                    "features": [
-                      {
-                        "type": "DOCUMENT_TEXT_DETECTION"
-                      }
-                    ]
-                }
-            ]
-        }
-        console.log(data);
-
-        var http = new XMLHttpRequest();
-        var url = 'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyC4zxRw4GIxO1RuUAezGwtnBl-KLkfRJ2E';
-
-        http.open('POST', url, true);
-        http.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-
-        http.onreadystatechange = function() {
-            if (http.readyState == 4 && http.status == 200) {
-                const responseText = http.responseText;
-                console.log(responseText);
-                const response = JSON.parse(responseText);
-                const centerBlock = getCenterBlock(response);
-                console.log(centerBlock);
-                const text = getTextFromBlock(centerBlock);
-                console.log(text);
-                const textArea = document.getElementById('ingredients_box');
-                textArea.value = text;
-            }
-        }
-
-        http.send(JSON.stringify(data));
-
-        //var response = fakeResponse();
-        //console.log(response);
-        //var text = response["responses"][0]["textAnnotations"][0]["description"];
-        //console.log(text);
-        //const textArea = document.getElementById('ingredients_box');
-        //textArea.value = text;
-    }
-
-    function fakeResponse() {
-        return {
-  "responses": [
-    {
-      "textAnnotations": [
-        {
-          "locale": "en",
-          "description": "the mince will make the hamburgers\nsweet and juicy. The egg is not essential,\nalthough it helps to bind the burgers and\nincreases the food value.\n10g (1/202) butter\n50g (202) onion, very finely chopped\n450g (11b) beef (flank, chump or shin would be\nperfect), freshly minced\n1/2 teaspoon fresh thyme leaves\n1/2 teaspoon finely chopped parsley\n1 small organic egg, beaten\nsalt and freshly ground pepper\npork caul fat (optional)\noil or dripping\nMelt the butter in a saucepan and toss\nin the onion, sweating until soft but not\ncoloured. Leave to get cold. Meanwhile mix\nthe mince with the herbs and beaten egg,\nid the\n",
-          "boundingPoly": {
-            "vertices": [
-              {
-                "x": 21,
-                "y": -7
-              },
-              {
-                "x": 543,
-                "y": -7
-              },
-              {
-                "x": 543,
-                "y": 769
-              },
-              {
-                "x": 21,
-                "y": 769
-              }
-            ]
-          }
-        }
-        ]
-        }
-        ]
-        }
-    }
 
   }
 
