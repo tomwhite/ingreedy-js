@@ -17,9 +17,9 @@ pork caul fat (optional)
 oil or dripping</textarea>
     <script type='text/javascript'>
       function parseIngredients(lines) {
-        return import_data(crfpp(export_data(lines)));
+        return import_data(crfTest(export_data(lines)));
       }
-      function crfpp(input) {
+      function crfTest(input) {
         FS.writeFile('input.txt', input);
         args = ['-v', '1', '-m', 'model_file', '-o', 'output.txt', 'input.txt'];
         Module['callMain'](args);
