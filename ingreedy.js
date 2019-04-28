@@ -5698,7 +5698,7 @@ foods = [
   }
 ]
 function indexFoods() {
-  var idx = lunr(function() {
+  return lunr(function() {
     this.ref('name');
     this.field('name');
 
@@ -5706,13 +5706,12 @@ function indexFoods() {
       this.add(food);
     }, this)
   });
-  return idx;
 }
 
-var idx = indexFoods();
+const idx = indexFoods();
 
 function normalize(name) {
-  var hits = idx.search(name);
+  const hits = idx.search(name);
   if (hits.length == 0) {
     return name;
   }
@@ -5720,11 +5719,11 @@ function normalize(name) {
 }
 
 function lookup(name) {
-  var hits = idx.search(name);
+  const hits = idx.search(name);
   if (hits.length == 0) {
     return null;
   }
-  for (var i = 0; i < foods.length; i++) {
+  for (let i = 0; i < foods.length; i++) {
     if (foods[i]['name'] === hits[0].ref) {
       return foods[i];
     }
@@ -5733,20 +5732,20 @@ function lookup(name) {
 }
 
 function tsvToJson(tsv) {
-  var lines = tsv.split('\n');
-  var result = [];
-  var headers = lines[0].split('\t');
-  for (var i = 1; i < lines.length; i++) {
-    var obj = {};
-    var line = lines[i].split('\t');
-    for (var j = 0; j < headers.length; j++) {
+  const lines = tsv.split('\n');
+  const result = [];
+  const headers = lines[0].split('\t');
+  for (let i = 1; i < lines.length; i++) {
+    const obj = {};
+    const line = lines[i].split('\t');
+    for (let j = 0; j < headers.length; j++) {
       obj[headers[j]] = line[j];
     }
     result.push(obj);
   }
   return result;
 }
-var unitToGrams = {
+const unitToGrams = {
   'clove': 5,
   'gram': 1,
   'millilitre': 1,
@@ -5756,7 +5755,7 @@ var unitToGrams = {
   'tablespoon': 15
 };
 
-var foodMeasures = {
+const foodMeasures = {
   'apple': 175,
   'banana': 151,
   'mandarin': 78,
@@ -5778,7 +5777,7 @@ var foodMeasures = {
 };
 
 function normalizeQuantity(quantity) {
-  var match = quantity.match(/(\d+) (\d+)\/(\d+)/)
+  let match = quantity.match(/(\d+) (\d+)\/(\d+)/)
   if (match != null) {
     return Number(match[1]) + Number(match[2]) / Number(match[3])
   }
@@ -5801,4 +5800,25 @@ function calculateMass(quantity, unit, name) {
     return quantityFloat * foodMeasures[name];
   }
   return NaN;
+}
+
+function calculateCarbs(foods) {
+  let carbsTotal = 0.0;
+  for (const food of foods) {
+    if ('name' in food) {
+      food['food'] = lookup(food['name']);
+    }
+    if ('qty' in food) {
+      // TODO: won't normally match
+      food['weight'] = calculateMass(food['qty'], food['unit'], food['name']);
+    }
+    if ('weight' in food && 'food' in food) {
+      if (food['food']['carbohydrate_content'] === '0') {
+        continue;
+      }
+      carbsTotal +=
+          food['weight'] * food['food']['carbohydrate_content'] / 100.0;
+    }
+  }
+  return carbsTotal;
 }

@@ -17,33 +17,13 @@ pork caul fat (optional)
 oil or dripping</textarea>
     <script type='text/javascript'>
       function parseIngredients(lines) {
-        return import_data(callIt(export_data(lines)));
+        return import_data(crfpp(export_data(lines)));
       }
-      function callIt(input) {
+      function crfpp(input) {
         FS.writeFile('input.txt', input);
         args = ['-v', '1', '-m', 'model_file', '-o', 'output.txt', 'input.txt'];
         Module['callMain'](args);
         return FS.readFile('output.txt', { encoding: 'utf8' }).split(/\n/);
-      }
-
-      function calculateCarbs(foods) {
-        let carbsTotal = 0.0;
-        for (const food of foods) {
-          if ('name' in food) {
-            food['food'] = lookup(food['name']);
-          }
-          if ('qty' in food) {
-            // TODO: won't normally match
-            food['weight'] = calculateMass(food['qty'], food['unit'], food['name']);
-          }
-          if ('weight' in food && 'food' in food) {
-            if (food['food']['carbohydrate_content'] === "0") {
-              continue;
-            }
-            carbsTotal += food['weight'] * food['food']['carbohydrate_content'] / 100.0;
-          }
-        }
-        return carbsTotal;
       }
 
       function whenReady() {

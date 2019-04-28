@@ -54,3 +54,24 @@ function calculateMass(quantity, unit, name) {
   }
   return NaN;
 }
+
+function calculateCarbs(foods) {
+  let carbsTotal = 0.0;
+  for (const food of foods) {
+    if ('name' in food) {
+      food['food'] = lookup(food['name']);
+    }
+    if ('qty' in food) {
+      // TODO: won't normally match
+      food['weight'] = calculateMass(food['qty'], food['unit'], food['name']);
+    }
+    if ('weight' in food && 'food' in food) {
+      if (food['food']['carbohydrate_content'] === '0') {
+        continue;
+      }
+      carbsTotal +=
+          food['weight'] * food['food']['carbohydrate_content'] / 100.0;
+    }
+  }
+  return carbsTotal;
+}
