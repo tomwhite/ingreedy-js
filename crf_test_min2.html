@@ -17,6 +17,23 @@ salt and freshly ground pepper
 pork caul fat (optional)
 oil or dripping</textarea>
     <script type='text/javascript'>
+      const textArea = document.getElementById('ingredients_box');
+      textArea.addEventListener('input', (e) => textChanged(e));
+
+      function textChanged(e) {
+        updateNutrients();
+      }
+
+      function updateNutrients() {
+        const text = document.getElementById('ingredients_box').value;
+        const lines = text.split(/\n/);
+        const foods = parseIngredients(lines);
+        const carbs = calculateCarbs(foods);
+        console.log(foods);
+        console.log(carbs);
+        document.getElementById('carbohydrate_content').innerHTML = Math.round(carbs) + "g";
+      }
+
       function parseIngredients(lines) {
         return import_data(crfTest(export_data(lines)));
       }
@@ -29,13 +46,7 @@ oil or dripping</textarea>
 
       function whenReady() {
         // can start the program here
-        const text = document.getElementById('ingredients_box').value;
-        const lines = text.split(/\n/);
-        const foods = parseIngredients(lines);
-        const carbs = calculateCarbs(foods);
-        console.log(foods);
-        console.log(carbs);
-        document.getElementById('carbohydrate_content').innerHTML = Math.round(carbs) + "g";
+        updateNutrients();
       }
 
       var Module = {
