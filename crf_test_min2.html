@@ -16,6 +16,7 @@
 salt and freshly ground pepper
 pork caul fat (optional)
 oil or dripping</textarea>
+    <div id="breakdown"></div>
     <script type='text/javascript'>
       const textArea = document.getElementById('ingredients_box');
       textArea.addEventListener('input', (e) => textChanged(e));
@@ -29,9 +30,22 @@ oil or dripping</textarea>
         const lines = text.split(/\n/);
         const foods = parseIngredients(lines);
         const carbs = calculateCarbs(foods);
+        document.getElementById('carbohydrate_content').innerHTML = Math.round(carbs) + "g";
         console.log(foods);
         console.log(carbs);
-        document.getElementById('carbohydrate_content').innerHTML = Math.round(carbs) + "g";
+
+        let breakdown = '';
+        for (let i = 0; i < foods.length; i++) {
+          if ('food' in foods[i]) {
+            // TODO: use function from measures.js
+            let carbs = 0;
+            if (foods[i]['food']['carbohydrate_content'] != 0) {
+              carbs = foods[i]['food']['carbohydrate_content'] * foods[i]['weight'] / 100.0;
+            }
+            breakdown += Math.round(carbs) + 'g ' + foods[i]['food']['name'] + '<br/>';
+          }
+        }
+        document.getElementById('breakdown').innerHTML = breakdown;
       }
 
       function parseIngredients(lines) {
