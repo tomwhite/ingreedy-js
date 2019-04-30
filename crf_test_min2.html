@@ -71,14 +71,14 @@ oil or dripping</textarea>
         const text = document.getElementById('ingredients_box').value;
         const lines = text.split(/\n/);
         const foods = parseIngredients(lines);
-        const carbs = calculateCarbs(foods);
-        document.getElementById('carbohydrate_content').innerHTML = Math.round(carbs) + "g";
         console.log(foods);
+        const carbs = calculateCarbs(foods);
         console.log(carbs);
+        document.getElementById('carbohydrate_content').innerHTML = Math.round(carbs) + "g";
 
         let breakdown = '';
         for (let i = 0; i < foods.length; i++) {
-          if ('food' in foods[i]) {
+          if ('food' in foods[i] && foods[i]['food'] != null) {
             // TODO: use function from measures.js
             let carbs = 0;
             if (foods[i]['food']['carbohydrate_content'] != 0) {

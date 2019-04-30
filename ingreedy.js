@@ -5812,7 +5812,7 @@ function calculateCarbs(foods) {
       // TODO: won't normally match
       food['weight'] = calculateMass(food['qty'], food['unit'], food['name']);
     }
-    if ('weight' in food && 'food' in food) {
+    if ('weight' in food && 'food' in food && food['food'] != null) {
       if (food['food']['carbohydrate_content'] === '0') {
         continue;
       }
