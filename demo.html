@@ -67,7 +67,7 @@
 </head>
 <body>
 <input type="file" accept="image/*" id="file-input">
-<div class="imgbox">
+<div id="imgbox" class="imgbox">
     <img class="center-fit" id="output">
 </div>
 
@@ -128,6 +128,11 @@ function compress(e) {
       makeVisionRequest(
           base64Img, 'AIzaSyChp1eQ02e3IDQbJ5aqcs2I_27GIn-TsxA',
           function(response) {
+            const orientation = getOrientation(response);
+            if (orientation != 0) {
+                const imgBox = document.getElementById('imgbox');
+                imgBox.style.transform = "rotate(-" + orientation + "deg)";
+            }
             const centerBlock = getCenterBlock(response);
             const text = getTextFromBlock(centerBlock);
             const textArea = document.getElementById('ingredients_box');

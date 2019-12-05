@@ -83,3 +83,44 @@ function getTextFromBlock(block) {
   });
   return text;
 }
+
+// https://stackoverflow.com/a/56907342
+/**
+ *
+ * @param gOCR  The Google Vision response
+ * @return orientation (0, 90, 180 or 270)
+ */
+function getOrientation(gOCR) {
+    var vertexList = gOCR.responses[0].textAnnotations[1].boundingPoly.vertices;
+
+    const ORIENTATION_NORMAL = 0;
+    const ORIENTATION_270_DEGREE = 270;
+    const ORIENTATION_90_DEGREE = 90;
+    const ORIENTATION_180_DEGREE = 180;
+
+    var centerX = 0, centerY = 0;
+    for (var i = 0; i < 4; i++) {
+        centerX += vertexList[i].x;
+        centerY += vertexList[i].y;
+    }
+    centerX /= 4;
+    centerY /= 4;
+
+    var x0 = vertexList[0].x;
+    var y0 = vertexList[0].y;
+
+    if (x0 < centerX) {
+        if (y0 < centerY) {
+
+            return ORIENTATION_NORMAL;
+        } else {
+            return ORIENTATION_270_DEGREE;
+        }
+    } else {
+        if (y0 < centerY) {
+            return ORIENTATION_90_DEGREE;
+        } else {
+            return ORIENTATION_180_DEGREE;
+        }
+    }
+}
