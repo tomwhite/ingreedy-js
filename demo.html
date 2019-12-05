@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     <title>Ingreedy demo</title>
     <style>
         * {
             margin: 0;
             padding: 0;
-        }
-        .imgbox {
-            display: grid;
-            height: 100%;
         }
         .center-fit {
             max-width: 100%;
@@ -66,19 +67,34 @@
     </style>
 </head>
 <body>
-<input type="file" accept="image/*" id="file-input">
-<div id="imgbox" class="imgbox">
-    <img class="center-fit" id="output">
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <input type="file" accept="image/*" id="file-input">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="circle carbs_circle">
+                <span class="nutrient_value" id="carbohydrate_content"></span><br><span class="nutrient_unit">Carbs</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div id="imgbox" class="imgbox">
+                <img class="center-fit" id="output">
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <textarea id="ingredients_box" rows="20" cols="40"></textarea>
+        </div>
+        <div class="col-sm-4">
+            <div id="breakdown"></div>
+        </div>
+    </div>
 </div>
-
-<div class="circle carbs_circle">
-    <span class="nutrient_value" id="carbohydrate_content"></span><br><span class="nutrient_unit">Carbs</span>
-</div>
-<br/>
-
-
-<textarea id="ingredients_box" rows="20" cols="40"></textarea>
-<div id="breakdown"></div>
 
 <script>
 const fileInput = document.getElementById('file-input');
