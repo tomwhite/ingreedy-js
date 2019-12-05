@@ -180,7 +180,7 @@ function compress(e) {
           if ('food' in foods[i] && foods[i]['food'] != null) {
             let carbs = getCarbs(foods[i]);
             let carbsStr = isNaN(carbs) ? '<span class="unknown_carbs">?</span>' : Math.round(carbs);
-            if (carbs == 0.0) {
+            if (Math.round(carbs) == 0.0) {
               breakdown += '<span class="zero_carbs">' + carbsStr + 'g ' + foods[i]['food']['name'] + '</span>' + '<br/>';
             } else {
               breakdown += carbsStr + 'g ' + foods[i]['food']['name'] + '<br/>';

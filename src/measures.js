@@ -26,7 +26,26 @@ const foodMeasures = {
   'mushroom': 100,
   'onion': 130,
   'potato': 229,
-  'tomato': 145
+  'tomato': 145,
+
+  // TODO: handle plurals better
+  'apples': 175,
+  'bananas': 151,
+  'mandarins': 78,
+  'mangoes': 274,
+  'pears': 198,
+  'aubergines': 572,
+  'avocados': 210,
+  'capsicums': 275,
+  'carrots': 168,
+  'chillies': 15,
+  'corns': 320,
+  'cucumbers': 187,
+  'lettuces': 570,
+  'mushrooms': 100,
+  'onions': 130,
+  'potatoes': 229,
+  'tomatoes': 145
 };
 
 function normalizeQuantity(quantity) {

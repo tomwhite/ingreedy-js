@@ -160,6 +160,7 @@ Pecans\t691\t14\t72\t9.6\t9.2`);
      eq(true, isNaN(calculateMass("2", "hundredweight", "onion")));
      eq(350, calculateMass("2", null, "apple"));
      eq(350, calculateMass("2", "", "apple"));
+     eq(350, calculateMass("2", null, "apples"));
      eq(true, isNaN(calculateMass("2", null, "rabbit")));
      eq(true, isNaN(calculateMass("2", "", "rabbit")));
      eq(true, isNaN(calculateMass("", "", "salt")));
