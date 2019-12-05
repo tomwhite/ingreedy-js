@@ -171,9 +171,9 @@ function compress(e) {
         const lines = text.split(/\n/);
         const foods = parseIngredients(lines);
         console.log(foods);
-        const carbs = calculateCarbs(foods);
+        const carbs = calculateCarbsFormatted(foods);
         console.log(carbs);
-        document.getElementById('carbohydrate_content').innerHTML = Math.round(carbs) + "g";
+        document.getElementById('carbohydrate_content').innerHTML = carbs + "g";
 
         let breakdown = '';
         for (let i = 0; i < foods.length; i++) {

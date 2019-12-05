@@ -72,6 +72,29 @@ function calculateCarbs(foods) {
   return carbsTotal;
 }
 
+function calculateCarbsFormatted(foods) {
+  let carbsTotal = 0.0;
+  let unknownFoods = false;
+  for (const food of foods) {
+    if ('name' in food) {
+      food['food'] = lookup(food['name']);
+    }
+    if ('qty' in food) {
+      // TODO: won't normally match
+      food['weight'] = calculateMass(food['qty'], food['unit'], food['name']);
+    }
+    if ('weight' in food && 'food' in food && food['food'] != null) {
+      let carbs = getCarbs(food);
+      if (isNaN(carbs)) {
+        unknownFoods = true;
+      } else {
+        carbsTotal += carbs;
+      }
+    }
+  }
+  return (unknownFoods ? '>' : '') + Math.round(carbsTotal);
+}
+
 function getCarbs(food) {
   if ('food' in food && food['food'] != null) {
     let carbsStr = food['food']['carbohydrate_content'];
