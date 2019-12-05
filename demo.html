@@ -55,6 +55,14 @@
             color: black;
         }
 
+        .unknown_carbs {
+            color: red;
+        }
+
+        .zero_carbs {
+            color: grey;
+        }
+
     </style>
 </head>
 <body>
@@ -118,7 +126,7 @@ function compress(e) {
       document.getElementById('output').src = dataUrl;
       const base64Img = dataUrl.replace('data:image/png;base64,', '');
       makeVisionRequest(
-          base64Img, 'AIzaSyC4zxRw4GIxO1RuUAezGwtnBl-KLkfRJ2E',
+          base64Img, 'AIzaSyChp1eQ02e3IDQbJ5aqcs2I_27GIn-TsxA',
           function(response) {
             const centerBlock = getCenterBlock(response);
             const text = getTextFromBlock(centerBlock);
@@ -149,12 +157,13 @@ function compress(e) {
         let breakdown = '';
         for (let i = 0; i < foods.length; i++) {
           if ('food' in foods[i] && foods[i]['food'] != null) {
-            // TODO: use function from measures.js
-            let carbs = 0;
-            if (foods[i]['food']['carbohydrate_content'] != 0) {
-              carbs = foods[i]['food']['carbohydrate_content'] * foods[i]['weight'] / 100.0;
+            let carbs = getCarbs(foods[i]);
+            let carbsStr = isNaN(carbs) ? '<span class="unknown_carbs">?</span>' : Math.round(carbs);
+            if (carbs == 0.0) {
+              breakdown += '<span class="zero_carbs">' + carbsStr + 'g ' + foods[i]['food']['name'] + '</span>' + '<br/>';
+            } else {
+              breakdown += carbsStr + 'g ' + foods[i]['food']['name'] + '<br/>';
             }
-            breakdown += Math.round(carbs) + 'g ' + foods[i]['food']['name'] + '<br/>';
           }
         }
         document.getElementById('breakdown').innerHTML = breakdown;

@@ -66,12 +66,20 @@ function calculateCarbs(foods) {
       food['weight'] = calculateMass(food['qty'], food['unit'], food['name']);
     }
     if ('weight' in food && 'food' in food && food['food'] != null) {
-      if (food['food']['carbohydrate_content'] === '0') {
-        continue;
-      }
-      carbsTotal +=
-          food['weight'] * food['food']['carbohydrate_content'] / 100.0;
+      carbsTotal += getCarbs(food);
     }
   }
   return carbsTotal;
+}
+
+function getCarbs(food) {
+  if ('food' in food && food['food'] != null) {
+    let carbsStr = food['food']['carbohydrate_content'];
+    if (carbsStr === '0' || carbsStr === 'N' || carbsStr === 'Tr') {
+      return 0.0;
+    } else if ('weight' in food) {
+      return food['weight'] * carbsStr / 100.0;
+    }
+  }
+  return NaN;
 }
