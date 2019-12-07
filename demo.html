@@ -75,10 +75,24 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-4">
-            <div class="circle carbs_circle">
-                <span class="nutrient_value" id="carbohydrate_content"></span><br><span class="nutrient_unit">Carbs</span>
-            </div>
+        <div class="col-lg-2">
+            <h4><span class="badge badge-pill badge-success" id="carbohydrate_content"></span></h4>
+        </div>
+        <div class="col-lg-2">
+            <select class="form-control form-control-sm" id="servings">
+                <option value="1">1 serving</option>
+                <option value="2">2 servings</option>
+                <option value="3">3 servings</option>
+                <option value="4">4 servings</option>
+                <option value="5">5 servings</option>
+                <option value="6">6 servings</option>
+                <option value="7">7 servings</option>
+                <option value="8">8 servings</option>
+                <option value="9">9 servings</option>
+                <option value="10">10 servings</option>
+                <option value="11">11 servings</option>
+                <option value="12">12 servings</option>
+            </select>
         </div>
     </div>
     <div class="row">
@@ -147,7 +161,7 @@ function compress(e) {
             const orientation = getOrientation(response);
             if (orientation != 0) {
                 const imgBox = document.getElementById('imgbox');
-                imgBox.style.transform = "rotate(-" + orientation + "deg)";
+                //imgBox.style.transform = "rotate(-" + orientation + "deg)";
             }
             const centerBlock = getCenterBlock(response);
             const text = getTextFromBlock(centerBlock);
@@ -171,9 +185,18 @@ function compress(e) {
         const lines = text.split(/\n/);
         const foods = parseIngredients(lines);
         console.log(foods);
-        const carbs = calculateCarbsFormatted(foods);
-        console.log(carbs);
-        document.getElementById('carbohydrate_content').innerHTML = carbs + "g";
+        const carbsObject = calculateCarbsObject(foods);
+        console.log(carbsObject);
+        const servings = document.getElementById('servings').value;
+        const carbsPerServing = Math.round(carbsObject.carbs / servings);
+        console.log(carbsPerServing);
+        const warningIndicator = carbsObject.unknownFoods ? ">" : "";
+        document.getElementById('carbohydrate_content').innerHTML = warningIndicator + carbsPerServing + "g Carbs";
+        if (carbsObject.unknownFoods) {
+            document.getElementById('carbohydrate_content').className = "badge badge-pill badge-warning";
+        } else {
+            document.getElementById('carbohydrate_content').className = "badge badge-pill badge-success";
+        }
 
         let breakdown = '';
         for (let i = 0; i < foods.length; i++) {

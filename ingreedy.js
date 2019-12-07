@@ -5838,7 +5838,7 @@ function calculateCarbs(foods) {
   return carbsTotal;
 }
 
-function calculateCarbsFormatted(foods) {
+function calculateCarbsObject(foods) {
   let carbsTotal = 0.0;
   let unknownFoods = false;
   for (const food of foods) {
@@ -5858,7 +5858,10 @@ function calculateCarbsFormatted(foods) {
       }
     }
   }
-  return (unknownFoods ? '>' : '') + Math.round(carbsTotal);
+  return {
+    'carbs': carbsTotal,
+    'unknownFoods': unknownFoods
+  };
 }
 
 function getCarbs(food) {
