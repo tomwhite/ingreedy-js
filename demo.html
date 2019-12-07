@@ -67,13 +67,19 @@
     </style>
 </head>
 <body>
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-4">
-            <input type="file" accept="image/*" id="file-input">
-        </div>
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="demo.html">
+        <img src="icon.gif" width="25" height="25" class="d-inline-block align-top" alt="">
+        Ingreedy
+    </a>
+</nav>
+<div class="container-fluid" id="scan_container">
+    <div class="form-group">
+        <label for="file-input">Scan recipe ingredients</label>
+        <input type="file" class="form-control-file" accept="image/*" id="file-input">
     </div>
+</div>
+<div class="container" id="result_container" style="display: none">
     <div class="row">
         <div class="col-lg-2">
             <h4><span class="badge badge-pill badge-success" id="carbohydrate_content"></span></h4>
@@ -158,6 +164,8 @@ function compress(e) {
       makeVisionRequest(
           base64Img, 'AIzaSyChp1eQ02e3IDQbJ5aqcs2I_27GIn-TsxA',
           function(response) {
+            hideFileInput();
+            showResultsContainer();
             const orientation = getOrientation(response);
             if (orientation != 0) {
                 const imgBox = document.getElementById('imgbox');
@@ -173,6 +181,14 @@ function compress(e) {
     }, reader.onerror = error => console.log(error);
   };
 }
+
+      function hideFileInput() {
+        document.getElementById('scan_container').style.display = 'none';
+      }
+
+      function showResultsContainer() {
+        document.getElementById('result_container').style.display = '';
+      }
 
       const servingsSelect = document.getElementById('servings');
       servingsSelect.addEventListener('input', (e) => servingsChanged(e));
