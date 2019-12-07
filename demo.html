@@ -173,6 +173,13 @@ function compress(e) {
   };
 }
 
+      const servingsSelect = document.getElementById('servings');
+      servingsSelect.addEventListener('input', (e) => servingsChanged(e));
+
+      function servingsChanged(e) {
+        updateNutrients();
+      }
+
       const textArea = document.getElementById('ingredients_box');
       textArea.addEventListener('input', (e) => textChanged(e));
 
