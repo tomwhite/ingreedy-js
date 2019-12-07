@@ -67,7 +67,7 @@ function getTextFromBlock(block) {
     paragraph['words'].forEach(function(word) {
       word['symbols'].forEach(function(symbol) {
         text += symbol['text'];
-        if ('detectedBreak' in symbol['property']) {
+        if ('property' in symbol && 'detectedBreak' in symbol['property']) {
           const detectedBreakType = symbol['property']['detectedBreak']['type'];
           if (detectedBreakType === 'SPACE' ||
               detectedBreakType === 'SURE_SPACE') {

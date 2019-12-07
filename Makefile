@@ -1,2 +1,2 @@
-ingreedy.js: src/lunr.js src/tagger.js src/ingreedy_food.js src/normalization.js src/measures.js
+ingreedy.js: src/lunr.js src/tagger.js src/ingreedy_food.js src/normalization.js src/measures.js src/servings.js
 	cat $^ > $@
