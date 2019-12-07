@@ -1,0 +1,15 @@
+<script src="tinytest.js"></script>
+<script src="../src/servings.js"></script>
+<script>
+
+ tests({
+
+   'getServings': function() {
+     eq(4, getServings("Serves 4"));
+     eq(4, getServings("Serves 4-6"));
+     eq(4, getServings("Serves: 4"));
+     eq(true, isNaN(getServings("Text unrelated to number of people this is for")));
+   },
+
+ });
+</script>
