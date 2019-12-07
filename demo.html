@@ -102,7 +102,7 @@
             </div>
         </div>
         <div class="col-lg-4">
-            <textarea id="ingredients_box" rows="20" cols="40" class="form-control form-control-sm"></textarea>
+            <textarea id="ingredients_box" rows="2" cols="40" class="form-control form-control-sm"></textarea>
         </div>
         <div class="col-lg-4">
             <p id="breakdown" class="small"></p>
@@ -167,6 +167,7 @@ function compress(e) {
             const text = getTextFromBlock(centerBlock);
             const textArea = document.getElementById('ingredients_box');
             textArea.value = text;
+            textArea.rows = text.split("\n").length;
             updateNutrients();
           });
     }, reader.onerror = error => console.log(error);
