@@ -5852,13 +5852,13 @@ function calculateCarbsObject(foods) {
       // TODO: won't normally match
       food["weight"] = calculateMass(food["qty"], food["unit"], food["name"]);
     }
-    if ("weight" in food && "food" in food && food["food"] != null) {
-      let carbs = getCarbs(food);
-      if (isNaN(carbs)) {
-        unknownFoods = true;
-      } else {
-        carbsTotal += carbs;
-      }
+    console.log(food);
+    let carbs = getCarbs(food);
+    console.log(carbs);
+    if (isNaN(carbs)) {
+      unknownFoods = true;
+    } else {
+      carbsTotal += carbs;
     }
   }
   return {
