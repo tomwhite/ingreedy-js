@@ -180,10 +180,10 @@ function compress(e) {
 
             // ingredients
             const centerBlock = getCenterBlock(response);
-            const text = getTextFromBlock(centerBlock);
+            const text = getTextFromBlock(centerBlock).trim();
             const textArea = document.getElementById('ingredients_box');
             textArea.value = text;
-            textArea.rows = text.split("\n").length;
+            textArea.rows = text.split("\n").length + 1;
             updateNutrients();
           });
     }, reader.onerror = error => console.log(error);
