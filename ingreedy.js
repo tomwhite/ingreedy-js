@@ -3471,96 +3471,99 @@ lunr.QueryParser.parseBoost = function (parser) {
 })();
 function tokenize(s) {
   // handle abbreviation like "100g" by treating it as "100 grams"
-  s = s.replace(/(\d+)g/, '$1 grams');
-  s = s.replace(/(\d+)oz/, '$1 ounces');
-  s = s.replace(/(\d+)ml/, '$1 millilitre');
-  s = s.replace(/(\d+)lb/, '$1 pound');
+  s = s.replace(/(\d+)g/, "$1 grams");
+  s = s.replace(/(\d+)oz/, "$1 ounces");
+  s = s.replace(/(\d+)ml/, "$1 millilitre");
+  s = s.replace(/(\d+)lb/, "$1 pound");
   // handle abbreviation like "100 g" (with space) by treating it as "100 grams"
-  s = s.replace(/(\d+) +g /, '$1 grams ');
-  s = s.replace(/(\d+) +oz /, '$1 ounces ');
-  s = s.replace(/(\d+) +ml /, '$1 millilitre ');
-  s = s.replace(/(\d+) +lb /, '$1 pound ');
+  s = s.replace(/(\d+) +g /, "$1 grams ");
+  s = s.replace(/(\d+) +oz /, "$1 ounces ");
+  s = s.replace(/(\d+) +ml /, "$1 millilitre ");
+  s = s.replace(/(\d+) +lb /, "$1 pound ");
   // handle abbreviations like tsp and tbsp
-  s = s.replace(/tsp\.?/, 'teaspoon');
-  s = s.replace(/tbsp\.?/, 'tablespoon');
-  return clumpFractions(s).split(/([,()]|\s+)/).filter(function(e) {
-    return String(e).trim();
-  })
+  s = s.replace(/tsp\.?/, "teaspoon");
+  s = s.replace(/tbsp\.?/, "tablespoon");
+  return clumpFractions(s)
+    .split(/([,()]|\s+)/)
+    .filter(function(e) {
+      return String(e).trim();
+    });
 }
 
 function joinLine(columns) {
-  return columns.join('\t');
+  return columns.join("\t");
 }
 
 function clumpFractions(s) {
-  return s.replace(/(\d+)\s+(\d)\/(\d)/, '$1$$$2/$3')
+  return s.replace(/(\d+)\s+(\d)\/(\d)/, "$1$$$2/$3");
 }
 
 function cleanUnicodeFractions(s) {
   const fractions = {
-    '\u215b': '1/8',
-    '\u215c': '3/8',
-    '\u215d': '5/8',
-    '\u215e': '7/8',
-    '\u2159': '1/6',
-    '\u215a': '5/6',
-    '\u2155': '1/5',
-    '\u2156': '2/5',
-    '\u2157': '3/5',
-    '\u2158': '4/5',
-    '\u00bc': '1/4',
-    '\u00be': '3/4',
-    '\u2153': '1/3',
-    '\u2154': '2/3',
-    '\u00bd': '1/2',
+    "\u215b": "1/8",
+    "\u215c": "3/8",
+    "\u215d": "5/8",
+    "\u215e": "7/8",
+    "\u2159": "1/6",
+    "\u215a": "5/6",
+    "\u2155": "1/5",
+    "\u2156": "2/5",
+    "\u2157": "3/5",
+    "\u2158": "4/5",
+    "\u00bc": "1/4",
+    "\u00be": "3/4",
+    "\u2153": "1/3",
+    "\u2154": "2/3",
+    "\u00bd": "1/2"
   };
   for (var unicode in fractions) {
     var ascii = fractions[unicode];
-    s = s.replace(unicode, ' ' + ascii)
+    s = s.replace(unicode, " " + ascii);
   }
   return s;
 }
 
 function unclump(s) {
-  return s.replace(/\$/, ' ')
+  return s.replace(/\$/, " ");
 }
 
 function getFeatures(token, index, tokens) {
   var l = tokens.length;
   return [
-    (`I${index}`), (`L${lengthGroup(l)}`),
-    (isCapitalized(token) ? 'Yes' : 'No') + 'CAP',
-    (insideParenthesis(token, tokens) ? 'Yes' : 'No') + 'PAREN'
+    `I${index}`,
+    `L${lengthGroup(l)}`,
+    (isCapitalized(token) ? "Yes" : "No") + "CAP",
+    (insideParenthesis(token, tokens) ? "Yes" : "No") + "PAREN"
   ];
 }
 
 function singularize(word) {
   const units = {
-    'cups': 'cup',
-    'tablespoons': 'tablespoon',
-    'teaspoons': 'teaspoon',
-    'pounds': 'pound',
-    'ounces': 'ounce',
-    'cloves': 'clove',
-    'sprigs': 'sprig',
-    'pinches': 'pinch',
-    'bunches': 'bunch',
-    'slices': 'slice',
-    'grams': 'gram',
-    'heads': 'head',
-    'quarts': 'quart',
-    'stalks': 'stalk',
-    'pints': 'pint',
-    'pieces': 'piece',
-    'sticks': 'stick',
-    'dashes': 'dash',
-    'fillets': 'fillet',
-    'cans': 'can',
-    'ears': 'ear',
-    'packages': 'package',
-    'strips': 'strip',
-    'bulbs': 'bulb',
-    'bottles': 'bottle'
+    cups: "cup",
+    tablespoons: "tablespoon",
+    teaspoons: "teaspoon",
+    pounds: "pound",
+    ounces: "ounce",
+    cloves: "clove",
+    sprigs: "sprig",
+    pinches: "pinch",
+    bunches: "bunch",
+    slices: "slice",
+    grams: "gram",
+    heads: "head",
+    quarts: "quart",
+    stalks: "stalk",
+    pints: "pint",
+    pieces: "piece",
+    sticks: "stick",
+    dashes: "dash",
+    fillets: "fillet",
+    cans: "can",
+    ears: "ear",
+    packages: "package",
+    strips: "strip",
+    bulbs: "bulb",
+    bottles: "bottle"
   };
   if (word in units) {
     return units[word];
@@ -3570,7 +3573,7 @@ function singularize(word) {
 }
 
 function isCapitalized(token) {
-  return /^[A-Z]/.test(token)
+  return /^[A-Z]/.test(token);
 }
 
 function lengthGroup(actualLength) {
@@ -3580,35 +3583,35 @@ function lengthGroup(actualLength) {
       return lengths[i].toString();
     }
   }
-  return 'X';
+  return "X";
 }
 
 function insideParenthesis(token, tokens) {
-  if (token === '(' || token === ')') {
+  if (token === "(" || token === ")") {
     return true;
   }
-  var line = tokens.join(' ');
+  var line = tokens.join(" ");
   // TODO: should escape token in line below
-  return RegExp('.*\\(.*' + token + '.*\\).*').test(line);
+  return RegExp(".*\\(.*" + token + ".*\\).*").test(line);
 }
 
 function displayIngredient(ingredient) {
-  var str = '';
+  var str = "";
   for (var i = 0; i < ingredient.length; i++) {
     var tag_tokens = ingredient[i];
     var tag = tag_tokens[0];
-    var tokens = tag_tokens[1].join(' ');
+    var tokens = tag_tokens[1].join(" ");
     str += `<span class='${tag}'>${tokens}</span>`;
   }
   return str;
 }
 
 function smartJoin(words) {
-  var input = words.join(' ');
-  input = input.replace(' , ', ', ')
-  input = input.replace('( ', '(')
-  input = input.replace(' )', ')')
-  return input
+  var input = words.join(" ");
+  input = input.replace(" , ", ", ");
+  input = input.replace("( ", "(");
+  input = input.replace(" )", ")");
+  return input;
 }
 
 function import_data(lines) {
@@ -3617,22 +3620,22 @@ function import_data(lines) {
   var prevTag = null;
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i];
-    if (line == '' || line == '\n') {
+    if (line == "" || line == "\n") {
       data.push({});
       display.push([]);
       prevTag = null;
-    } else if (line[0] == '#') {
+    } else if (line[0] == "#") {
       continue;
     } else {
-      columns = line.trim().split('\t')
-      token = columns[0].trim()
+      columns = line.trim().split("\t");
+      token = columns[0].trim();
 
-      token = unclump(token)
+      token = unclump(token);
 
-      tag_confidence = columns[columns.length - 1].split('/', 2);
+      tag_confidence = columns[columns.length - 1].split("/", 2);
       tag = tag_confidence[0];
       confidence = tag_confidence[1];
-      tag = tag.replace(/^[BI]\-/, '').toLowerCase();
+      tag = tag.replace(/^[BI]\-/, "").toLowerCase();
 
       if (prevTag != tag) {
         display[display.length - 1].push([tag, [token]]);
@@ -3646,7 +3649,7 @@ function import_data(lines) {
         data[data.length - 1][tag] = [];
       }
 
-      if (tag === 'unit') {
+      if (tag === "unit") {
         token = singularize(token);
       }
 
@@ -3666,15 +3669,15 @@ function import_data(lines) {
   }
 
   for (var i = 0; i < output.length; i++) {
-    output[i]['display'] = displayIngredient(display[i]);
+    output[i]["display"] = displayIngredient(display[i]);
   }
 
   for (var i = 0; i < output.length; i++) {
     var all_tokens = [];
     for (var j = 0; j < display[i].length; j++) {
-      all_tokens.push(display[i][j][1].join(' '));
+      all_tokens.push(display[i][j][1].join(" "));
     }
-    output[i]['input'] = smartJoin(all_tokens);
+    output[i]["input"] = smartJoin(all_tokens);
   }
 
   return output;
@@ -3691,9 +3694,9 @@ function export_data(lines) {
       var features = getFeatures(token, j + 1, tokens);
       output.push(joinLine([token].concat(features)));
     }
-    output.push('');
+    output.push("");
   }
-  return output.join('\n');
+  return output.join("\n");
 }
 foods = [
   {
@@ -5699,12 +5702,12 @@ foods = [
 ]
 function indexFoods() {
   return lunr(function() {
-    this.ref('name');
-    this.field('name');
+    this.ref("name");
+    this.field("name");
 
     foods.forEach(function(food) {
       this.add(food);
-    }, this)
+    }, this);
   });
 }
 
@@ -5724,7 +5727,7 @@ function lookup(name) {
     return null;
   }
   for (let i = 0; i < foods.length; i++) {
-    if (foods[i]['name'] === hits[0].ref) {
+    if (foods[i]["name"] === hits[0].ref) {
       return foods[i];
     }
   }
@@ -5732,12 +5735,12 @@ function lookup(name) {
 }
 
 function tsvToJson(tsv) {
-  const lines = tsv.split('\n');
+  const lines = tsv.split("\n");
   const result = [];
-  const headers = lines[0].split('\t');
+  const headers = lines[0].split("\t");
   for (let i = 1; i < lines.length; i++) {
     const obj = {};
-    const line = lines[i].split('\t');
+    const line = lines[i].split("\t");
     for (let j = 0; j < headers.length; j++) {
       obj[headers[j]] = line[j];
     }
@@ -5746,69 +5749,69 @@ function tsvToJson(tsv) {
   return result;
 }
 const unitToGrams = {
-  'clove': 5,
-  'gram': 1,
-  'millilitre': 1,
-  'ounce': 28.3,
-  'pound': 454,
-  'teaspoon': 5,
-  'tablespoon': 15
+  clove: 5,
+  gram: 1,
+  millilitre: 1,
+  ounce: 28.3,
+  pound: 454,
+  teaspoon: 5,
+  tablespoon: 15
 };
 
 const foodMeasures = {
-  'apple': 175,
-  'banana': 151,
-  'mandarin': 78,
-  'mango': 274,
-  'pear': 198,
-  'aubergine': 572,
-  'avocado': 210,
-  'bok choy': 235,
-  'capsicum': 275,
-  'carrot': 168,
-  'chilli': 15,
-  'corn': 320,
-  'cucumber': 187,
-  'lettuce': 570,
-  'mushroom': 100,
-  'onion': 130,
-  'potato': 229,
-  'tomato': 145,
+  apple: 175,
+  banana: 151,
+  mandarin: 78,
+  mango: 274,
+  pear: 198,
+  aubergine: 572,
+  avocado: 210,
+  "bok choy": 235,
+  capsicum: 275,
+  carrot: 168,
+  chilli: 15,
+  corn: 320,
+  cucumber: 187,
+  lettuce: 570,
+  mushroom: 100,
+  onion: 130,
+  potato: 229,
+  tomato: 145,
 
   // TODO: handle plurals better
-  'apples': 175,
-  'bananas': 151,
-  'mandarins': 78,
-  'mangoes': 274,
-  'pears': 198,
-  'aubergines': 572,
-  'avocados': 210,
-  'capsicums': 275,
-  'carrots': 168,
-  'chillies': 15,
-  'corns': 320,
-  'cucumbers': 187,
-  'lettuces': 570,
-  'mushrooms': 100,
-  'onions': 130,
-  'potatoes': 229,
-  'tomatoes': 145
+  apples: 175,
+  bananas: 151,
+  mandarins: 78,
+  mangoes: 274,
+  pears: 198,
+  aubergines: 572,
+  avocados: 210,
+  capsicums: 275,
+  carrots: 168,
+  chillies: 15,
+  corns: 320,
+  cucumbers: 187,
+  lettuces: 570,
+  mushrooms: 100,
+  onions: 130,
+  potatoes: 229,
+  tomatoes: 145
 };
 
 function normalizeQuantity(quantity) {
-  let match = quantity.match(/(\d+) (\d+)\/(\d+)/)
+  let match = quantity.match(/(\d+) (\d+)\/(\d+)/);
   if (match != null) {
-    return Number(match[1]) + Number(match[2]) / Number(match[3])
+    return Number(match[1]) + Number(match[2]) / Number(match[3]);
   }
-  match = quantity.match(/(\d+)\/(\d+)/)
+  match = quantity.match(/(\d+)\/(\d+)/);
   if (match != null) {
-    return Number(match[1]) / Number(match[2])
+    return Number(match[1]) / Number(match[2]);
   }
   return Number(quantity);
 }
 
 function calculateMass(quantity, unit, name) {
-  quantityFloat = normalizeQuantity(quantity)
+  quantityFloat = normalizeQuantity(quantity);
   if (isNaN(quantityFloat)) {
     return quantityFloat;
   }
@@ -5824,14 +5827,14 @@ function calculateMass(quantity, unit, name) {
 function calculateCarbs(foods) {
   let carbsTotal = 0.0;
   for (const food of foods) {
-    if ('name' in food) {
-      food['food'] = lookup(food['name']);
+    if ("name" in food) {
+      food["food"] = lookup(food["name"]);
     }
-    if ('qty' in food) {
+    if ("qty" in food) {
       // TODO: won't normally match
-      food['weight'] = calculateMass(food['qty'], food['unit'], food['name']);
+      food["weight"] = calculateMass(food["qty"], food["unit"], food["name"]);
     }
-    if ('weight' in food && 'food' in food && food['food'] != null) {
+    if ("weight" in food && "food" in food && food["food"] != null) {
       carbsTotal += getCarbs(food);
     }
   }
@@ -5842,14 +5845,14 @@ function calculateCarbsObject(foods) {
   let carbsTotal = 0.0;
   let unknownFoods = false;
   for (const food of foods) {
-    if ('name' in food) {
-      food['food'] = lookup(food['name']);
+    if ("name" in food) {
+      food["food"] = lookup(food["name"]);
     }
-    if ('qty' in food) {
+    if ("qty" in food) {
       // TODO: won't normally match
-      food['weight'] = calculateMass(food['qty'], food['unit'], food['name']);
+      food["weight"] = calculateMass(food["qty"], food["unit"], food["name"]);
     }
-    if ('weight' in food && 'food' in food && food['food'] != null) {
+    if ("weight" in food && "food" in food && food["food"] != null) {
       let carbs = getCarbs(food);
       if (isNaN(carbs)) {
         unknownFoods = true;
@@ -5859,26 +5862,45 @@ function calculateCarbsObject(foods) {
     }
   }
   return {
-    'carbs': carbsTotal,
-    'unknownFoods': unknownFoods
+    carbs: carbsTotal,
+    unknownFoods: unknownFoods
   };
 }
 
 function getCarbs(food) {
-  if ('food' in food && food['food'] != null) {
-    let carbsStr = food['food']['carbohydrate_content'];
-    if (carbsStr === '0' || carbsStr === 'N' || carbsStr === 'Tr') {
+  if ("food" in food && food["food"] != null) {
+    let carbsStr = food["food"]["carbohydrate_content"];
+    if (carbsStr === "0" || carbsStr === "N" || carbsStr === "Tr") {
       return 0.0;
-    } else if ('weight' in food) {
-      return food['weight'] * carbsStr / 100.0;
+    } else if ("weight" in food) {
+      return (food["weight"] * carbsStr) / 100.0;
     }
   }
   return NaN;
-}function getServings(text) {
+}
+function getServings(text) {
   const re = /serves:?\s+(\d+)/i;
   const matches = text.match(re);
   if (matches) {
     return matches[1];
   }
   return NaN;
+}
+
+function getServingsFromPage(response) {
+  return getBlocks(response)
+    .map(function(block) {
+      const text = getTextFromBlock(block);
+      const servings = getServings(text);
+      return servings;
+    })
+    .reduce(function(acc, cur) {
+      if (!isNaN(acc)) {
+        return acc;
+      }
+      if (!isNaN(cur)) {
+        return cur;
+      }
+      return NaN;
+    }, NaN);
 }

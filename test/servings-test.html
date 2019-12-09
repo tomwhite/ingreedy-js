@@ -1,5 +1,7 @@
 <script src="tinytest.js"></script>
+<script src="../src/ocr.js"></script>
 <script src="../src/servings.js"></script>
+<script src="IMG_0220.JPG.google.js"></script>
 <script>
 
  tests({
@@ -10,6 +12,10 @@
      eq(4, getServings("Serves: 4"));
      eq(true, isNaN(getServings("Text unrelated to number of people this is for")));
    },
+
+   'getServingsFromPage': function() {
+     eq(true, isNaN(getServingsFromPage(response0220)));
+   }
 
  });
 </script>

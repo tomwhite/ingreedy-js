@@ -6,3 +6,21 @@ function getServings(text) {
   }
   return NaN;
 }
+
+function getServingsFromPage(response) {
+  return getBlocks(response)
+    .map(function(block) {
+      const text = getTextFromBlock(block);
+      const servings = getServings(text);
+      return servings;
+    })
+    .reduce(function(acc, cur) {
+      if (!isNaN(acc)) {
+        return acc;
+      }
+      if (!isNaN(cur)) {
+        return cur;
+      }
+      return NaN;
+    }, NaN);
+}
