@@ -184,28 +184,34 @@ function compress(e) {
         const lines = text.split(/\n/);
         const foods = parseIngredients(lines);
         console.log(foods);
-        const carbsObject = calculateCarbsObject(foods);
-        console.log(carbsObject);
+        const foodsWithCarbs = foods.map(food => calculateCarbsInFood(food));
+        const totalCarbsInfo = calculateTotalCarbs(foodsWithCarbs);
         const servings = document.getElementById('servings').value;
-        const carbsPerServing = Math.round(carbsObject.carbs / servings);
+        const carbsPerServing = Math.round(totalCarbsInfo.carbs / servings);
         console.log(carbsPerServing);
-        const warningIndicator = carbsObject.unknownFoods ? ">" : "";
+        const warningIndicator = totalCarbsInfo.unknownFoods ? ">" : "";
         document.getElementById('carbohydrate_content').innerHTML = warningIndicator + carbsPerServing + "g Carbs";
-        if (carbsObject.unknownFoods) {
+        if (totalCarbsInfo.unknownFoods) {
             document.getElementById('carbohydrate_content').className = "badge badge-pill badge-warning";
         } else {
             document.getElementById('carbohydrate_content').className = "badge badge-pill badge-success";
         }
 
         let breakdown = '';
-        for (let i = 0; i < foods.length; i++) {
-          if ('food' in foods[i] && foods[i]['food'] != null) {
-            let carbs = getCarbs(foods[i]);
-            let carbsStr = isNaN(carbs) ? '<span class="unknown_carbs">?</span>' : Math.round(carbs);
-            if (Math.round(carbs) == 0.0) {
-              breakdown += '<span class="zero_carbs">' + carbsStr + 'g ' + foods[i]['food']['name'] + '</span>' + '<br/>';
+        for (const foodWithCarbs of foodsWithCarbs) {
+          if ('food' in foodWithCarbs && foodWithCarbs['food'] != null) {
+            const name = foodWithCarbs['food']['name'];
+            if (foodWithCarbs.success) {
+              const c = Math.round(foodWithCarbs.carbs);
+              if (c == 0.0) {
+                breakdown += '<span class="zero_carbs">' + c + 'g ' + name + '</span>' + '<br/>';
+              } else {
+                breakdown += c + 'g ' + name + '<br/>';
+              }
             } else {
-              breakdown += carbsStr + 'g ' + foods[i]['food']['name'] + '<br/>';
+              console.log(name + ": " + foodWithCarbs.reason);
+              let carbsStr = '<span class="unknown_carbs">?</span>';
+              breakdown += carbsStr + 'g ' + name + '<br/>';
             }
           }
         }
