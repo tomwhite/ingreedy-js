@@ -27,7 +27,7 @@ the whole app runs locally in a browser on a phone or on a laptop.
 
 ### Image capture
 
-The user takes a photo of a recipe, then it is displayed in the app. There is some code that handles the orientation
+The user takes a photo of a recipe, then it is displayed in the app. There is some code that fixes the orientation
 of the image (see the [discussion here](https://medium.com/@ageitgey/the-dumb-reason-your-fancy-computer-vision-app-isnt-working-exif-orientation-73166c7d39da)).
 
 ### Image to text conversion
