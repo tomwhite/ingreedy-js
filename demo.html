@@ -148,12 +148,10 @@ fileInput.onchange = function(e) {
         const text = document.getElementById('ingredients_box').value;
         const lines = text.split(/\n/);
         const foods = parseIngredients(lines);
-        console.log(foods);
         const foodsWithCarbs = foods.map(food => calculateCarbsInFood(food));
         const totalCarbsInfo = calculateTotalCarbs(foodsWithCarbs);
         const servings = document.getElementById('servings').value;
         const carbsPerServing = Math.round(totalCarbsInfo.carbs / servings);
-        console.log(carbsPerServing);
         const warningIndicator = totalCarbsInfo.unknownFoods ? ">" : "";
         document.getElementById('carbohydrate_content').innerHTML = warningIndicator + carbsPerServing + "g Carbs";
         if (totalCarbsInfo.unknownFoods) {
@@ -210,7 +208,7 @@ fileInput.onchange = function(e) {
             //text = text.replace(/</g, "&lt;");
             //text = text.replace(/>/g, "&gt;");
             //text = text.replace('\n', '<br>', 'g');
-            console.log(text);
+            //console.log(text);
             if (element) {
               element.value += text + "\n";
               element.scrollTop = element.scrollHeight; // focus on bottom
