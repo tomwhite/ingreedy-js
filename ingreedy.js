@@ -5824,6 +5824,9 @@ function calculateMass(quantity, unit, name) {
   return NaN;
 }
 
+/*
+ * Deprecated. Use calculateCarbsInFood.
+ */
 function calculateCarbs(foods) {
   let carbsTotal = 0.0;
   for (const food of foods) {
@@ -5841,6 +5844,9 @@ function calculateCarbs(foods) {
   return carbsTotal;
 }
 
+/*
+ * Deprecated. Use calculateCarbsInFood.
+ */
 function calculateCarbsObject(foods) {
   let carbsTotal = 0.0;
   let unknownFoods = false;
@@ -5852,9 +5858,7 @@ function calculateCarbsObject(foods) {
       // TODO: won't normally match
       food["weight"] = calculateMass(food["qty"], food["unit"], food["name"]);
     }
-    console.log(food);
     let carbs = getCarbs(food);
-    console.log(carbs);
     if (isNaN(carbs)) {
       unknownFoods = true;
     } else {
@@ -5867,6 +5871,9 @@ function calculateCarbsObject(foods) {
   };
 }
 
+/*
+ * Deprecated. Use calculateCarbsInFood.
+ */
 function getCarbs(food) {
   if ("food" in food && food["food"] != null) {
     let carbsStr = food["food"]["carbohydrate_content"];
@@ -5877,6 +5884,111 @@ function getCarbs(food) {
     }
   }
   return NaN;
+}
+
+function calculateCarbsInFood(food) {
+  if (!("name" in food)) {
+    return {
+      ...food,
+      success: false,
+      reason: "Food not specified"
+    };
+  }
+  const resolvedFood = lookup(food["name"]);
+  if (resolvedFood == null) {
+    return {
+      ...food,
+      success: false,
+      reason: 'Food not found: "' + food["name"] + '"'
+    };
+  }
+  let carbsPer100gStr = resolvedFood["carbohydrate_content"];
+  if (
+    carbsPer100gStr === "0" ||
+    carbsPer100gStr === "N" ||
+    carbsPer100gStr === "Tr"
+  ) {
+    return {
+      ...food,
+      food: resolvedFood,
+      success: true,
+      carbs: 0.0
+    };
+  }
+  const carbsPer100g = parseFloat(carbsPer100gStr);
+  if (isNaN(carbsPer100g)) {
+    return {
+      ...food,
+      food: resolvedFood,
+      success: false,
+      reason: 'Carbs per 100g not numeric: "' + carbsPer100gStr + '"'
+    };
+  }
+  if (!("qty" in food)) {
+    return {
+      ...food,
+      food: resolvedFood,
+      success: false,
+      reason: "Quantity not specified"
+    };
+  }
+  const qty = normalizeQuantity(food["qty"]);
+  if (isNaN(qty)) {
+    return {
+      ...food,
+      food: resolvedFood,
+      success: false,
+      reason: 'Quantity not numeric: "' + food["qty"] + '"'
+    };
+  }
+  if ("unit" in food) {
+    const unit = food["unit"];
+    if (unit in unitToGrams) {
+      return {
+        ...food,
+        food: resolvedFood,
+        success: true,
+        carbs: (qty * unitToGrams[unit] * carbsPer100g) / 100.0
+      };
+    } else {
+      return {
+        ...food,
+        food: resolvedFood,
+        success: false,
+        reason: 'Unit not found: "' + unit + '"'
+      };
+    }
+  }
+  if (food["name"] in foodMeasures) {
+    return {
+      ...food,
+      food: resolvedFood,
+      success: true,
+      carbs: qty * foodMeasures[food["name"]]
+    };
+  }
+  return {
+    ...food,
+    food: resolvedFood,
+    success: false,
+    reason: "Unit not specified"
+  };
+}
+
+function calculateTotalCarbs(foods) {
+  let carbsTotal = 0.0;
+  let unknownFoods = false;
+  for (const food of foods) {
+    if ("carbs" in food) {
+      carbsTotal += food["carbs"];
+    } else {
+      unknownFoods = true;
+    }
+  }
+  return {
+    carbs: carbsTotal,
+    unknownFoods: unknownFoods
+  };
 }
 function getServings(text) {
   const re = /serves:?\s+(\d+)/i;

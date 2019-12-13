@@ -167,5 +167,61 @@ Pecans\t691\t14\t72\t9.6\t9.2`);
      eq(true, isNaN(calculateMass("2blah", "blah", "onion")));
    },
 
+   'calculateCarbs': function() {
+     eq(16, calculateCarbs([{ qty: "200", unit: "gram", name: "onion" }]));
+   },
+
+   'calculateCarbsInFood': function() {
+     // missing food
+     let result = calculateCarbsInFood({ })
+     eq(false, result.success);
+     eq('Food not specified', result.reason);
+
+     // unknown food
+     result = calculateCarbsInFood({ qty: "100", unit: "gram", name: "zoh" })
+     eq(false, result.success);
+     eq('Food not found: "zoh"', result.reason);
+
+     // zero carb food doesn't need qty or unit
+     result = calculateCarbsInFood({ name: "beef" })
+     eq(true, result.success);
+     eq(0.0, result.carbs);
+
+     // missing qty for non-zero carb food
+     result = calculateCarbsInFood({ name: "flour" })
+     eq(false, result.success);
+     eq('Quantity not specified', result.reason);
+
+     // non-numeric qty
+     result = calculateCarbsInFood({ qty: "two", unit: "gram", name: "flour" })
+     eq(false, result.success);
+     eq('Quantity not numeric: "two"', result.reason);
+
+     // all fields
+     result = calculateCarbsInFood({ qty: "100", unit: "gram", name: "flour" })
+     eq(true, result.success);
+     eq(58, result.carbs);
+
+     // fractional qty
+     result = calculateCarbsInFood({ qty: "1 1/2", unit: "gram", name: "flour" })
+     eq(true, result.success);
+     eq(0.87, result.carbs);
+
+     // unknown unit
+     result = calculateCarbsInFood({ qty: "1", unit: "shoe", name: "flour" })
+     eq(false, result.success);
+     eq('Unit not found: "shoe"', result.reason);
+
+     // known food weight without unit
+     result = calculateCarbsInFood({ qty: "1", name: "onion" })
+     eq(true, result.success);
+     eq(130, result.carbs);
+
+     // unknown food weight without unit
+     result = calculateCarbsInFood({ qty: "1", name: "flour" })
+     eq(false, result.success);
+     eq('Unit not specified', result.reason);
+  }
+
  });
 </script>
