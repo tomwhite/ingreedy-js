@@ -23,7 +23,7 @@
             font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
         }
 
-        .unknown_carbs {
+        .error {
             color: red;
         }
 
@@ -209,9 +209,7 @@ function compress(e) {
                 breakdown += c + 'g ' + name + '<br/>';
               }
             } else {
-              console.log(name + ": " + foodWithCarbs.reason);
-              let carbsStr = '<span class="unknown_carbs">?</span>';
-              breakdown += carbsStr + 'g ' + name + '<br/>';
+              breakdown += '<span class="error">?</span>g ' + name + ' <span class="error">' + foodWithCarbs.reason + '</span><br/>';
             }
           }
         }
