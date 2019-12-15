@@ -66,9 +66,19 @@ function getExtents(vertices) {
 function getTextFromBlock(block) {
   // construct the text that is in a block
   let text = "";
+  let lineBreakBuffer = "";
   block["paragraphs"].forEach(function(paragraph) {
+    if (lineBreakBuffer.length > 0) {
+      // treat a new para as a line continuation
+      text += " "; 
+      lineBreakBuffer = "";
+    }
     paragraph["words"].forEach(function(word) {
       word["symbols"].forEach(function(symbol) {
+        if (lineBreakBuffer.length > 0) {
+          text += lineBreakBuffer;
+          lineBreakBuffer = "";
+        }
         text += symbol["text"];
         if ("property" in symbol && "detectedBreak" in symbol["property"]) {
           const detectedBreakType = symbol["property"]["detectedBreak"]["type"];
@@ -81,11 +91,14 @@ function getTextFromBlock(block) {
             detectedBreakType === "EOL_SURE_SPACE" ||
             detectedBreakType === "LINE_BREAK"
           ) {
-            text += "\n";
+            lineBreakBuffer = "\n";
           }
         }
       });
     });
   });
+  if (!text.endsWith("\n")) {
+    text += "\n";
+  }
   return text;
 }
