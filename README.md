@@ -138,11 +138,8 @@ lines, which can complicate matters in some cases. For example, we would like to
   be the consistency of a ketchup)
 ```
 
-In the current implementation these two lines are treated as two ingredients, but in this case it's not a problem, since
-the second line doesn't have any quantity information so it doesn't add to the carb total. It might be possible to
-improve the processing so that if a follow-on line is indented it is appended to the previous line without a line break.
-
-Sometimes there are no indentation hints:
+In the current implementation these two lines are treated one, since we
+interpret the indent as a line continuation. Sometimes however there are no indentation hints:
 
 ```
 100ml extra virgin olive
@@ -150,7 +147,7 @@ oil
 ```
 
 The first line might be interpreted as "olive" rather than "olive oil", which could result in inaccurate carb counts.
-This is quite a difficult problem and it may not be possible to get it right all the time, so a simple workaround of
+This is quite a difficult problem and it may not be possible to get it right all the time (a possible cue we could use in this case is spacing between lines), so a simple workaround of
 editing the text after scanning is worth recommending to users.
 
 ### Carb counting
@@ -160,9 +157,8 @@ the number of carbohydrates in 100g) and the weight needed in the recipe. If any
 we couldn't identify the food, the quantity, or the unit) then that line is marked as "unknown".
 
 The total number of carbs is simply the sum of the carbs for each line. If there are any unknown lines then this is
-flagged up in the total so the user knows it may not be complete. Unknown lines are marked with red question marks,
-which allows the user to edit the line so it can be re-parsed (possible improvement: give a hint saying what the 
-problem was). 
+flagged up in the total so the user knows it may not be complete. Unknown lines are marked with red question marks and a hint saying what the problem was,
+which allows the user to edit the line so it can be re-parsed.
 
 ### User interface
 
