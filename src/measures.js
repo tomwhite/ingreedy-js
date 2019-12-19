@@ -144,7 +144,7 @@ function calculateCarbsInFood(food) {
       reason: "Food not specified"
     };
   }
-  const resolvedFood = lookup(food["name"]);
+  const resolvedFood = lookupFood(food["name"]);
   if (resolvedFood == null) {
     return {
       ...food,
@@ -152,8 +152,9 @@ function calculateCarbsInFood(food) {
       reason: 'Food not found: "' + food["name"] + '"'
     };
   }
-  let carbsPer100gStr = resolvedFood["carbohydrate_content"];
+  let carbsPer100gStr = resolvedFood["carbs"];
   if (
+    carbsPer100gStr === 0 ||
     carbsPer100gStr === "0" ||
     carbsPer100gStr === "N" ||
     carbsPer100gStr === "Tr"
