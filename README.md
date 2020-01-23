@@ -172,6 +172,24 @@ for improvement here.
 
 ## Developer notes
 
+### How to run
+
+Run a local server with
+
+```bash
+python server.py
+```
+
+Then go to http://localhost:8080/demo.html in a browser.
+
+You can run the in-browser tests by visiting:
+
+* http://localhost:8080/test/ingreedy-test.html
+* http://localhost:8080/test/ocr-test.html
+* http://localhost:8080/test/servings-test.html
+
+Error messages are written to the console.
+
 ### Building CRF++ with Emscripten
 
 Install Emscripten: https://github.com/emscripten-core/emsdk
