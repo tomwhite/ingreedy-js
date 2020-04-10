@@ -1,4 +1,6 @@
 <script src="tinytest.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+<script src="../js/lemmatizer.js"></script>
 <script src="../ingreedy.js"></script>
 <script>
 
@@ -13,7 +15,7 @@
 
    // tagger.js
 
-      'tokenize': function() {
+  'tokenize': function() {
      arrayEq(["100", "grams", "flour"], tokenize("100 grams flour"));
      arrayEq(["100", "grams", "flour"], tokenize("100g flour"));
      arrayEq(["100", "grams", "flour"], tokenize("100 g flour"));
@@ -123,25 +125,31 @@ laid	I6	L8	NoCAP	NoPAREN
    },
 
 
-   // normalization.js
+   // foodmap.js
 
-   'tsvToJson': function() {
-     var j = tsvToJson(`name\tcalories\tcarbohydrate_content\tfat_content\tfiber_content\tprotein_content
-Celeriac, raw\t42\t9.2\t0.3\t1.8\t1.5
-Pecans\t691\t14\t72\t9.6\t9.2`);
-     eq("Celeriac, raw", j[0].name);
-     eq(9.2, j[0].carbohydrate_content);
-     eq("Pecans", j[1].name);
-     eq(14, j[1].carbohydrate_content);
+   'normalizeName': function() {
+     eq("celeriac", normalizeName("Celeriac"));
+     //eq("creme fraiche", normalizeName("Crème fraîche")); // TODO: fix this
+     eq("red onion", normalizeName("red  onions"));
+   },
+
+   'lookupExact': function() {
+     eq("Onions, raw", lookupExact("red  onions"));
+     eq(null, lookupExact("blue milk")); // doesn't exist
+   },
+
+   // foodsearch.js
+   
+   'lookupFood': function() {
+     let food = lookupFood("red  onions");
+     eq("Onions, raw", food.name);
+     eq(8.0, food.carbs);
+     food = lookupFood("blue cheese"); // forces a rough match
+     eq("Cheese, Stilton, blue", food.name);
    },
 
    'normalize': function() {
      eq("Celeriac, raw", normalize("celeriac"));
-   },
-
-   'lookup': function() {
-     eq("Celeriac, raw", lookup("celeriac").name);
-     eq(9.2, lookup("celeriac").carbohydrate_content);
    },
 
    // measures.js
@@ -200,12 +208,12 @@ Pecans\t691\t14\t72\t9.6\t9.2`);
      // all fields
      result = calculateCarbsInFood({ qty: "100", unit: "gram", name: "flour" })
      eq(true, result.success);
-     eq(58, result.carbs);
+     eq(80.9, result.carbs);
 
      // fractional qty
      result = calculateCarbsInFood({ qty: "1 1/2", unit: "gram", name: "flour" })
      eq(true, result.success);
-     eq(0.87, result.carbs);
+     eq(1.2135, result.carbs);
 
      // unknown unit
      result = calculateCarbsInFood({ qty: "1", unit: "shoe", name: "flour" })

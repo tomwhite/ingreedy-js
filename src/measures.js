@@ -81,7 +81,7 @@ function calculateCarbs(foods) {
   let carbsTotal = 0.0;
   for (const food of foods) {
     if ("name" in food) {
-      food["food"] = lookup(food["name"]);
+      food["food"] = lookupFood(food["name"]);
     }
     if ("qty" in food) {
       // TODO: won't normally match
@@ -126,7 +126,7 @@ function calculateCarbsObject(foods) {
  */
 function getCarbs(food) {
   if ("food" in food && food["food"] != null) {
-    let carbsStr = food["food"]["carbohydrate_content"];
+    let carbsStr = food["food"]["carbs"];
     if (carbsStr === "0" || carbsStr === "N" || carbsStr === "Tr") {
       return 0.0;
     } else if ("weight" in food) {
