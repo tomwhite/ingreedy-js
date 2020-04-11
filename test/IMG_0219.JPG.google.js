@@ -94560,3 +94560,4 @@ const response0219 = {
     }
   ]
 }
+module.exports = response0219

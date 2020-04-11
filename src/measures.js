@@ -1,3 +1,5 @@
+var foodsearch = require('./foodsearch.js')
+
 const unitToGrams = {
   clove: 5,
   gram: 1,
@@ -144,7 +146,7 @@ function calculateCarbsInFood(food) {
       reason: "Food not specified"
     };
   }
-  const resolvedFood = lookupFood(food["name"]);
+  const resolvedFood = foodsearch.lookupFood(food["name"]);
   if (resolvedFood == null) {
     return {
       ...food,
@@ -241,3 +243,8 @@ function calculateTotalCarbs(foods) {
     unknownFoods: unknownFoods
   };
 }
+
+exports.normalizeQuantity = normalizeQuantity
+exports.calculateMass = calculateMass
+exports.calculateCarbsInFood = calculateCarbsInFood
+exports.calculateTotalCarbs = calculateTotalCarbs

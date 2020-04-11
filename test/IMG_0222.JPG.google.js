@@ -19335,3 +19335,4 @@ const response0222 = {
     }
   ]
 }
+module.exports = response0222

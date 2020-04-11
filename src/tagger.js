@@ -227,3 +227,18 @@ function export_data(lines) {
   }
   return output.join("\n");
 }
+
+exports.tokenize = tokenize
+exports.joinLine = joinLine
+exports.clumpFractions = clumpFractions
+exports.cleanUnicodeFractions = cleanUnicodeFractions
+exports.unclump = unclump
+exports.getFeatures = getFeatures
+exports.singularize = singularize
+exports.isCapitalized = isCapitalized
+exports.lengthGroup = lengthGroup
+exports.insideParenthesis = insideParenthesis
+exports.displayIngredient = displayIngredient
+exports.smartJoin = smartJoin
+exports.import_data = import_data
+exports.export_data = export_data

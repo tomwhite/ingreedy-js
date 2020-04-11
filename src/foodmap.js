@@ -1,15 +1,17 @@
+const foods = require('./foodmap_def').foods
+
 const foodmap = {};
 for (const food of foods) {
     foodmap[food["normalized_name"]] = food;
 }
 
-const lemmatizer = new Lemmatizer();
+const lemmatize = require('wink-lemmatizer');
 
 function normalizeName(name) {
     return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "") // remove diacritics, see https://stackoverflow.com/a/37511463
         .toLowerCase() // lowercase
         .split(/\s+/) // split on spaces
-        .map(token => lemmatizer.only_lemmas(token, "noun")) // lemmatize
+        .map(token => lemmatize.noun(token)) // lemmatize
         .join(" "); // join with spaces
 }
 
@@ -20,3 +22,6 @@ function lookupExact(foodName) {
     }
     return null;
 }
+
+exports.normalizeName = normalizeName
+exports.lookupExact = lookupExact

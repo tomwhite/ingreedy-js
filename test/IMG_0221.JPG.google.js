@@ -79470,3 +79470,4 @@ const response0221 = {
     }
   ]
 }
+module.exports = response0221

@@ -24358,3 +24358,4 @@ const response0100 = {
     }
   ]
 }
+module.exports = response0100

@@ -1,3 +1,7 @@
+const lunr = require('lunr');
+const mccance = require('./foodsearch_def').mccance
+var foodmap = require('./foodmap.js')
+
 function indexFoods() {
   return lunr(function() {
     this.ref("name");
@@ -35,7 +39,7 @@ function search(name) {
 }
 
 function lookupFood(name) {
- let foodName = lookupExact(name);
+ let foodName = foodmap.lookupExact(name);
  if (foodName != null) {
    // TODO: turn into a hash lookup
    for (let i = 0; i < mccance.length; i++) {
@@ -46,3 +50,6 @@ function lookupFood(name) {
  }
  return search(name);
 }
+
+exports.normalize = normalize
+exports.lookupFood = lookupFood

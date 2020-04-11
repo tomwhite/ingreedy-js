@@ -95,173 +95,70 @@
     </div>
 </div>
 
-<script>
-const fileInput = document.getElementById('file-input');
-fileInput.onchange = function(e) {
-  loadImage(
-    e.target.files[0],
-    function(img) {
-      const dataUrl = img.toDataURL('image/png');
-      document.getElementById('output').src = dataUrl;
-      const base64Img = dataUrl.replace('data:image/png;base64,', '');
-      makeVisionRequest(
-          base64Img, 'AIzaSyChp1eQ02e3IDQbJ5aqcs2I_27GIn-TsxA',
-          function(response) {
-            hideFileInput();
-            showResultsContainer();
-
-            // servings
-            const servings = getServingsFromPage(response);
-            if (!isNaN(servings)) {
-                document.getElementById('servings').value = servings;
-            }
-
-            // ingredients
-            const centerBlock = getCenterBlock(response);
-            const text = getTextFromBlock(centerBlock).trim();
-            const textArea = document.getElementById('ingredients_box');
-            textArea.value = text;
-            textArea.rows = text.split("\n").length + 1;
-            updateNutrients();
-          });
-    },
-    {
-      maxWidth: 1024,
-      maxHeight: 768,
-      orientation: true
-    }
-  );
-};
-
-
-      function hideFileInput() {
-        document.getElementById('scan_container').style.display = 'none';
-      }
-
-      function showResultsContainer() {
-        document.getElementById('result_container').style.display = '';
-      }
-
-      const servingsSelect = document.getElementById('servings');
-      servingsSelect.addEventListener('input', (e) => servingsChanged(e));
-
-      function servingsChanged(e) {
-        updateNutrients();
-      }
-
-      const textArea = document.getElementById('ingredients_box');
-      textArea.addEventListener('input', (e) => textChanged(e));
-
-      function textChanged(e) {
-        updateNutrients();
-      }
-
-      function updateNutrients() {
-        const text = document.getElementById('ingredients_box').value;
-        const lines = text.split(/\n/);
-        const foods = parseIngredients(lines).filter(food => food['input'].trim().length > 0);
-        const foodsWithCarbs = foods.map(food => calculateCarbsInFood(food));
-        const totalCarbsInfo = calculateTotalCarbs(foodsWithCarbs);
-        const servings = document.getElementById('servings').value;
-        const carbsPerServing = Math.round(totalCarbsInfo.carbs / servings);
-        const warningIndicator = totalCarbsInfo.unknownFoods ? ">" : "";
-        document.getElementById('carbohydrate_content').innerHTML = warningIndicator + carbsPerServing + "g Carbs";
-        if (totalCarbsInfo.unknownFoods) {
-            document.getElementById('carbohydrate_content').className = "badge badge-pill badge-warning";
-        } else {
-            document.getElementById('carbohydrate_content').className = "badge badge-pill badge-success";
-        }
-
-        let breakdown = '';
-        for (const foodWithCarbs of foodsWithCarbs) {
-          console.log(foodWithCarbs);
-          if ('food' in foodWithCarbs && foodWithCarbs['food'] != null) {
-            const name = foodWithCarbs['food']['name'];
-            if (foodWithCarbs.success) {
-              const c = Math.round(foodWithCarbs.carbs);
-              if (c == 0.0) {
-                breakdown += '<span class="zero_carbs">' + c + 'g ' + name + '</span>' + '<br/>';
-              } else {
-                breakdown += c + 'g ' + name + '<br/>';
-              }
-            } else {
-              breakdown += '<span class="error">?</span>g ' + name + ' <span class="error">' + foodWithCarbs.reason + '</span><br/>';
-            }
-          } else {
-            breakdown += '<span class="error">?</span>g <span class="error">' + foodWithCarbs.reason + '</span><br/>';
-          }
-        }
-        document.getElementById('breakdown').innerHTML = breakdown;
-      }
-
-      function parseIngredients(lines) {
-        return import_data(crfTest(export_data(lines)));
-      }
-      function crfTest(input) {
-        FS.writeFile('input.txt', input);
-        args = ['-v', '1', '-m', 'model_file', '-o', 'output.txt', 'input.txt'];
-        Module['callMain'](args);
-        return FS.readFile('output.txt', { encoding: 'utf8' }).split(/\n/);
-      }
-
-      function whenReady() {
-        // can start the program here
-        updateNutrients();
-      }
-
-      var Module = {
-        arguments: ["-h"], // run help when it first loads (this is ignored)
-        preRun: [],
-        postRun: [whenReady],
-        print: (function() {
-          var element = document.getElementById('output');
-          if (element) element.value = ''; // clear browser cache
-          return function(text) {
-            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
-            // These replacements are necessary if you render to raw HTML
-            //text = text.replace(/&/g, "&amp;");
-            //text = text.replace(/</g, "&lt;");
-            //text = text.replace(/>/g, "&gt;");
-            //text = text.replace('\n', '<br>', 'g');
-            //console.log(text);
-            if (element) {
-              element.value += text + "\n";
-              element.scrollTop = element.scrollHeight; // focus on bottom
-            }
-          };
-        })(),
-        printErr: function(text) {
-          if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
-          console.error(text);
-        },
-        setStatus: function(text) {
-          console.log("status:" + text);
-        },
-        totalDependencies: 0,
-        monitorRunDependencies: function(left) {
-          this.totalDependencies = Math.max(this.totalDependencies, left);
-          Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
-        }
-      };
-      Module.setStatus('Downloading...');
-      window.onerror = function(event) {
-        // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
-        Module.setStatus('Exception thrown, see JavaScript console');
-        Module.setStatus = function(text) {
-          if (text) Module.printErr('[post-exception status] ' + text);
-        };
-      };
-
-</script>
-
 <!-- https://github.com/blueimp/JavaScript-Load-Image -->
 <script src="load-image.all.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
-<script src="js/lemmatizer.js"></script>
-<script src="src/ocr.js"></script>
-<script async type="text/javascript" src="ingreedy.js"></script>
-<script async type="text/javascript" src="crf_test.js"></script>
+<script src="bundle.js"></script>
+
+<script>
+  function crfTest(input) {
+          FS.writeFile('input.txt', input);
+          args = ['-v', '1', '-m', 'model_file', '-o', 'output.txt', 'input.txt'];
+          Module['callMain'](args);
+          return FS.readFile('output.txt', { encoding: 'utf8' }).split(/\n/);
+        }
+  
+        function whenReady() {
+          // can start the program here
+          ingreedy.updateNutrients();
+        }
+  
+        var Module = {
+          arguments: ["-h"], // run help when it first loads (this is ignored)
+          preRun: [],
+          postRun: [whenReady],
+          print: (function() {
+            var element = document.getElementById('output');
+            if (element) element.value = ''; // clear browser cache
+            return function(text) {
+              if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+              // These replacements are necessary if you render to raw HTML
+              //text = text.replace(/&/g, "&amp;");
+              //text = text.replace(/</g, "&lt;");
+              //text = text.replace(/>/g, "&gt;");
+              //text = text.replace('\n', '<br>', 'g');
+              //console.log(text);
+              if (element) {
+                element.value += text + "\n";
+                element.scrollTop = element.scrollHeight; // focus on bottom
+              }
+            };
+          })(),
+          printErr: function(text) {
+            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+            console.error(text);
+          },
+          setStatus: function(text) {
+            console.log("status:" + text);
+          },
+          totalDependencies: 0,
+          monitorRunDependencies: function(left) {
+            this.totalDependencies = Math.max(this.totalDependencies, left);
+            Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+          }
+        };
+        Module.setStatus('Downloading...');
+        window.onerror = function(event) {
+          // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
+          Module.setStatus('Exception thrown, see JavaScript console');
+          Module.setStatus = function(text) {
+            if (text) Module.printErr('[post-exception status] ' + text);
+          };
+        };
+  
+  </script>
+
+<script src="crf_test.js"></script>
 
 </body>
 </html>

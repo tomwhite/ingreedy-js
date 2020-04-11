@@ -1,3 +1,5 @@
+.DS_Store
 CRF++-0.58
 emsdk
 model
+node_modules

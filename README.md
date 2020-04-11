@@ -177,18 +177,32 @@ for improvement here.
 Run a local server with
 
 ```bash
-python server.py
+python -m http.server 8080
 ```
 
 Then go to http://localhost:8080/demo.html in a browser.
 
-You can run the in-browser tests by visiting:
+### How to build
 
-* http://localhost:8080/test/ingreedy-test.html
-* http://localhost:8080/test/ocr-test.html
-* http://localhost:8080/test/servings-test.html
+You will need [Node.js](https://nodejs.org/).
 
-Error messages are written to the console.
+Then install the dependencies with
+
+```bash
+npm install
+```
+
+Build the bundle with
+
+```bash
+browserify index.js --standalone ingreedy > bundle.js
+```
+
+Run the tests with
+
+```bash
+npm test
+```
 
 ### Building CRF++ with Emscripten
 
@@ -241,4 +255,14 @@ Run
 ```bash
 node crf_learn.js --help
 node crf_test.js --help
+```
+
+Compile for use in node:
+
+```bash
+emcc .libs/crf_test.bc .libs/libcrfpp.dylib -o crf_test_node.js --embed-file ../model/model_file@model_file --embed-file ../ing.txt@ing.txt -s ENVIRONMENT=node
+node crf_test_node.js -v 1 -m model_file ing.txt
+
+emcc .libs/crf_test.bc .libs/libcrfpp.dylib -o crf_test_node.js --embed-file ../model/model_file@model_file --embed-file ../ing.txt@ing.txt -s ENVIRONMENT=node -s MODULARIZE=1 -s 'EXPORT_NAME="MyCode"' -s INVOKE_RUN=0 -s EXPORT_ALL=1
+node crf_test_node_program.js
 ```

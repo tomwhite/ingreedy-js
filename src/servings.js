@@ -1,3 +1,5 @@
+var ocr = require('./ocr.js')
+
 function getServings(text) {
   const re = /serves:?\s+(\d+)/i;
   const matches = text.match(re);
@@ -8,9 +10,9 @@ function getServings(text) {
 }
 
 function getServingsFromPage(response) {
-  return getBlocks(response)
+  return ocr.getBlocks(response)
     .map(function(block) {
-      const text = getTextFromBlock(block);
+      const text = ocr.getTextFromBlock(block);
       const servings = getServings(text);
       return servings;
     })
@@ -24,3 +26,6 @@ function getServingsFromPage(response) {
       return NaN;
     }, NaN);
 }
+
+exports.getServings = getServings
+exports.getServingsFromPage = getServingsFromPage

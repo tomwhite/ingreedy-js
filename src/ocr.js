@@ -102,3 +102,9 @@ function getTextFromBlock(block) {
   }
   return text;
 }
+
+exports.getBlocks = getBlocks
+exports.getCenterBlock = getCenterBlock
+exports.getExtents = getExtents
+exports.getTextFromBlock = getTextFromBlock
+exports.makeVisionRequest = makeVisionRequest
