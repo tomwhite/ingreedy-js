@@ -44,8 +44,8 @@ CRFNode().then(function(Module) {
 
         const foodsWithCarbs = foods.map(food => measures.calculateCarbsInFood(food));
         for (const foodWithCarbs of foodsWithCarbs) {
-            if (!foodWithCarbs.success && foodWithCarbs.reason.startsWith("Unit not found")) {
-                console.log(`${inputFile}:${foodWithCarbs.reason}`);
+            if (!foodWithCarbs.success && foodWithCarbs.reasonText.startsWith("Unit not found")) {
+                console.log(`${inputFile}:${foodWithCarbs.reasonText}`);
             }
         }
     }

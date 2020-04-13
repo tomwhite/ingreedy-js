@@ -143,7 +143,7 @@ function calculateCarbsInFood(food) {
     return {
       ...food,
       success: false,
-      reason: "Food not specified"
+      reasonText: "Food not specified"
     };
   }
   const resolvedFood = foodsearch.lookupFood(food["name"]);
@@ -151,7 +151,7 @@ function calculateCarbsInFood(food) {
     return {
       ...food,
       success: false,
-      reason: 'Food not found: "' + food["name"] + '"'
+      reasonText: 'Food not found: "' + food["name"] + '"'
     };
   }
   let carbsPer100gStr = resolvedFood["carbs"];
@@ -174,7 +174,7 @@ function calculateCarbsInFood(food) {
       ...food,
       food: resolvedFood,
       success: false,
-      reason: 'Carbs per 100g not numeric: "' + carbsPer100gStr + '"'
+      reasonText: 'Carbs per 100g not numeric: "' + carbsPer100gStr + '"'
     };
   }
   if (!("qty" in food)) {
@@ -182,7 +182,7 @@ function calculateCarbsInFood(food) {
       ...food,
       food: resolvedFood,
       success: false,
-      reason: "Quantity not specified"
+      reasonText: "Quantity not specified"
     };
   }
   const qty = normalizeQuantity(food["qty"]);
@@ -191,7 +191,7 @@ function calculateCarbsInFood(food) {
       ...food,
       food: resolvedFood,
       success: false,
-      reason: 'Quantity not numeric: "' + food["qty"] + '"'
+      reasonText: 'Quantity not numeric: "' + food["qty"] + '"'
     };
   }
   if ("unit" in food) {
@@ -208,7 +208,7 @@ function calculateCarbsInFood(food) {
         ...food,
         food: resolvedFood,
         success: false,
-        reason: 'Unit not found: "' + unit + '"'
+        reasonText: 'Unit not found: "' + unit + '"'
       };
     }
   }
@@ -224,7 +224,7 @@ function calculateCarbsInFood(food) {
     ...food,
     food: resolvedFood,
     success: false,
-    reason: "Unit not specified"
+    reasonText: "Unit not specified"
   };
 }
 

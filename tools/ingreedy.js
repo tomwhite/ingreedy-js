@@ -51,10 +51,10 @@ CRFNode().then(function(Module) {
                     console.log(`${c}g ${name}`);
                 }
             } else {
-                console.log('?g'.red + ` ${name} ` + `${foodWithCarbs.reason}`.red);
+                console.log('?g'.red + ` ${name} ` + `${foodWithCarbs.reasonText}`.red);
             }
         } else {
-            console.log('?g'.red + `${foodWithCarbs.reason}`.red);
+            console.log('?g'.red + `${foodWithCarbs.reasonText}`.red);
         }
     }
     console.log();

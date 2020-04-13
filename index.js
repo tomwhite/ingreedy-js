@@ -92,10 +92,10 @@ fileInput.onchange = function(e) {
                 breakdown += c + 'g ' + name + '<br/>';
               }
             } else {
-              breakdown += '<span class="error">?</span>g ' + name + ' <span class="error">' + foodWithCarbs.reason + '</span><br/>';
+              breakdown += '<span class="error">?</span>g ' + name + ' <span class="error">' + foodWithCarbs.reasonText + '</span><br/>';
             }
           } else {
-            breakdown += '<span class="error">?</span>g <span class="error">' + foodWithCarbs.reason + '</span><br/>';
+            breakdown += '<span class="error">?</span>g <span class="error">' + foodWithCarbs.reasonText + '</span><br/>';
           }
         }
         document.getElementById('breakdown').innerHTML = breakdown;

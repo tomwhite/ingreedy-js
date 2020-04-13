@@ -93,10 +93,10 @@ fileInput.onchange = function(e) {
                 breakdown += c + 'g ' + name + '<br/>';
               }
             } else {
-              breakdown += '<span class="error">?</span>g ' + name + ' <span class="error">' + foodWithCarbs.reason + '</span><br/>';
+              breakdown += '<span class="error">?</span>g ' + name + ' <span class="error">' + foodWithCarbs.reasonText + '</span><br/>';
             }
           } else {
-            breakdown += '<span class="error">?</span>g <span class="error">' + foodWithCarbs.reason + '</span><br/>';
+            breakdown += '<span class="error">?</span>g <span class="error">' + foodWithCarbs.reasonText + '</span><br/>';
           }
         }
         document.getElementById('breakdown').innerHTML = breakdown;
@@ -173544,7 +173544,7 @@ const lemmatize = require('wink-lemmatizer');
 function normalizeName(name) {
     return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "") // remove diacritics, see https://stackoverflow.com/a/37511463
         .toLowerCase() // lowercase
-        .split(/\s+/) // split on spaces
+        .split(/\W+/) // split on word boundaries
         .map(token => lemmatize.noun(token)) // lemmatize
         .join(" "); // join with spaces
 }
@@ -173771,7 +173771,7 @@ function calculateCarbsInFood(food) {
     return {
       ...food,
       success: false,
-      reason: "Food not specified"
+      reasonText: "Food not specified"
     };
   }
   const resolvedFood = foodsearch.lookupFood(food["name"]);
@@ -173779,7 +173779,7 @@ function calculateCarbsInFood(food) {
     return {
       ...food,
       success: false,
-      reason: 'Food not found: "' + food["name"] + '"'
+      reasonText: 'Food not found: "' + food["name"] + '"'
     };
   }
   let carbsPer100gStr = resolvedFood["carbs"];
@@ -173802,7 +173802,7 @@ function calculateCarbsInFood(food) {
       ...food,
       food: resolvedFood,
       success: false,
-      reason: 'Carbs per 100g not numeric: "' + carbsPer100gStr + '"'
+      reasonText: 'Carbs per 100g not numeric: "' + carbsPer100gStr + '"'
     };
   }
   if (!("qty" in food)) {
@@ -173810,7 +173810,7 @@ function calculateCarbsInFood(food) {
       ...food,
       food: resolvedFood,
       success: false,
-      reason: "Quantity not specified"
+      reasonText: "Quantity not specified"
     };
   }
   const qty = normalizeQuantity(food["qty"]);
@@ -173819,7 +173819,7 @@ function calculateCarbsInFood(food) {
       ...food,
       food: resolvedFood,
       success: false,
-      reason: 'Quantity not numeric: "' + food["qty"] + '"'
+      reasonText: 'Quantity not numeric: "' + food["qty"] + '"'
     };
   }
   if ("unit" in food) {
@@ -173836,7 +173836,7 @@ function calculateCarbsInFood(food) {
         ...food,
         food: resolvedFood,
         success: false,
-        reason: 'Unit not found: "' + unit + '"'
+        reasonText: 'Unit not found: "' + unit + '"'
       };
     }
   }
@@ -173852,7 +173852,7 @@ function calculateCarbsInFood(food) {
     ...food,
     food: resolvedFood,
     success: false,
-    reason: "Unit not specified"
+    reasonText: "Unit not specified"
   };
 }
 

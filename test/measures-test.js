@@ -58,8 +58,8 @@ describe('calculateCarbsInFood', function() {
         it('should fail', function() {
             assert.equal(result.success, false);
         });
-        it('should have reason', function() {
-            assert.equal(result.reason, 'Food not specified');
+        it('should have reason text', function() {
+            assert.equal(result.reasonText, 'Food not specified');
         });    
     });
     describe('unknown food', function() {
@@ -67,8 +67,8 @@ describe('calculateCarbsInFood', function() {
         it('should fail', function() {
             assert.equal(result.success, false);
         });
-        it('should have reason', function() {
-            assert.equal(result.reason, 'Food not found: "zoh"');
+        it('should have reason text', function() {
+            assert.equal(result.reasonText, 'Food not found: "zoh"');
         });    
     });
     describe("zero carb food doesn't need qty or unit", function() {
@@ -85,8 +85,8 @@ describe('calculateCarbsInFood', function() {
         it('should fail', function() {
             assert.equal(result.success, false);
         });
-        it('should have reason', function() {
-            assert.equal(result.reason, 'Quantity not specified');
+        it('should have reason text', function() {
+            assert.equal(result.reasonText, 'Quantity not specified');
         });    
     });
     describe("non-numeric qty", function() {
@@ -94,8 +94,8 @@ describe('calculateCarbsInFood', function() {
         it('should fail', function() {
             assert.equal(result.success, false);
         });
-        it('should have reason', function() {
-            assert.equal(result.reason, 'Quantity not numeric: "two"');
+        it('should have reason text', function() {
+            assert.equal(result.reasonText, 'Quantity not numeric: "two"');
         });    
     });
     describe("all fields", function() {
@@ -121,8 +121,8 @@ describe('calculateCarbsInFood', function() {
         it('should fail', function() {
             assert.equal(result.success, false);
         });
-        it('should have reason', function() {
-            assert.equal(result.reason, 'Unit not found: "shoe"');
+        it('should have reason text', function() {
+            assert.equal(result.reasonText, 'Unit not found: "shoe"');
         });    
     });
     describe("known food weight without unit", function() {
@@ -139,8 +139,8 @@ describe('calculateCarbsInFood', function() {
         it('should fail', function() {
             assert.equal(result.success, false);
         });
-        it('should have reason', function() {
-            assert.equal(result.reason, 'Unit not specified');
+        it('should have reason text', function() {
+            assert.equal(result.reasonText, 'Unit not specified');
         });    
     });
 });
