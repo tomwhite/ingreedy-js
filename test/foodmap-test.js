@@ -8,6 +8,9 @@ describe('normalizeName', function() {
     it('should remove spaces and plurals', function() {
         assert.equal(foodmap.normalizeName("red  onions"), "red onion");
     });
+    it('should remove hyphens', function() {
+        assert.equal(foodmap.normalizeName("flat-leaf parsley"), "flat leaf parsley");
+    });
     it('should remove diacritics', function() {
         assert.equal(foodmap.normalizeName("Crème fraîche"), "creme fraiche");
     });

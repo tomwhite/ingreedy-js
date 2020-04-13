@@ -10,7 +10,7 @@ const lemmatize = require('wink-lemmatizer');
 function normalizeName(name) {
     return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "") // remove diacritics, see https://stackoverflow.com/a/37511463
         .toLowerCase() // lowercase
-        .split(/\s+/) // split on spaces
+        .split(/\W+/) // split on word boundaries
         .map(token => lemmatize.noun(token)) // lemmatize
         .join(" "); // join with spaces
 }
