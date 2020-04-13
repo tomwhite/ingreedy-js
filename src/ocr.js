@@ -1,5 +1,8 @@
+// Unlike browsers, Node doesn't have the XMLHttpRequest variable, so we need to emulate it
+var XHR = (typeof XMLHttpRequest === 'undefined') ? require("xmlhttprequest").XMLHttpRequest : XMLHttpRequest;
+
 function makeVisionRequest(base64Img, key, successCallback) {
-  const http = new XMLHttpRequest();
+  const http = new XHR();
   const url = "https://vision.googleapis.com/v1/images:annotate?key=" + key;
   const data = {
     requests: [
