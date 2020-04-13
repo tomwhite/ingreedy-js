@@ -34,7 +34,7 @@ CRFNode().then(function(Module) {
 
     const lines = text.split(/\n/);
     const foods = parseIngredients(lines).filter(food => food['input'].trim().length > 0);
-    for (food of foods) {
+    for (const food of foods) {
         console.log(`${food.qty || '-'} ${food.unit || '-'} ${food.name}`)
     }
     console.log();
