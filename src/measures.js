@@ -138,11 +138,22 @@ function getCarbs(food) {
   return NaN;
 }
 
+const FailureReason = Object.freeze({
+  FOOD_NOT_SPECIFIED: Symbol("food not specified"),
+  FOOD_NOT_FOUND: Symbol("food not found"),
+  CARBS_NOT_NUMERIC: Symbol("carbs not numeric"),
+  QUANTITY_NOT_SPECIFIED: Symbol("quantity not specified"),
+  QUANTITY_NOT_NUMERIC: Symbol("quantity not numeric"),
+  UNIT_NOT_SPECIFIED: Symbol("unit not specified"),
+  UNIT_NOT_FOUND: Symbol("unit not found")
+});
+
 function calculateCarbsInFood(food) {
   if (!("name" in food)) {
     return {
       ...food,
       success: false,
+      reason: FailureReason.FOOD_NOT_SPECIFIED,
       reasonText: "Food not specified"
     };
   }
@@ -151,6 +162,7 @@ function calculateCarbsInFood(food) {
     return {
       ...food,
       success: false,
+      reason: FailureReason.FOOD_NOT_FOUND,
       reasonText: 'Food not found: "' + food["name"] + '"'
     };
   }
@@ -174,6 +186,7 @@ function calculateCarbsInFood(food) {
       ...food,
       food: resolvedFood,
       success: false,
+      reason: FailureReason.CARBS_NOT_NUMERIC,
       reasonText: 'Carbs per 100g not numeric: "' + carbsPer100gStr + '"'
     };
   }
@@ -191,6 +204,7 @@ function calculateCarbsInFood(food) {
       ...food,
       food: resolvedFood,
       success: false,
+      reason: FailureReason.QUANTITY_NOT_NUMERIC,
       reasonText: 'Quantity not numeric: "' + food["qty"] + '"'
     };
   }
@@ -208,6 +222,7 @@ function calculateCarbsInFood(food) {
         ...food,
         food: resolvedFood,
         success: false,
+        reason: FailureReason.UNIT_NOT_FOUND,
         reasonText: 'Unit not found: "' + unit + '"'
       };
     }
@@ -224,6 +239,7 @@ function calculateCarbsInFood(food) {
     ...food,
     food: resolvedFood,
     success: false,
+    reason: FailureReason.UNIT_NOT_SPECIFIED,
     reasonText: "Unit not specified"
   };
 }
@@ -248,3 +264,4 @@ exports.normalizeQuantity = normalizeQuantity
 exports.calculateMass = calculateMass
 exports.calculateCarbsInFood = calculateCarbsInFood
 exports.calculateTotalCarbs = calculateTotalCarbs
+exports.FailureReason = FailureReason
