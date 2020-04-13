@@ -126,12 +126,12 @@ describe('calculateCarbsInFood', function() {
         });    
     });
     describe("known food weight without unit", function() {
-        const result = measures.calculateCarbsInFood({ qty: "1", name: "onion" });
+        const result = measures.calculateCarbsInFood({ qty: "2", name: "onions" });
         it('should succeed', function() {
             assert.equal(result.success, true);
         });
         it('should have carbs', function() {
-            assert.equal(result.carbs, 130);
+            assert.equal(result.carbs, 20.8);
         });    
     });
     describe("unknown food weight without unit", function() {

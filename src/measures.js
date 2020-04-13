@@ -217,7 +217,7 @@ function calculateCarbsInFood(food) {
       ...food,
       food: resolvedFood,
       success: true,
-      carbs: qty * foodMeasures[food["name"]]
+      carbs: (qty * foodMeasures[food["name"]] * carbsPer100g) / 100.0
     };
   }
   return {
