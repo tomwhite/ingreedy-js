@@ -1,9 +1,9 @@
-var fs = require('fs');
-var ocr = require('../src/ocr');
-var path = require('path');
+const fs = require('fs');
+const ocr = require('../src/ocr');
+const path = require('path');
 
 function base64Encode(file) {
-    var bitmap = fs.readFileSync(file);
+    const bitmap = fs.readFileSync(file);
     return new Buffer(bitmap).toString('base64');
 }
 

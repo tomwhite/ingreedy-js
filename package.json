@@ -9,6 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "colors": "^1.4.0",
     "lunr": "^2.3.8",
     "wink-lemmatizer": "^3.0.1",
     "xmlhttprequest": "^1.8.0"
