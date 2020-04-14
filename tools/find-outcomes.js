@@ -14,6 +14,23 @@ function walkDir(dir, callback) {
     });
 };
 
+function getIngredientsLinesFromFile(inputFile) {
+    if (inputFile.endsWith(".json")) {
+        const response = JSON.parse(fs.readFileSync(inputFile));
+        const text = recipe.getIngredientsTextFromPage(response);
+        if (text == null) {
+            return {};
+        }
+        return text.split(/\n/);    
+    } else if (inputFile.endsWith(".tsv")) {
+        return fs.readFileSync(inputFile, "utf8")
+            .split(/\n/)
+            .slice(1) // remove header
+            .map(line => line.split('\t')[1]) // TODO: pull out named field
+            .filter(line => line !== undefined);
+    }
+}
+
 const input = process.argv[2];
 const outcome = process.argv[3];
 
@@ -33,12 +50,7 @@ CRFNode().then(function(Module) {
     }
 
     function printFoodsNotInFoodMap(inputFile) {
-        const response = JSON.parse(fs.readFileSync(inputFile));
-        const text = recipe.getIngredientsTextFromPage(response);
-        if (text == null) {
-            return {};
-        }
-        const lines = text.split(/\n/);
+        const lines = getIngredientsLinesFromFile(inputFile);
         const foods = parseIngredients(lines).filter(food => food['input'].trim().length > 0);
 
         const foodsWithCarbs = foods.map(food => measures.calculateCarbsInFood(food));
