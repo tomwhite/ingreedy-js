@@ -1,8 +1,8 @@
 const colors = require('colors');
 const foodmap = require('../src/foodmap')
 const fs = require('fs');
-const ocr = require('../src/ocr');
 const path = require('path');
+const recipe = require('../src/recipe');
 const tagger = require('../src/tagger');
 
 function walkDir(dir, callback) {
@@ -33,11 +33,10 @@ CRFNode().then(function(Module) {
 
     function printFoodsNotInFoodMap(inputFile) {
         const response = JSON.parse(fs.readFileSync(inputFile));
-        const centerBlock = ocr.getCenterBlock(response);
-        if (!centerBlock) {
-            return;
+        const text = recipe.getIngredientsTextFromPage(response);
+        if (text == null) {
+            return {};
         }
-        const text = ocr.getTextFromBlock(centerBlock).trim();
         const lines = text.split(/\n/);
         const foods = parseIngredients(lines).filter(food => food['input'].trim().length > 0);
         for (const food of foods) {
