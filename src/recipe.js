@@ -27,5 +27,12 @@ function getServingsFromPage(response) {
     }, NaN);
 }
 
+function getIngredientsTextFromPage(response) {
+  const centerBlock = ocr.getCenterBlock(response);
+  const text = ocr.getTextFromBlock(centerBlock).trim();
+  return text;
+}
+
 exports.getServings = getServings
 exports.getServingsFromPage = getServingsFromPage
+exports.getIngredientsTextFromPage = getIngredientsTextFromPage

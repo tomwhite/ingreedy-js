@@ -11,9 +11,7 @@ const inputFile = process.argv[2];
 const response = JSON.parse(fs.readFileSync(inputFile));
 
 const servings = recipe.getServingsFromPage(response) || 1;
-
-const centerBlock = ocr.getCenterBlock(response);
-const text = ocr.getTextFromBlock(centerBlock).trim();
+const text = recipe.getIngredientsTextFromPage(response);
 console.log(text)
 console.log();
 

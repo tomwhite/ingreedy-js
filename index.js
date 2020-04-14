@@ -24,8 +24,7 @@ fileInput.onchange = function(e) {
             }
 
             // ingredients
-            const centerBlock = ocr.getCenterBlock(response);
-            const text = ocr.getTextFromBlock(centerBlock).trim();
+            const text = recipe.getIngredientsTextFromPage(response);
             const textArea = document.getElementById('ingredients_box');
             textArea.value = text;
             textArea.rows = text.split("\n").length + 1;
