@@ -29,8 +29,13 @@ function getServingsFromPage(response) {
 
 function getIngredientsTextFromPage(response) {
   const centerBlock = ocr.getCenterBlock(response);
+  if (!centerBlock) {
+    return null;
+  }
   const text = ocr.getTextFromBlock(centerBlock).trim();
-  return text;
+  return text.split("\n")
+    .filter(line => !line.match(/serves:?\s+(\d+).*/i))
+    .join("\n");
 }
 
 exports.getServings = getServings
