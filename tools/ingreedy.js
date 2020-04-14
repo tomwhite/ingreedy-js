@@ -2,7 +2,7 @@ const colors = require('colors');
 const fs = require('fs');
 const measures = require('../src/measures');
 const ocr = require('../src/ocr');
-const servngs = require('../src/servings');
+const recipe = require('../src/recipe');
 const tagger = require('../src/tagger');
 
 // Eventually this should accept an image, a JSON response, or just a list of ingredient lines
@@ -10,7 +10,7 @@ const inputFile = process.argv[2];
 
 const response = JSON.parse(fs.readFileSync(inputFile));
 
-const servings = servngs.getServingsFromPage(response) || 1;
+const servings = recipe.getServingsFromPage(response) || 1;
 
 const centerBlock = ocr.getCenterBlock(response);
 const text = ocr.getTextFromBlock(centerBlock).trim();

@@ -1,6 +1,6 @@
 const measures = require('./src/measures')
 const ocr = require('./src/ocr')
-const servngs = require('./src/servings')
+const recipe = require('./src/recipe')
 const tagger = require('./src/tagger')
 
 const fileInput = document.getElementById('file-input');
@@ -18,7 +18,7 @@ fileInput.onchange = function(e) {
             showResultsContainer();
 
             // servings
-            const servings = servngs.getServingsFromPage(response);
+            const servings = recipe.getServingsFromPage(response);
             if (!isNaN(servings)) {
                 document.getElementById('servings').value = servings;
             }
