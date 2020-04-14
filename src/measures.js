@@ -139,14 +139,14 @@ function getCarbs(food) {
 }
 
 const Outcome = Object.freeze({
-  SUCCESS: Symbol("success"),
-  FOOD_NOT_SPECIFIED: Symbol("food not specified"),
-  FOOD_NOT_FOUND: Symbol("food not found"),
-  CARBS_NOT_NUMERIC: Symbol("carbs not numeric"),
-  QUANTITY_NOT_SPECIFIED: Symbol("quantity not specified"),
-  QUANTITY_NOT_NUMERIC: Symbol("quantity not numeric"),
-  UNIT_NOT_SPECIFIED: Symbol("unit not specified"),
-  UNIT_NOT_FOUND: Symbol("unit not found")
+  SUCCESS: Symbol.for("success"),
+  FOOD_NOT_SPECIFIED: Symbol.for("food not specified"),
+  FOOD_NOT_FOUND: Symbol.for("food not found"),
+  CARBS_NOT_NUMERIC: Symbol.for("carbs not numeric"),
+  QUANTITY_NOT_SPECIFIED: Symbol.for("quantity not specified"),
+  QUANTITY_NOT_NUMERIC: Symbol.for("quantity not numeric"),
+  UNIT_NOT_SPECIFIED: Symbol.for("unit not specified"),
+  UNIT_NOT_FOUND: Symbol.for("unit not found")
 });
 
 function calculateCarbsInFood(food) {

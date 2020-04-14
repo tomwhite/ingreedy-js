@@ -16,6 +16,7 @@ function walkDir(dir, callback) {
 };
 
 const input = process.argv[2];
+const outcome = process.argv[3];
 
 const CRFNode = require('../CRF++-0.58/crf_test_node')
 CRFNode().then(function(Module) {
@@ -46,8 +47,8 @@ CRFNode().then(function(Module) {
         const outcomes = {};
         for (const foodWithCarbs of foodsWithCarbs) {
             outcomes[foodWithCarbs.outcome] = (outcomes[foodWithCarbs.outcome] || 0) + 1;
-            if (!foodWithCarbs.success && foodWithCarbs.outcome === measures.Outcome.UNIT_NOT_FOUND) {
-                console.log(`${inputFile}|${foodWithCarbs.reasonText}|${foodWithCarbs.input}`);
+            if (foodWithCarbs.outcome === Symbol.for(outcome)) {
+                console.log(`${inputFile}|${foodWithCarbs.reasonText}|${foodWithCarbs.input}|${foodWithCarbs.qty || ''}|${foodWithCarbs.unit || ''}|${foodWithCarbs.food.name || ''}`);
             }
         }
         return outcomes;
@@ -62,9 +63,16 @@ CRFNode().then(function(Module) {
     }
 
     function printOutcomesSummary(outcomes) {
+        let success = 0;
+        let total = 0;
         for (const key of Object.getOwnPropertySymbols(outcomes)) {
+            if (key === measures.Outcome.SUCCESS) {
+                success += outcomes[key];
+            }
+            total += outcomes[key];
             console.log(`${key.toString()}: ${outcomes[key]}`);
         }
+        console.log(`Success: ${(100.0 * success / total).toFixed(2)}%`)
     }
 
     if (fs.lstatSync(input).isDirectory()) {
