@@ -122,7 +122,7 @@ some foods that don't appear in a particular database. Allowing users to add foo
 Now we have identified the food and its nutrients (and carbs in particular), but we are not done, since we need to
 determine the quantity used in the recipe. Most of the time this is very straightforward, since we are given a quantity
 like "500" and a unit like "grams" so we know that's 500g of the ingredient. But there are many other units from the very
-specific ("tsp") to to vague ("handful"). Sometimes a recipe just specifies a number of a certain foodstuff, as in
+specific ("tsp") to the vague ("handful"). Sometimes a recipe just specifies a number of a certain foodstuff, as in
 "5 onions", so we need a database of typical weights for common foods.
 
 The current implementation uses a small set of rules to interpret measures. Both to map units to weights (e.g. it knows

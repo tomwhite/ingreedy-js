@@ -10,7 +10,7 @@ const inputFile = process.argv[2];
 
 const response = JSON.parse(fs.readFileSync(inputFile));
 
-const servings = servngs.getServingsFromPage(response);
+const servings = servngs.getServingsFromPage(response) || 1;
 
 const centerBlock = ocr.getCenterBlock(response);
 const text = ocr.getTextFromBlock(centerBlock).trim();
