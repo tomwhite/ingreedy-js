@@ -1,7 +1,9 @@
-var foodsearch = require('./foodsearch.js')
+const measuresDef = require('./measures_def')
+
+const foodsearch = require('./foodsearch.js')
 
 const unitToGrams = {
-  clove: 5,
+  clove: 5, // TODO: use food measures, since this only applies to some foods, typically garlic
   gram: 1,
   millilitre: 1,
   ounce: 28.3,
@@ -10,45 +12,7 @@ const unitToGrams = {
   tablespoon: 15
 };
 
-const foodMeasures = {
-  apple: 175,
-  banana: 151,
-  mandarin: 78,
-  mango: 274,
-  pear: 198,
-  aubergine: 572,
-  avocado: 210,
-  "bok choy": 235,
-  capsicum: 275,
-  carrot: 168,
-  chilli: 15,
-  corn: 320,
-  cucumber: 187,
-  lettuce: 570,
-  mushroom: 100,
-  onion: 130,
-  potato: 229,
-  tomato: 145,
-
-  // TODO: handle plurals better
-  apples: 175,
-  bananas: 151,
-  mandarins: 78,
-  mangoes: 274,
-  pears: 198,
-  aubergines: 572,
-  avocados: 210,
-  capsicums: 275,
-  carrots: 168,
-  chillies: 15,
-  corns: 320,
-  cucumbers: 187,
-  lettuces: 570,
-  mushrooms: 100,
-  onions: 130,
-  potatoes: 229,
-  tomatoes: 145
-};
+const foodMeasures = Object.assign({}, ...measuresDef.foodMeasures.map(v => ({[v.food]: v.weight})));
 
 function normalizeQuantity(quantity) {
   let match = quantity.match(/(\d+) (\d+)\/(\d+)/);
@@ -231,13 +195,13 @@ function calculateCarbsInFood(food) {
       };
     }
   }
-  if (food["name"] in foodMeasures) {
+  if (resolvedFood["name"] in foodMeasures) {
     return {
       ...food,
       food: resolvedFood,
       success: true,
       outcome: Outcome.SUCCESS,
-      carbs: (qty * foodMeasures[food["name"]] * carbsPer100g) / 100.0
+      carbs: (qty * foodMeasures[resolvedFood["name"]] * carbsPer100g) / 100.0
     };
   }
   return {

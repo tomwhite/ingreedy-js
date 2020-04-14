@@ -18,25 +18,22 @@ describe('normalizeQuantity', function() {
 
 describe('calculateMass', function() {
     it('should work for quantity and grams', function() {
-        assert.equal(measures.calculateMass("2", "gram", "onion"), 2);
+        assert.equal(measures.calculateMass("2", "gram", "Onions, raw"), 2);
     });
     it('should convert ounces', function() {
-        assert.equal(measures.calculateMass("2", "ounce", "onion"), 56.6);
+        assert.equal(measures.calculateMass("2", "ounce", "Onions, raw"), 56.6);
     });
     it('should convert pounds', function() {
-        assert.equal(measures.calculateMass("2", "pound", "onion"), 908);
+        assert.equal(measures.calculateMass("2", "pound", "Onions, raw"), 908);
     });
     it('should return NaN for unknown unit', function() {
-        assert.equal(isNaN(measures.calculateMass("2", "hundredweight", "onion")), true);
+        assert.equal(isNaN(measures.calculateMass("2", "hundredweight", "Onions, raw")), true);
     });
     it('should know mass of food with measure, with null quantity', function() {
-        assert.equal(measures.calculateMass("2", null, "apple"), 350);
+        assert.equal(measures.calculateMass("2", null, "Apples, eating, raw, flesh and skin"), 350);
     });
     it('should know mass of food with measure, with blank quantity', function() {
-        assert.equal(measures.calculateMass("2", "", "apple"), 350);
-    });
-    it('should know mass of food with measure, pluralized', function() {
-        assert.equal(measures.calculateMass("2", "", "apples"), 350);
+        assert.equal(measures.calculateMass("2", "", "Apples, eating, raw, flesh and skin"), 350);
     });
     it('should return NaN for food with no measure, with null quantity', function() {
         assert.equal(isNaN(measures.calculateMass("2", null, "rabbit")), true);
@@ -48,7 +45,7 @@ describe('calculateMass', function() {
         assert.equal(isNaN(measures.calculateMass("", "", "salt")), true);
     });
     it('should return NaN for food with meaningless unit and quantity', function() {
-        assert.equal(isNaN(measures.calculateMass("2blah", "blah", "onion")), true);
+        assert.equal(isNaN(measures.calculateMass("2blah", "blah", "Onions, raw")), true);
     });
 });
 
@@ -126,7 +123,7 @@ describe('calculateCarbsInFood', function() {
         });    
     });
     describe("known food weight without unit", function() {
-        const result = measures.calculateCarbsInFood({ qty: "2", name: "onions" });
+        const result = measures.calculateCarbsInFood({ qty: "2", name: "red onions" });
         it('should succeed', function() {
             assert.equal(result.success, true);
         });
