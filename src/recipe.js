@@ -27,6 +27,10 @@ function getServingsFromPage(response) {
     }, NaN);
 }
 
+function fixFractions(line) {
+  return line.replace(/\bV(\d+)\b/, "1/$1")
+}
+
 function getIngredientsTextFromPage(response) {
   const centerBlock = ocr.getCenterBlock(response);
   if (!centerBlock) {
@@ -35,9 +39,11 @@ function getIngredientsTextFromPage(response) {
   const text = ocr.getTextFromBlock(centerBlock).trim();
   return text.split("\n")
     .filter(line => !line.match(/serves:?\s+(\d+).*/i))
+    .map(line => fixFractions(line))
     .join("\n");
 }
 
 exports.getServings = getServings
 exports.getServingsFromPage = getServingsFromPage
 exports.getIngredientsTextFromPage = getIngredientsTextFromPage
+exports.fixFractions = fixFractions

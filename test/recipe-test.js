@@ -52,3 +52,11 @@ describe('getServingsFromPage', function() {
     });
 });
 
+describe('fix fractions', function() {
+    it('should leave line with fraction intact', function() {
+        assert.equal(recipe.fixFractions("1/2 tsp honey"), "1/2 tsp honey");
+    });
+    it('should change leading V to 1/', function() {
+        assert.equal(recipe.fixFractions("V2 tsp honey"), "1/2 tsp honey");
+    });
+});
