@@ -48,7 +48,7 @@ CRFNode().then(function(Module) {
         for (const foodWithCarbs of foodsWithCarbs) {
             outcomes[foodWithCarbs.outcome] = (outcomes[foodWithCarbs.outcome] || 0) + 1;
             if (foodWithCarbs.outcome === Symbol.for(outcome)) {
-                console.log(`${inputFile}|${foodWithCarbs.reasonText}|${foodWithCarbs.input}|${foodWithCarbs.qty || ''}|${foodWithCarbs.unit || ''}|${foodWithCarbs.food.name || ''}`);
+                console.log(`${inputFile}|${foodWithCarbs.reasonText}|${foodWithCarbs.input}|${foodWithCarbs.qty || ''}|${foodWithCarbs.unit || ''}|${foodWithCarbs.food ? foodWithCarbs.food.name || '' : ''}`);
             }
         }
         return outcomes;
