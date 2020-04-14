@@ -36,7 +36,7 @@ CRFNode().then(function(Module) {
         const response = JSON.parse(fs.readFileSync(inputFile));
         const centerBlock = ocr.getCenterBlock(response);
         if (!centerBlock) {
-            return;
+            return {};
         }
         const text = ocr.getTextFromBlock(centerBlock).trim();
         const lines = text.split(/\n/);
@@ -53,16 +53,36 @@ CRFNode().then(function(Module) {
         return outcomes;
     }
 
+    function mergeOutcomes(outcomes1, outcomes2) {
+        const outcomes = {...outcomes1, ...outcomes2};
+        for (let key of Object.getOwnPropertySymbols(outcomes)) {
+            outcomes[key] = (outcomes1[key] || 0) + (outcomes2[key] || 0);
+        }
+        return outcomes;
+    }
+
+    function printOutcomesSummary(outcomes) {
+        for (const key of Object.getOwnPropertySymbols(outcomes)) {
+            console.log(`${key.toString()}: ${outcomes[key]}`);
+        }
+    }
+
     if (fs.lstatSync(input).isDirectory()) {
         // walk directory and run for each file
+        let outcomes = {};
         walkDir(input, function(inputFile) {
             if (inputFile.toLowerCase().endsWith('.google.json')) {
-                printFoodsNotInFoodMap(inputFile);
+                const newOutcomes = printFoodsNotInFoodMap(inputFile);
+                outcomes = mergeOutcomes(outcomes, newOutcomes);
             }
         });
+        console.log();
+        printOutcomesSummary(outcomes);
     } else {
         // single file
-        printFoodsNotInFoodMap(input);
+        const outcomes = printFoodsNotInFoodMap(input);
+        console.log();
+        printOutcomesSummary(outcomes);
     }
 
 });

@@ -197,6 +197,7 @@ function calculateCarbsInFood(food) {
       ...food,
       food: resolvedFood,
       success: false,
+      outcome: Outcome.QUANTITY_NOT_SPECIFIED,
       reasonText: "Quantity not specified"
     };
   }
