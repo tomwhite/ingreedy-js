@@ -43,11 +43,14 @@ CRFNode().then(function(Module) {
         const foods = parseIngredients(lines).filter(food => food['input'].trim().length > 0);
 
         const foodsWithCarbs = foods.map(food => measures.calculateCarbsInFood(food));
+        const outcomes = {};
         for (const foodWithCarbs of foodsWithCarbs) {
-            if (!foodWithCarbs.success && foodWithCarbs.reason === measures.FailureReason.UNIT_NOT_FOUND) {
-                console.log(`${inputFile}:${foodWithCarbs.reasonText}`);
+            outcomes[foodWithCarbs.outcome] = (outcomes[foodWithCarbs.outcome] || 0) + 1;
+            if (!foodWithCarbs.success && foodWithCarbs.outcome === measures.Outcome.UNIT_NOT_FOUND) {
+                console.log(`${inputFile}|${foodWithCarbs.reasonText}|${foodWithCarbs.input}`);
             }
         }
+        return outcomes;
     }
 
     if (fs.lstatSync(input).isDirectory()) {
