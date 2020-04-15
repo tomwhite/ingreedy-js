@@ -51,7 +51,7 @@ describe('calculateMass', function() {
 
 describe('calculateCarbsInFood', function() {
     describe('missing food', function() {
-        const result = measures.calculateCarbsInFood({ });
+        const result = measures.calculateCarbsInFood({ }, true);
         it('should fail', function() {
             assert.equal(result.success, false);
         });
@@ -60,7 +60,7 @@ describe('calculateCarbsInFood', function() {
         });    
     });
     describe('unknown food', function() {
-        const result = measures.calculateCarbsInFood({ qty: "100", unit: "gram", name: "zoh" });
+        const result = measures.calculateCarbsInFood({ qty: "100", unit: "gram", name: "zoh" }, true);
         it('should fail', function() {
             assert.equal(result.success, false);
         });
@@ -69,7 +69,7 @@ describe('calculateCarbsInFood', function() {
         });    
     });
     describe("zero carb food doesn't need qty or unit", function() {
-        const result = measures.calculateCarbsInFood({ name: "beef" });
+        const result = measures.calculateCarbsInFood({ name: "beef" }, true);
         it('should succeed', function() {
             assert.equal(result.success, true);
         });
@@ -78,7 +78,7 @@ describe('calculateCarbsInFood', function() {
         });    
     });
     describe("missing qty for non-zero carb food", function() {
-        const result = measures.calculateCarbsInFood({ name: "flour" });
+        const result = measures.calculateCarbsInFood({ name: "flour" }, true);
         it('should fail', function() {
             assert.equal(result.success, false);
         });
@@ -87,7 +87,7 @@ describe('calculateCarbsInFood', function() {
         });    
     });
     describe("non-numeric qty", function() {
-        const result = measures.calculateCarbsInFood({ qty: "two", unit: "gram", name: "flour" });
+        const result = measures.calculateCarbsInFood({ qty: "two", unit: "gram", name: "flour" }, true);
         it('should fail', function() {
             assert.equal(result.success, false);
         });
@@ -96,7 +96,7 @@ describe('calculateCarbsInFood', function() {
         });    
     });
     describe("all fields", function() {
-        const result = measures.calculateCarbsInFood({ qty: "100", unit: "gram", name: "flour" });
+        const result = measures.calculateCarbsInFood({ qty: "100", unit: "gram", name: "flour" }, true);
         it('should succeed', function() {
             assert.equal(result.success, true);
         });
@@ -105,7 +105,7 @@ describe('calculateCarbsInFood', function() {
         });    
     });
     describe("fractional qty", function() {
-        const result = measures.calculateCarbsInFood({ qty: "1 1/2", unit: "gram", name: "flour" });
+        const result = measures.calculateCarbsInFood({ qty: "1 1/2", unit: "gram", name: "flour" }, true);
         it('should succeed', function() {
             assert.equal(result.success, true);
         });
@@ -114,7 +114,7 @@ describe('calculateCarbsInFood', function() {
         });    
     });
     describe("unknown unit", function() {
-        const result = measures.calculateCarbsInFood({ qty: "1", unit: "shoe", name: "flour" });
+        const result = measures.calculateCarbsInFood({ qty: "1", unit: "shoe", name: "flour" }, true);
         it('should fail', function() {
             assert.equal(result.success, false);
         });
@@ -123,7 +123,7 @@ describe('calculateCarbsInFood', function() {
         });    
     });
     describe("known food weight without unit", function() {
-        const result = measures.calculateCarbsInFood({ qty: "2", name: "red onions" });
+        const result = measures.calculateCarbsInFood({ qty: "2", name: "red onions" }, true);
         it('should succeed', function() {
             assert.equal(result.success, true);
         });
@@ -132,7 +132,7 @@ describe('calculateCarbsInFood', function() {
         });    
     });
     describe("unknown food weight without unit", function() {
-        const result = measures.calculateCarbsInFood({ qty: "1", name: "flour" });
+        const result = measures.calculateCarbsInFood({ qty: "1", name: "flour" }, true);
         it('should fail', function() {
             assert.equal(result.success, false);
         });

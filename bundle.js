@@ -25,8 +25,7 @@ fileInput.onchange = function(e) {
             }
 
             // ingredients
-            const centerBlock = ocr.getCenterBlock(response);
-            const text = ocr.getTextFromBlock(centerBlock).trim();
+            const text = recipe.getIngredientsTextFromPage(response);
             const textArea = document.getElementById('ingredients_box');
             textArea.value = text;
             textArea.rows = text.split("\n").length + 1;
@@ -68,7 +67,7 @@ fileInput.onchange = function(e) {
         const text = document.getElementById('ingredients_box').value;
         const lines = text.split(/\n/);
         const foods = parseIngredients(lines).filter(food => food['input'].trim().length > 0);
-        const foodsWithCarbs = foods.map(food => measures.calculateCarbsInFood(food));
+        const foodsWithCarbs = foods.map(food => measures.calculateCarbsInFood(food, true));
         const totalCarbsInfo = measures.calculateTotalCarbs(foodsWithCarbs);
         const servings = document.getElementById('servings').value;
         const carbsPerServing = Math.round(totalCarbsInfo.carbs / servings);
@@ -173605,7 +173604,7 @@ function search(name) {
   return null;
 }
 
-function lookupFood(name) {
+function lookupFood(name, fallbackToSearch) {
  let foodName = foodmap.lookupExact(name);
  if (foodName != null) {
    // TODO: turn into a hash lookup
@@ -173615,7 +173614,7 @@ function lookupFood(name) {
      }
    }
  }
- return search(name);
+ return fallbackToSearch ? search(name) : null;
 }
 
 exports.normalize = normalize
@@ -173741,7 +173740,7 @@ const Outcome = Object.freeze({
   UNIT_NOT_FOUND: Symbol.for("unit not found")
 });
 
-function calculateCarbsInFood(food) {
+function calculateCarbsInFood(food, fallbackToSearch) {
   if (!("name" in food)) {
     return {
       ...food,
@@ -173750,7 +173749,7 @@ function calculateCarbsInFood(food) {
       reasonText: "Food not specified"
     };
   }
-  const resolvedFood = foodsearch.lookupFood(food["name"]);
+  const resolvedFood = foodsearch.lookupFood(food["name"], fallbackToSearch);
   if (resolvedFood == null) {
     return {
       ...food,
@@ -174011,8 +174010,26 @@ function getServingsFromPage(response) {
     }, NaN);
 }
 
+function fixFractions(line) {
+  return line.replace(/\bV(\d+)\b/, "1/$1")
+}
+
+function getIngredientsTextFromPage(response) {
+  const centerBlock = ocr.getCenterBlock(response);
+  if (!centerBlock) {
+    return null;
+  }
+  const text = ocr.getTextFromBlock(centerBlock).trim();
+  return text.split("\n")
+    .filter(line => !line.match(/serves:?\s+(\d+).*/i))
+    .map(line => fixFractions(line))
+    .join("\n");
+}
+
 exports.getServings = getServings
 exports.getServingsFromPage = getServingsFromPage
+exports.getIngredientsTextFromPage = getIngredientsTextFromPage
+exports.fixFractions = fixFractions
 
 },{"./ocr.js":16}],18:[function(require,module,exports){
 function tokenize(s) {

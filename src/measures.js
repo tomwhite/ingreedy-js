@@ -113,7 +113,7 @@ const Outcome = Object.freeze({
   UNIT_NOT_FOUND: Symbol.for("unit not found")
 });
 
-function calculateCarbsInFood(food) {
+function calculateCarbsInFood(food, fallbackToSearch) {
   if (!("name" in food)) {
     return {
       ...food,
@@ -122,7 +122,7 @@ function calculateCarbsInFood(food) {
       reasonText: "Food not specified"
     };
   }
-  const resolvedFood = foodsearch.lookupFood(food["name"]);
+  const resolvedFood = foodsearch.lookupFood(food["name"], fallbackToSearch);
   if (resolvedFood == null) {
     return {
       ...food,

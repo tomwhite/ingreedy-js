@@ -33,6 +33,7 @@ function getIngredientsLinesFromFile(inputFile) {
 
 const input = process.argv[2];
 const outcome = process.argv[3];
+const fallbackToSearch = process.argv[4] || false;
 
 const CRFNode = require('../CRF++-0.58/crf_test_node')
 CRFNode().then(function(Module) {
@@ -53,7 +54,7 @@ CRFNode().then(function(Module) {
         const lines = getIngredientsLinesFromFile(inputFile);
         const foods = parseIngredients(lines).filter(food => food['input'].trim().length > 0);
 
-        const foodsWithCarbs = foods.map(food => measures.calculateCarbsInFood(food));
+        const foodsWithCarbs = foods.map(food => measures.calculateCarbsInFood(food, fallbackToSearch));
         const outcomes = {};
         for (const foodWithCarbs of foodsWithCarbs) {
             outcomes[foodWithCarbs.outcome] = (outcomes[foodWithCarbs.outcome] || 0) + 1;

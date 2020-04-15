@@ -66,7 +66,7 @@ fileInput.onchange = function(e) {
         const text = document.getElementById('ingredients_box').value;
         const lines = text.split(/\n/);
         const foods = parseIngredients(lines).filter(food => food['input'].trim().length > 0);
-        const foodsWithCarbs = foods.map(food => measures.calculateCarbsInFood(food));
+        const foodsWithCarbs = foods.map(food => measures.calculateCarbsInFood(food, true));
         const totalCarbsInfo = measures.calculateTotalCarbs(foodsWithCarbs);
         const servings = document.getElementById('servings').value;
         const carbsPerServing = Math.round(totalCarbsInfo.carbs / servings);

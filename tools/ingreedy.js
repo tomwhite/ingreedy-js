@@ -37,7 +37,7 @@ CRFNode().then(function(Module) {
     }
     console.log();
 
-    const foodsWithCarbs = foods.map(food => measures.calculateCarbsInFood(food));
+    const foodsWithCarbs = foods.map(food => measures.calculateCarbsInFood(food, true));
     for (const foodWithCarbs of foodsWithCarbs) {
         if ('food' in foodWithCarbs && foodWithCarbs['food'] != null) {
             const name = foodWithCarbs['food']['name'];

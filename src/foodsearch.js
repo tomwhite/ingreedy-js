@@ -38,7 +38,7 @@ function search(name) {
   return null;
 }
 
-function lookupFood(name) {
+function lookupFood(name, fallbackToSearch) {
  let foodName = foodmap.lookupExact(name);
  if (foodName != null) {
    // TODO: turn into a hash lookup
@@ -48,7 +48,7 @@ function lookupFood(name) {
      }
    }
  }
- return search(name);
+ return fallbackToSearch ? search(name) : null;
 }
 
 exports.normalize = normalize

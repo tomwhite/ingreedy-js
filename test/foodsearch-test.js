@@ -9,7 +9,7 @@ describe('normalize', function() {
 
 describe('lookupFood', function() {
     describe('match', function() {
-        const food = foodsearch.lookupFood("red  onions");
+        const food = foodsearch.lookupFood("red  onions", false);
         it('should have the right name', function() {
             assert.equal(food.name, "Onions, raw");
         });
@@ -18,7 +18,7 @@ describe('lookupFood', function() {
         });    
     });
     describe('fall back to search', function() {
-        const food = foodsearch.lookupFood("blue cheese");
+        const food = foodsearch.lookupFood("blue cheese", true);
         it('should have the right name', function() {
             assert.equal(food.name, "Cheese, Stilton, blue");
         });    
