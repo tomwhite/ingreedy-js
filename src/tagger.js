@@ -10,8 +10,8 @@ function tokenize(s) {
   s = s.replace(/(\d+) +ml /, "$1 millilitre ");
   s = s.replace(/(\d+) +lb /, "$1 pound ");
   // handle abbreviations like tsp and tbsp
-  s = s.replace(/tsp\.?/, "teaspoon");
-  s = s.replace(/tbsp\.?/, "tablespoon");
+  s = s.replace(/tsp\.?/, " teaspoon");
+  s = s.replace(/tbsp\.?/, " tablespoon");
   return clumpFractions(s)
     .split(/([,()]|\s+)/)
     .filter(function(e) {
