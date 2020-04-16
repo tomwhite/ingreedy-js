@@ -1,6 +1,6 @@
 const measuresDef = require('./measures_def')
 
-const foodsearch = require('./foodsearch.js')
+const foodsearch = require('./foodsearch')
 
 const unitToGrams = {
   clove: 5, // TODO: use food measures, since this only applies to some foods, typically garlic
@@ -12,7 +12,7 @@ const unitToGrams = {
   tablespoon: 15
 };
 
-const foodMeasures = Object.assign({}, ...measuresDef.foodMeasures.map(v => ({[v.food]: v.weight})));
+const foodMeasures = Object.assign({}, ...measuresDef.map(v => ({[v.food]: v.weight})));
 
 function normalizeQuantity(quantity) {
   let match = quantity.match(/(\d+) (\d+)\/(\d+)/);

@@ -17,6 +17,15 @@ describe('lookupFood', function() {
             assert.equal(food.carbs, 8.0);
         });    
     });
+    describe('use AFCD for food not in McCance (CoFID)', function() {
+        const food = foodsearch.lookupFood("almond", false);
+        it('should have the right name', function() {
+            assert.equal(food.name, "Nut, almond, with skin, raw, unsalted");
+        });
+        it('should have carbs', function() {
+            assert.equal(food.carbs, 5.4);
+        });
+    });
     describe('fall back to search', function() {
         const food = foodsearch.lookupFood("blue cheese", true);
         it('should have the right name', function() {

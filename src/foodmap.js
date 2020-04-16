@@ -1,4 +1,4 @@
-const foods = require('./foodmap_def').foods
+const foods = require('./foodmap_def')
 
 const foodmap = {};
 for (const food of foods) {
@@ -18,7 +18,7 @@ function normalizeName(name) {
 function lookupExact(foodName) {
     const foodNameNormalized = normalizeName(foodName);
     if (foodNameNormalized in foodmap) {
-        return foodmap[foodNameNormalized]["food"];
+        return foodmap[foodNameNormalized]["food"] || foodmap[foodNameNormalized]["food_afcd"];
     }
     return null;
 }

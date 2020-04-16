@@ -1,6 +1,7 @@
 const lunr = require('lunr');
-const mccance = require('./foodsearch_def').mccance
-var foodmap = require('./foodmap.js')
+const mccance = require('./mccance_def')
+const afcd = require('./afcd_def')
+const foodmap = require('./foodmap')
 
 function indexFoods() {
   return lunr(function() {
@@ -47,6 +48,12 @@ function lookupFood(name, fallbackToSearch) {
        return mccance[i];
      }
    }
+   // Try AFCD if not in McCance
+   for (let i = 0; i < afcd.length; i++) {
+    if (afcd[i]["name"] === foodName) {
+      return afcd[i];
+    }
+  }
  }
  return fallbackToSearch ? search(name) : null;
 }
