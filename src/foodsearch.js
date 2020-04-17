@@ -1,6 +1,7 @@
 const lunr = require('lunr');
 const mccance = require('./mccance_def')
 const afcd = require('./afcd_def')
+const usfdc = require('./usfdc_def')
 const foodmap = require('./foodmap')
 
 function indexFoods() {
@@ -50,10 +51,16 @@ function lookupFood(name, fallbackToSearch) {
    }
    // Try AFCD if not in McCance
    for (let i = 0; i < afcd.length; i++) {
-    if (afcd[i]["name"] === foodName) {
-      return afcd[i];
-    }
-  }
+     if (afcd[i]["name"] === foodName) {
+       return afcd[i];
+     }
+   }
+   // Try USFDC
+   for (let i = 0; i < usfdc.length; i++) {
+     if (usfdc[i]["name"] === foodName) {
+       return usfdc[i];
+     }
+   }
  }
  return fallbackToSearch ? search(name) : null;
 }

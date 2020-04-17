@@ -18,7 +18,7 @@ function normalizeName(name) {
 function lookupExact(foodName) {
     const foodNameNormalized = normalizeName(foodName);
     if (foodNameNormalized in foodmap) {
-        return foodmap[foodNameNormalized]["food"] || foodmap[foodNameNormalized]["food_afcd"];
+        return foodmap[foodNameNormalized]["food"] || foodmap[foodNameNormalized]["food_afcd"] || foodmap[foodNameNormalized]["food_usfdc"];
     }
     return null;
 }
