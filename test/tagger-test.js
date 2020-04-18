@@ -100,6 +100,9 @@ describe('insideParenthesis', function() {
     it('should return false for word not in parentheses', function() {
         assert.equal(tagger.insideParenthesis("green", tokens), false);
     });
+    it('should not fail for a regex character', function() {
+        assert.equal(tagger.insideParenthesis("green [", tokens), false);
+    });
 });
 
 describe('smartJoin', function() {

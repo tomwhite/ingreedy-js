@@ -115,13 +115,17 @@ function lengthGroup(actualLength) {
   return "X";
 }
 
+// from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+function escapeRegExp(string) {
+  return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
 function insideParenthesis(token, tokens) {
   if (token === "(" || token === ")") {
     return true;
   }
   var line = tokens.join(" ");
-  // TODO: should escape token in line below
-  return RegExp(".*\\(.*" + token + ".*\\).*").test(line);
+  return RegExp(".*\\(.*" + escapeRegExp(token) + ".*\\).*").test(line);
 }
 
 function displayIngredient(ingredient) {
