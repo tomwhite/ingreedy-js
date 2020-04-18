@@ -12,7 +12,7 @@ describe('getBlocks', function() {
 });
 
 describe('getTextFromBlock', function() {
-    it('should find text for centre block', function() {
+    it('should find text for centre block, and use indents as continuation line hints', function() {
         assert.equal(ocr.getTextFromBlock(ocr.getCenterBlock(response0096)).trim(), `500g dried haricot beans
 2-3 tablespoons vegetable oil
 2 large onions, finely chopped or minced in a food processor
@@ -47,7 +47,7 @@ ground black pepper
 6 garlic cloves, very finely
 sliced`);
     });
-    it('should find text for centre block', function() {
+    it('should find text for centre block, and use indents as continuation line hints', function() {
         assert.equal(ocr.getTextFromBlock(ocr.getCenterBlock(response0220)).trim(), `10g (1/202) butter
 50g (20z) onion, very finely chopped
 450g (11b) beef (flank, chump or shin would be perfect), freshly minced
