@@ -16,11 +16,12 @@ function walkDir(dir, callback) {
     });
 };
 
-function getOutputFile(inputFile, outputDir) {
-    return path.join(outputDir, path.basename(inputFile) + ".google.json");
+function getOutputFile(relativeInputFile, outputDir) {
+    return path.join(outputDir, relativeInputFile + ".google.json");
 }
 
 function ocrFile(inputFile, outputFile, key) {
+    fs.mkdirSync(path.dirname(outputFile), { recursive: true });
     if (fs.existsSync(outputFile)) {
         console.log(`${outputFile} already exists`);
     } else {
@@ -38,10 +39,11 @@ if (fs.lstatSync(input).isDirectory()) {
     // walk directory and run for each file
     walkDir(input, function(inputFile) {
         if (inputFile.toLowerCase().endsWith('.jpg')) {
-            ocrFile(inputFile, getOutputFile(inputFile, outputDir), key);
+            const outputFile = getOutputFile(path.relative(input, inputFile), outputDir)
+            ocrFile(inputFile, outputFile, key);
         }
     });
 } else {
     // single file
-    ocrFile(input, getOutputFile(input, outputDir), key);
+    ocrFile(input, getOutputFile(path.relative(input, inputFile), outputDir), key);
 }
