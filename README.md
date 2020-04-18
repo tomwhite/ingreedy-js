@@ -180,7 +180,7 @@ Run a local server with
 python -m http.server 8080
 ```
 
-Then go to http://localhost:8080/demo.html in a browser.
+Then go to http://localhost:8080/?key=KEY in a browser, where `KEY` is the Google Vision API key.
 
 ### How to build
 

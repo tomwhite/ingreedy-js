@@ -3,6 +3,12 @@ const ocr = require('./src/ocr')
 const recipe = require('./src/recipe')
 const tagger = require('./src/tagger')
 
+const urlParams = new URLSearchParams(window.location.search);
+const key = urlParams.get("key");
+if (key === null) {
+  alert("This app needs a Google Cloud Vision key URL parameter")
+}
+
 const fileInput = document.getElementById('file-input');
 fileInput.onchange = function(e) {
   loadImage(
@@ -12,7 +18,7 @@ fileInput.onchange = function(e) {
       document.getElementById('output').src = dataUrl;
       const base64Img = dataUrl.replace('data:image/png;base64,', '');
       ocr.makeVisionRequest(
-          base64Img, 'AIzaSyChp1eQ02e3IDQbJ5aqcs2I_27GIn-TsxA',
+          base64Img, key,
           function(response) {
             hideFileInput();
             showResultsContainer();
