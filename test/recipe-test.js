@@ -60,3 +60,24 @@ describe('fix fractions', function() {
         assert.equal(recipe.fixFractions("V2 tsp honey"), "1/2 tsp honey");
     });
 });
+
+describe('getIngredientsTextFromBlocks', function() {
+    it('should find text for centre block', function() {
+        const blocks = recipe.getIngredientsBlocksFromPage(response0096);
+        assert.equal(recipe.getIngredientsTextFromBlocks(blocks).trim(), `500g dried haricot beans
+2-3 tablespoons vegetable oil
+2 large onions, finely chopped or minced in a food processor
+2 fat garlic cloves, crushed
+1 tablespoon cocoa powder
+2 teaspoons ground cinnamon
+2 teaspoons ground cumin
+1 teaspoon cayenne pepper
+400g can chopped tomatoes
+100g tamarind paste (the paste should be the consistency of a ketchup)
+4 tablespoons brown sugar
+4 tablespoons red wine vinegar
+500ml boiling water
+Maldon sea salt flakes and freshly ground black pepper
+toasted bread, to serve`);
+    });
+});

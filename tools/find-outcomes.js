@@ -17,7 +17,8 @@ function walkDir(dir, callback) {
 function getIngredientsLinesFromFile(inputFile) {
     if (inputFile.endsWith(".json")) {
         const response = JSON.parse(fs.readFileSync(inputFile));
-        const text = recipe.getIngredientsTextFromPage(response);
+        const blocks = recipe.getIngredientsBlocksFromPage(response);
+        const text = recipe.getIngredientsTextFromBlocks(blocks);
         if (text == null) {
             return {};
         }

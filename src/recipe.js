@@ -31,13 +31,21 @@ function fixFractions(line) {
   return line.replace(/\bV(\d+)\b/, "1/$1")
 }
 
-function getIngredientsTextFromPage(response) {
+function getIngredientsBlocksFromPage(response) {
+  // TODO: make this more robust by finding the nearest block that overlaps
   const centerBlock = ocr.getCenterBlock(response);
   if (!centerBlock) {
-    return null;
+    return [];
   }
-  const text = ocr.getTextFromBlock(centerBlock).trim();
-  return text.split("\n")
+  return [ centerBlock ];
+}
+
+function getIngredientsTextFromBlocks(blocks) {
+  const text = blocks
+    .map(block => ocr.getTextFromBlock(block).trim())
+    .reduce((acc, cur) => acc + "\n" + cur, "");
+  return text.trim()
+    .split("\n")
     .filter(line => !line.match(/serves:?\s+(\d+).*/i))
     .map(line => fixFractions(line))
     .join("\n");
@@ -45,5 +53,6 @@ function getIngredientsTextFromPage(response) {
 
 exports.getServings = getServings
 exports.getServingsFromPage = getServingsFromPage
-exports.getIngredientsTextFromPage = getIngredientsTextFromPage
+exports.getIngredientsBlocksFromPage = getIngredientsBlocksFromPage
+exports.getIngredientsTextFromBlocks = getIngredientsTextFromBlocks
 exports.fixFractions = fixFractions

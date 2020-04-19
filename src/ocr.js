@@ -30,7 +30,6 @@ function getBlocks(response) {
 
 function getCenterBlock(response) {
   // get block that overlaps the center of the page
-  // TODO: make this more robust by finding the nearest block that overlaps
   const page = response["responses"][0]["fullTextAnnotation"]["pages"][0];
   const midx = page["width"] / 2;
   const midy = page["height"] / 2;
