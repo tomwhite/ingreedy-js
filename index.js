@@ -4,50 +4,62 @@ const recipe = require('./src/recipe')
 const tagger = require('./src/tagger')
 
 const urlParams = new URLSearchParams(window.location.search);
-const key = urlParams.get("key");
-if (key === null) {
-  alert("This app needs a Google Cloud Vision key URL parameter")
-}
+const key = urlParams.get("key"); // need a key for OCR
 
 const fileInput = document.getElementById('file-input');
-fileInput.onchange = function(e) {
-  loadImage(
-    e.target.files[0],
-    function(img) {
-      const dataUrl = img.toDataURL('image/png');
-      document.getElementById('output').src = dataUrl;
-      const base64Img = dataUrl.replace('data:image/png;base64,', '');
-      ocr.makeVisionRequest(
-          base64Img, key,
-          function(response) {
-            hideFileInput();
-            showResultsContainer();
+if (key != null && fileInput != null) {
+  showFileInput();
+  fileInput.onchange = function(e) {
+    loadImage(
+      e.target.files[0],
+      function(img) {
+        const dataUrl = img.toDataURL('image/png');
+        document.getElementById('output').src = dataUrl;
+        const base64Img = dataUrl.replace('data:image/png;base64,', '');
+        ocr.makeVisionRequest(
+            base64Img, key,
+            function(response) {
+              hideFileInput();
+              showResultsContainer();
+  
+              // servings
+              const servings = recipe.getServingsFromPage(response);
+              if (!isNaN(servings)) {
+                  document.getElementById('servings').value = servings;
+              }
+  
+              // ingredients
+              const text = recipe.getIngredientsTextFromPage(response);
+              const textArea = document.getElementById('ingredients_box');
+              textArea.value = text;
+              textArea.rows = text.split("\n").length + 1;
+              updateNutrients();
+            });
+      },
+      {
+        maxWidth: 1024,
+        maxHeight: 768,
+        orientation: true
+      }
+    );
+  };
+} else {
+  hideScannedImage();
+  showResultsContainer();
+}
 
-            // servings
-            const servings = recipe.getServingsFromPage(response);
-            if (!isNaN(servings)) {
-                document.getElementById('servings').value = servings;
-            }
-
-            // ingredients
-            const text = recipe.getIngredientsTextFromPage(response);
-            const textArea = document.getElementById('ingredients_box');
-            textArea.value = text;
-            textArea.rows = text.split("\n").length + 1;
-            updateNutrients();
-          });
-    },
-    {
-      maxWidth: 1024,
-      maxHeight: 768,
-      orientation: true
-    }
-  );
-};
 
 
       function hideFileInput() {
         document.getElementById('scan_container').style.display = 'none';
+      }
+
+      function showFileInput() {
+        document.getElementById('scan_container').style.display = '';
+      }
+
+      function hideScannedImage() {
+        document.getElementById('imgbox_container').style.display = 'none';
       }
 
       function showResultsContainer() {
