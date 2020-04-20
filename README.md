@@ -195,7 +195,7 @@ npm install
 Build the bundle with
 
 ```bash
-browserify index.js --standalone ingreedy > bundle.js
+npm run build
 ```
 
 Run the tests with
