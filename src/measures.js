@@ -30,7 +30,7 @@ function normalizeQuantity(quantity) {
 }
 
 function calculateMass(quantity, unit, name) {
-  quantityFloat = normalizeQuantity(quantity);
+  const quantityFloat = normalizeQuantity(quantity);
   if (isNaN(quantityFloat)) {
     return quantityFloat;
   }
@@ -39,68 +39,6 @@ function calculateMass(quantity, unit, name) {
   }
   if (!unit && name in foodMeasures) {
     return quantityFloat * foodMeasures[name];
-  }
-  return NaN;
-}
-
-/*
- * Deprecated. Use calculateCarbsInFood.
- */
-function calculateCarbs(foods) {
-  let carbsTotal = 0.0;
-  for (const food of foods) {
-    if ("name" in food) {
-      food["food"] = lookupFood(food["name"]);
-    }
-    if ("qty" in food) {
-      // TODO: won't normally match
-      food["weight"] = calculateMass(food["qty"], food["unit"], food["name"]);
-    }
-    if ("weight" in food && "food" in food && food["food"] != null) {
-      carbsTotal += getCarbs(food);
-    }
-  }
-  return carbsTotal;
-}
-
-/*
- * Deprecated. Use calculateCarbsInFood.
- */
-function calculateCarbsObject(foods) {
-  let carbsTotal = 0.0;
-  let unknownFoods = false;
-  for (const food of foods) {
-    if ("name" in food) {
-      food["food"] = lookup(food["name"]);
-    }
-    if ("qty" in food) {
-      // TODO: won't normally match
-      food["weight"] = calculateMass(food["qty"], food["unit"], food["name"]);
-    }
-    let carbs = getCarbs(food);
-    if (isNaN(carbs)) {
-      unknownFoods = true;
-    } else {
-      carbsTotal += carbs;
-    }
-  }
-  return {
-    carbs: carbsTotal,
-    unknownFoods: unknownFoods,
-  };
-}
-
-/*
- * Deprecated. Use calculateCarbsInFood.
- */
-function getCarbs(food) {
-  if ("food" in food && food["food"] != null) {
-    let carbsStr = food["food"]["carbs"];
-    if (carbsStr === "0" || carbsStr === "N" || carbsStr === "Tr") {
-      return 0.0;
-    } else if ("weight" in food) {
-      return (food["weight"] * carbsStr) / 100.0;
-    }
   }
   return NaN;
 }

@@ -32,8 +32,8 @@ if (key != null && fileInput != null) {
             const rect = canvas.getBoundingClientRect();
             const mouseX = event.clientX - rect.left;
             const mouseY = event.clientY - rect.top;
-            var canvasX = (mouseX * canvas.width) / canvas.clientWidth;
-            var canvasY = (mouseY * canvas.height) / canvas.clientHeight;
+            const canvasX = (mouseX * canvas.width) / canvas.clientWidth;
+            const canvasY = (mouseY * canvas.height) / canvas.clientHeight;
             blocks.forEach((block) => {
               const vertices = block["boundingBox"]["vertices"];
               // construct a path to see if user has clicked on it, but don't render it
@@ -107,14 +107,14 @@ function showResultsContainer() {
 const servingsSelect = document.getElementById("servings");
 servingsSelect.addEventListener("input", (e) => servingsChanged(e));
 
-function servingsChanged(e) {
+function servingsChanged() {
   updateNutrients();
 }
 
 const textArea = document.getElementById("ingredients_box");
 textArea.addEventListener("input", (e) => textChanged(e));
 
-function textChanged(e) {
+function textChanged() {
   updateNutrients();
 }
 
@@ -173,7 +173,7 @@ function updateNutrients() {
 }
 
 function parseIngredients(lines) {
-  return tagger.import_data(crfTest(tagger.export_data(lines)));
+  return tagger.import_data(crfTest(tagger.export_data(lines))); // eslint-disable-line no-undef
 }
 
 function updateIngredientsFromSelectedBlocks(ctx, blocks, selectedBlocks) {

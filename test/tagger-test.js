@@ -1,5 +1,5 @@
-var assert = require("assert");
-var tagger = require("../src/tagger");
+const assert = require("assert");
+const tagger = require("../src/tagger");
 
 describe("tokenize", function () {
   it("should parse grams", function () {

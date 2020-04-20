@@ -1,7 +1,6 @@
-const colors = require("colors");
+const colors = require("colors"); // eslint-disable-line no-unused-vars
 const fs = require("fs");
 const measures = require("../src/measures");
-const ocr = require("../src/ocr");
 const recipe = require("../src/recipe");
 const tagger = require("../src/tagger");
 
@@ -22,7 +21,15 @@ CRFNode().then(function (Module) {
 
   function crfTest(input) {
     FS.writeFile("input.txt", input);
-    args = ["-v", "1", "-m", "model_file", "-o", "output.txt", "input.txt"];
+    const args = [
+      "-v",
+      "1",
+      "-m",
+      "model_file",
+      "-o",
+      "output.txt",
+      "input.txt",
+    ];
     Module["callMain"](args);
     return FS.readFile("output.txt", { encoding: "utf8" }).split(/\n/);
   }

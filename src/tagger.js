@@ -45,8 +45,8 @@ function cleanUnicodeFractions(s) {
     "\u2154": "2/3",
     "\u00bd": "1/2",
   };
-  for (var unicode in fractions) {
-    var ascii = fractions[unicode];
+  for (let unicode in fractions) {
+    const ascii = fractions[unicode];
     s = s.replace(unicode, " " + ascii);
   }
   return s;
@@ -57,7 +57,7 @@ function unclump(s) {
 }
 
 function getFeatures(token, index, tokens) {
-  var l = tokens.length;
+  const l = tokens.length;
   return [
     `I${index}`,
     `L${lengthGroup(l)}`,
@@ -106,10 +106,10 @@ function isCapitalized(token) {
 }
 
 function lengthGroup(actualLength) {
-  var lengths = [4, 8, 12, 16, 20];
-  for (var i = 0; i < lengths.length; i++) {
-    if (actualLength < lengths[i]) {
-      return lengths[i].toString();
+  const lengths = [4, 8, 12, 16, 20];
+  for (const length of lengths) {
+    if (actualLength < length) {
+      return length.toString();
     }
   }
   return "X";
@@ -124,35 +124,35 @@ function insideParenthesis(token, tokens) {
   if (token === "(" || token === ")") {
     return true;
   }
-  var line = tokens.join(" ");
+  const line = tokens.join(" ");
   return RegExp(".*\\(.*" + escapeRegExp(token) + ".*\\).*").test(line);
 }
 
 function displayIngredient(ingredient) {
-  var str = "";
-  for (var i = 0; i < ingredient.length; i++) {
-    var tag_tokens = ingredient[i];
-    var tag = tag_tokens[0];
-    var tokens = tag_tokens[1].join(" ");
+  let str = "";
+  for (let i = 0; i < ingredient.length; i++) {
+    const tag_tokens = ingredient[i];
+    const tag = tag_tokens[0];
+    const tokens = tag_tokens[1].join(" ");
     str += `<span class='${tag}'>${tokens}</span>`;
   }
   return str;
 }
 
 function smartJoin(words) {
-  var input = words.join(" ");
-  input = input.replace(" , ", ", ");
-  input = input.replace("( ", "(");
-  input = input.replace(" )", ")");
-  return input;
+  return words
+    .join(" ")
+    .replace(" , ", ", ")
+    .replace("( ", "(")
+    .replace(" )", ")");
 }
 
 function import_data(lines) {
-  var data = [{}];
-  var display = [[]];
-  var prevTag = null;
-  for (var i = 0; i < lines.length; i++) {
-    var line = lines[i];
+  const data = [{}];
+  const display = [[]];
+  let prevTag = null;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
     if (line == "" || line == "\n") {
       data.push({});
       display.push([]);
@@ -167,14 +167,13 @@ function import_data(lines) {
 
       let tag_confidence = columns[columns.length - 1].split("/", 2);
       let tag = tag_confidence[0];
-      let confidence = tag_confidence[1];
-      tag = tag.replace(/^[BI]\-/, "").toLowerCase();
+      tag = tag.replace(/^[BI]-/, "").toLowerCase();
 
       if (prevTag != tag) {
         display[display.length - 1].push([tag, [token]]);
         prevTag = tag;
       } else {
-        var ingredient = display[display.length - 1];
+        const ingredient = display[display.length - 1];
         ingredient[ingredient.length - 1][1].push(token);
       }
 
@@ -190,24 +189,24 @@ function import_data(lines) {
     }
   }
 
-  var output = [];
-  for (var i = 0; i < data.length; i++) {
-    var ingredient = data[i];
-    var dict = {};
-    for (var k in ingredient) {
-      var tokens = ingredient[k];
+  const output = [];
+  for (let i = 0; i < data.length; i++) {
+    const ingredient = data[i];
+    const dict = {};
+    for (let k in ingredient) {
+      const tokens = ingredient[k];
       dict[k] = smartJoin(tokens);
     }
     output.push(dict);
   }
 
-  for (var i = 0; i < output.length; i++) {
+  for (let i = 0; i < output.length; i++) {
     output[i]["display"] = displayIngredient(display[i]);
   }
 
-  for (var i = 0; i < output.length; i++) {
-    var all_tokens = [];
-    for (var j = 0; j < display[i].length; j++) {
+  for (let i = 0; i < output.length; i++) {
+    const all_tokens = [];
+    for (let j = 0; j < display[i].length; j++) {
       all_tokens.push(display[i][j][1].join(" "));
     }
     output[i]["input"] = smartJoin(all_tokens);
@@ -217,14 +216,14 @@ function import_data(lines) {
 }
 
 function export_data(lines) {
-  var output = [];
-  for (var i = 0; i < lines.length; i++) {
-    var line = lines[i];
-    var line_clean = cleanUnicodeFractions(line);
-    var tokens = tokenize(line_clean);
-    for (var j = 0; j < tokens.length; j++) {
-      var token = tokens[j];
-      var features = getFeatures(token, j + 1, tokens);
+  const output = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const line_clean = cleanUnicodeFractions(line);
+    const tokens = tokenize(line_clean);
+    for (let j = 0; j < tokens.length; j++) {
+      const token = tokens[j];
+      const features = getFeatures(token, j + 1, tokens);
       output.push(joinLine([token].concat(features)));
     }
     output.push("");

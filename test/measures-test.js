@@ -1,5 +1,5 @@
-var assert = require("assert");
-var measures = require("../src/measures");
+const assert = require("assert");
+const measures = require("../src/measures");
 
 describe("normalizeQuantity", function () {
   it("should normalize integer", function () {

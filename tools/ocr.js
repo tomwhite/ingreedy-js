@@ -48,9 +48,5 @@ if (fs.lstatSync(input).isDirectory()) {
   });
 } else {
   // single file
-  ocrFile(
-    input,
-    getOutputFile(path.relative(input, inputFile), outputDir),
-    key
-  );
+  ocrFile(input, getOutputFile(path.basename(input), outputDir), key);
 }

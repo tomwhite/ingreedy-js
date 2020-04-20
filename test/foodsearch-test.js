@@ -1,5 +1,5 @@
-var assert = require("assert");
-var foodsearch = require("../src/foodsearch.js");
+const assert = require("assert");
+const foodsearch = require("../src/foodsearch.js");
 
 describe("normalize", function () {
   it("should find the canonical food name", function () {

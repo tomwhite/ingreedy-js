@@ -1,5 +1,5 @@
-var assert = require("assert");
-var foodmap = require("../src/foodmap.js");
+const assert = require("assert");
+const foodmap = require("../src/foodmap.js");
 
 describe("normalizeName", function () {
   it("should leave already normalized names unchanged", function () {
