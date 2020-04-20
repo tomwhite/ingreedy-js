@@ -1,6 +1,6 @@
-const measuresDef = require('./measures_def')
+const measuresDef = require("./measures_def");
 
-const foodsearch = require('./foodsearch')
+const foodsearch = require("./foodsearch");
 
 const unitToGrams = {
   clove: 5, // TODO: use food measures, since this only applies to some foods, typically garlic
@@ -9,10 +9,13 @@ const unitToGrams = {
   ounce: 28.3,
   pound: 454,
   teaspoon: 5,
-  tablespoon: 15
+  tablespoon: 15,
 };
 
-const foodMeasures = Object.assign({}, ...measuresDef.map(v => ({[v.food]: v.weight})));
+const foodMeasures = Object.assign(
+  {},
+  ...measuresDef.map((v) => ({ [v.food]: v.weight }))
+);
 
 function normalizeQuantity(quantity) {
   let match = quantity.match(/(\d+) (\d+)\/(\d+)/);
@@ -83,7 +86,7 @@ function calculateCarbsObject(foods) {
   }
   return {
     carbs: carbsTotal,
-    unknownFoods: unknownFoods
+    unknownFoods: unknownFoods,
   };
 }
 
@@ -110,7 +113,7 @@ const Outcome = Object.freeze({
   QUANTITY_NOT_SPECIFIED: Symbol.for("quantity not specified"),
   QUANTITY_NOT_NUMERIC: Symbol.for("quantity not numeric"),
   UNIT_NOT_SPECIFIED: Symbol.for("unit not specified"),
-  UNIT_NOT_FOUND: Symbol.for("unit not found")
+  UNIT_NOT_FOUND: Symbol.for("unit not found"),
 });
 
 function calculateCarbsInFood(food, fallbackToSearch) {
@@ -119,7 +122,7 @@ function calculateCarbsInFood(food, fallbackToSearch) {
       ...food,
       success: false,
       outcome: Outcome.FOOD_NOT_SPECIFIED,
-      reasonText: "Food not specified"
+      reasonText: "Food not specified",
     };
   }
   const resolvedFood = foodsearch.lookupFood(food["name"], fallbackToSearch);
@@ -128,7 +131,7 @@ function calculateCarbsInFood(food, fallbackToSearch) {
       ...food,
       success: false,
       outcome: Outcome.FOOD_NOT_FOUND,
-      reasonText: 'Food not found: "' + food["name"] + '"'
+      reasonText: 'Food not found: "' + food["name"] + '"',
     };
   }
   let carbsPer100gStr = resolvedFood["carbs"];
@@ -143,7 +146,7 @@ function calculateCarbsInFood(food, fallbackToSearch) {
       food: resolvedFood,
       success: true,
       outcome: Outcome.SUCCESS,
-      carbs: 0.0
+      carbs: 0.0,
     };
   }
   const carbsPer100g = parseFloat(carbsPer100gStr);
@@ -153,7 +156,7 @@ function calculateCarbsInFood(food, fallbackToSearch) {
       food: resolvedFood,
       success: false,
       outcome: Outcome.CARBS_NOT_NUMERIC,
-      reasonText: 'Carbs per 100g not numeric: "' + carbsPer100gStr + '"'
+      reasonText: 'Carbs per 100g not numeric: "' + carbsPer100gStr + '"',
     };
   }
   if (!("qty" in food)) {
@@ -162,7 +165,7 @@ function calculateCarbsInFood(food, fallbackToSearch) {
       food: resolvedFood,
       success: false,
       outcome: Outcome.QUANTITY_NOT_SPECIFIED,
-      reasonText: "Quantity not specified"
+      reasonText: "Quantity not specified",
     };
   }
   const qty = normalizeQuantity(food["qty"]);
@@ -172,7 +175,7 @@ function calculateCarbsInFood(food, fallbackToSearch) {
       food: resolvedFood,
       success: false,
       outcome: Outcome.QUANTITY_NOT_NUMERIC,
-      reasonText: 'Quantity not numeric: "' + food["qty"] + '"'
+      reasonText: 'Quantity not numeric: "' + food["qty"] + '"',
     };
   }
   if ("unit" in food) {
@@ -183,7 +186,7 @@ function calculateCarbsInFood(food, fallbackToSearch) {
         food: resolvedFood,
         success: true,
         outcome: Outcome.SUCCESS,
-        carbs: (qty * unitToGrams[unit] * carbsPer100g) / 100.0
+        carbs: (qty * unitToGrams[unit] * carbsPer100g) / 100.0,
       };
     } else {
       return {
@@ -191,7 +194,7 @@ function calculateCarbsInFood(food, fallbackToSearch) {
         food: resolvedFood,
         success: false,
         outcome: Outcome.UNIT_NOT_FOUND,
-        reasonText: 'Unit not found: "' + unit + '"'
+        reasonText: 'Unit not found: "' + unit + '"',
       };
     }
   }
@@ -201,7 +204,7 @@ function calculateCarbsInFood(food, fallbackToSearch) {
       food: resolvedFood,
       success: true,
       outcome: Outcome.SUCCESS,
-      carbs: (qty * foodMeasures[resolvedFood["name"]] * carbsPer100g) / 100.0
+      carbs: (qty * foodMeasures[resolvedFood["name"]] * carbsPer100g) / 100.0,
     };
   }
   return {
@@ -209,7 +212,7 @@ function calculateCarbsInFood(food, fallbackToSearch) {
     food: resolvedFood,
     success: false,
     outcome: Outcome.UNIT_NOT_SPECIFIED,
-    reasonText: "Unit not specified"
+    reasonText: "Unit not specified",
   };
 }
 
@@ -225,12 +228,12 @@ function calculateTotalCarbs(foods) {
   }
   return {
     carbs: carbsTotal,
-    unknownFoods: unknownFoods
+    unknownFoods: unknownFoods,
   };
 }
 
-exports.normalizeQuantity = normalizeQuantity
-exports.calculateMass = calculateMass
-exports.calculateCarbsInFood = calculateCarbsInFood
-exports.calculateTotalCarbs = calculateTotalCarbs
-exports.Outcome = Outcome
+exports.normalizeQuantity = normalizeQuantity;
+exports.calculateMass = calculateMass;
+exports.calculateCarbsInFood = calculateCarbsInFood;
+exports.calculateTotalCarbs = calculateTotalCarbs;
+exports.Outcome = Outcome;

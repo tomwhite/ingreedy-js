@@ -14,7 +14,7 @@ function tokenize(s) {
   s = s.replace(/tbsp\.?/, " tablespoon");
   return clumpFractions(s)
     .split(/([,()]|\s+)/)
-    .filter(function(e) {
+    .filter(function (e) {
       return String(e).trim();
     });
 }
@@ -43,7 +43,7 @@ function cleanUnicodeFractions(s) {
     "\u00be": "3/4",
     "\u2153": "1/3",
     "\u2154": "2/3",
-    "\u00bd": "1/2"
+    "\u00bd": "1/2",
   };
   for (var unicode in fractions) {
     var ascii = fractions[unicode];
@@ -62,7 +62,7 @@ function getFeatures(token, index, tokens) {
     `I${index}`,
     `L${lengthGroup(l)}`,
     (isCapitalized(token) ? "Yes" : "No") + "CAP",
-    (insideParenthesis(token, tokens) ? "Yes" : "No") + "PAREN"
+    (insideParenthesis(token, tokens) ? "Yes" : "No") + "PAREN",
   ];
 }
 
@@ -92,7 +92,7 @@ function singularize(word) {
     packages: "package",
     strips: "strip",
     bulbs: "bulb",
-    bottles: "bottle"
+    bottles: "bottle",
   };
   if (word in units) {
     return units[word];
@@ -117,7 +117,7 @@ function lengthGroup(actualLength) {
 
 // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
 function escapeRegExp(string) {
-  return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+  return string.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
 }
 
 function insideParenthesis(token, tokens) {
@@ -232,17 +232,17 @@ function export_data(lines) {
   return output.join("\n");
 }
 
-exports.tokenize = tokenize
-exports.joinLine = joinLine
-exports.clumpFractions = clumpFractions
-exports.cleanUnicodeFractions = cleanUnicodeFractions
-exports.unclump = unclump
-exports.getFeatures = getFeatures
-exports.singularize = singularize
-exports.isCapitalized = isCapitalized
-exports.lengthGroup = lengthGroup
-exports.insideParenthesis = insideParenthesis
-exports.displayIngredient = displayIngredient
-exports.smartJoin = smartJoin
-exports.import_data = import_data
-exports.export_data = export_data
+exports.tokenize = tokenize;
+exports.joinLine = joinLine;
+exports.clumpFractions = clumpFractions;
+exports.cleanUnicodeFractions = cleanUnicodeFractions;
+exports.unclump = unclump;
+exports.getFeatures = getFeatures;
+exports.singularize = singularize;
+exports.isCapitalized = isCapitalized;
+exports.lengthGroup = lengthGroup;
+exports.insideParenthesis = insideParenthesis;
+exports.displayIngredient = displayIngredient;
+exports.smartJoin = smartJoin;
+exports.import_data = import_data;
+exports.export_data = export_data;

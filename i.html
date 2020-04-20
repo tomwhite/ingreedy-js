@@ -1,167 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
 
     <title>Ingreedy</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
-        .center-fit {
-            max-width: 100%;
-            max-height: 100vh;
-            margin: auto;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+      }
 
-        body {
-            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-        }
+      textarea {
+        outline: 1px solid green;
+      }
 
-        .error {
-            color: red;
-        }
+      .center-fit {
+        max-width: 100%;
+        max-height: 100vh;
+        margin: auto;
+      }
 
-        .zero_carbs {
-            color: grey;
-        }
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
 
+      .error {
+        color: red;
+      }
+
+      .zero_carbs {
+        color: grey;
+      }
     </style>
-</head>
-<body>
-<nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand" href="javascript:location.reload();">
-        <img src="icon.gif" width="25" height="25" class="d-inline-block align-top" alt="">
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-light">
+      <a class="navbar-brand" href="javascript:location.reload();">
+        <img
+          src="icon.gif"
+          width="25"
+          height="25"
+          class="d-inline-block align-top"
+          alt=""
+        />
         Ingreedy
-    </a>
-</nav>
-<div class="container-fluid" id="scan_container" style="display: none">
-    <div class="form-group">
+      </a>
+    </nav>
+    <div class="container-fluid" id="scan_container" style="display: none;">
+      <div class="form-group">
         <label for="file-input">Scan recipe ingredients</label>
-        <input type="file" class="form-control-file" accept="image/*" id="file-input">
-    </div>
-</div>
-<div class="container" id="result_container" style="display: none">
-    <div class="row">
-      <div class="col-lg-4" id="imgbox_container">
-          <div id="imgbox" class="imgbox">
-          </div>
+        <input
+          type="file"
+          class="form-control-file"
+          accept="image/*"
+          id="file-input"
+        />
       </div>
     </div>
-    <div class="row">
-      <div class="col-lg-4">
-        <textarea id="ingredients_box" rows="2" cols="40" class="form-control form-control-sm"></textarea>
+    <div class="container" id="result_container" style="display: none;">
+      <div class="row">
+        <div class="col-lg-4" id="imgbox_container">
+          <div id="imgbox" class="imgbox"></div>
+        </div>
       </div>
-    </div>
-    <div class="row">
+      <div class="row">
+        <div class="col-lg-4">
+          <textarea
+            id="ingredients_box"
+            rows="2"
+            cols="40"
+            class="form-control form-control-sm"
+          ></textarea>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-lg-2">
-            <h4><span class="badge badge-pill badge-success" id="carbohydrate_content"></span></h4>
+          <h4>
+            <span
+              class="badge badge-pill badge-success"
+              id="carbohydrate_content"
+            ></span>
+          </h4>
         </div>
         <div class="col-lg-2">
-            <select class="form-control form-control-sm" id="servings">
-                <option value="1">1 serving</option>
-                <option value="2">2 servings</option>
-                <option value="3">3 servings</option>
-                <option value="4">4 servings</option>
-                <option value="5">5 servings</option>
-                <option value="6">6 servings</option>
-                <option value="7">7 servings</option>
-                <option value="8">8 servings</option>
-                <option value="9">9 servings</option>
-                <option value="10">10 servings</option>
-                <option value="11">11 servings</option>
-                <option value="12">12 servings</option>
-                <option value="13">13 servings</option>
-                <option value="14">14 servings</option>
-                <option value="15">15 servings</option>
-                <option value="16">16 servings</option>
-                <option value="17">17 servings</option>
-                <option value="18">18 servings</option>
-                <option value="19">19 servings</option>
-                <option value="20">20 servings</option>
-                <option value="21">21 servings</option>
-                <option value="22">22 servings</option>
-                <option value="23">23 servings</option>
-                <option value="24">24 servings</option>
-            </select>
+          <select class="form-control form-control-sm" id="servings">
+            <option value="1">1 serving</option>
+            <option value="2">2 servings</option>
+            <option value="3">3 servings</option>
+            <option value="4">4 servings</option>
+            <option value="5">5 servings</option>
+            <option value="6">6 servings</option>
+            <option value="7">7 servings</option>
+            <option value="8">8 servings</option>
+            <option value="9">9 servings</option>
+            <option value="10">10 servings</option>
+            <option value="11">11 servings</option>
+            <option value="12">12 servings</option>
+            <option value="13">13 servings</option>
+            <option value="14">14 servings</option>
+            <option value="15">15 servings</option>
+            <option value="16">16 servings</option>
+            <option value="17">17 servings</option>
+            <option value="18">18 servings</option>
+            <option value="19">19 servings</option>
+            <option value="20">20 servings</option>
+            <option value="21">21 servings</option>
+            <option value="22">22 servings</option>
+            <option value="23">23 servings</option>
+            <option value="24">24 servings</option>
+          </select>
         </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-4">
-        <p id="breakdown" class="small"></p>
+      </div>
+      <div class="row">
+        <div class="col-lg-4">
+          <p id="breakdown" class="small"></p>
+        </div>
       </div>
     </div>
-</div>
 
-<!-- https://github.com/blueimp/JavaScript-Load-Image -->
-<script src="load-image.all.min.js"></script>
+    <!-- https://github.com/blueimp/JavaScript-Load-Image -->
+    <script src="load-image.all.min.js"></script>
 
-<script src="bundle.js"></script>
+    <script src="bundle.js"></script>
 
-<script>
-  function crfTest(input) {
-          FS.writeFile('input.txt', input);
-          args = ['-v', '1', '-m', 'model_file', '-o', 'output.txt', 'input.txt'];
-          Module['callMain'](args);
-          return FS.readFile('output.txt', { encoding: 'utf8' }).split(/\n/);
-        }
-  
-        function whenReady() {
-          // can start the program here
-          ingreedy.updateNutrients();
-        }
-  
-        var Module = {
-          arguments: ["-h"], // run help when it first loads (this is ignored)
-          preRun: [],
-          postRun: [whenReady],
-          print: (function() {
-            var element = document.getElementById('output');
-            if (element) element.value = ''; // clear browser cache
-            return function(text) {
-              if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
-              // These replacements are necessary if you render to raw HTML
-              //text = text.replace(/&/g, "&amp;");
-              //text = text.replace(/</g, "&lt;");
-              //text = text.replace(/>/g, "&gt;");
-              //text = text.replace('\n', '<br>', 'g');
-              //console.log(text);
-              if (element) {
-                element.value += text + "\n";
-                element.scrollTop = element.scrollHeight; // focus on bottom
-              }
-            };
-          })(),
-          printErr: function(text) {
-            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
-            console.error(text);
-          },
-          setStatus: function(text) {
-            console.log("status:" + text);
-          },
-          totalDependencies: 0,
-          monitorRunDependencies: function(left) {
-            this.totalDependencies = Math.max(this.totalDependencies, left);
-            Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
-          }
-        };
-        Module.setStatus('Downloading...');
-        window.onerror = function(event) {
-          // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
-          Module.setStatus('Exception thrown, see JavaScript console');
-          Module.setStatus = function(text) {
-            if (text) Module.printErr('[post-exception status] ' + text);
+    <script>
+      function crfTest(input) {
+        FS.writeFile("input.txt", input);
+        args = ["-v", "1", "-m", "model_file", "-o", "output.txt", "input.txt"];
+        Module["callMain"](args);
+        return FS.readFile("output.txt", { encoding: "utf8" }).split(/\n/);
+      }
+
+      function whenReady() {
+        // can start the program here
+        ingreedy.updateNutrients();
+      }
+
+      var Module = {
+        arguments: ["-h"], // run help when it first loads (this is ignored)
+        preRun: [],
+        postRun: [whenReady],
+        print: (function () {
+          var element = document.getElementById("output");
+          if (element) element.value = ""; // clear browser cache
+          return function (text) {
+            if (arguments.length > 1)
+              text = Array.prototype.slice.call(arguments).join(" ");
+            // These replacements are necessary if you render to raw HTML
+            //text = text.replace(/&/g, "&amp;");
+            //text = text.replace(/</g, "&lt;");
+            //text = text.replace(/>/g, "&gt;");
+            //text = text.replace('\n', '<br>', 'g');
+            //console.log(text);
+            if (element) {
+              element.value += text + "\n";
+              element.scrollTop = element.scrollHeight; // focus on bottom
+            }
           };
+        })(),
+        printErr: function (text) {
+          if (arguments.length > 1)
+            text = Array.prototype.slice.call(arguments).join(" ");
+          console.error(text);
+        },
+        setStatus: function (text) {
+          console.log("status:" + text);
+        },
+        totalDependencies: 0,
+        monitorRunDependencies: function (left) {
+          this.totalDependencies = Math.max(this.totalDependencies, left);
+          Module.setStatus(
+            left
+              ? "Preparing... (" +
+                  (this.totalDependencies - left) +
+                  "/" +
+                  this.totalDependencies +
+                  ")"
+              : "All downloads complete."
+          );
+        },
+      };
+      Module.setStatus("Downloading...");
+      window.onerror = function (event) {
+        // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
+        Module.setStatus("Exception thrown, see JavaScript console");
+        Module.setStatus = function (text) {
+          if (text) Module.printErr("[post-exception status] " + text);
         };
+      };
+    </script>
 
-  </script>
-
-<script src="crf_test.js"></script>
-
-</body>
+    <script src="crf_test.js"></script>
+  </body>
 </html>
