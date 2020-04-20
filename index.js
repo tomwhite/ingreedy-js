@@ -1,3 +1,4 @@
+const loadImage = require("blueimp-load-image");
 const measures = require("./src/measures");
 const ocr = require("./src/ocr");
 const recipe = require("./src/recipe");
