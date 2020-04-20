@@ -231,6 +231,24 @@ function export_data(lines) {
   return output.join("\n");
 }
 
+/*
+ * Carb factor overrides can be added to the end of ingredient lines to indicate the carb factor of the food.
+ * E.g. "100 grams freekeh [60.2]" overrides the carb factor to be 60.2 g/100g.
+ * This is useful if the system can't find the food.
+ */
+function extractCarbFactorOverrides(lines) {
+  const regex = /\[([\d.]+)\]$/;
+  const modifiedLines = lines.map((line) => line.replace(regex, "").trim());
+  const carbFactorOverrides = lines.map((line) => {
+    const m = line.match(regex);
+    return m == null ? m : parseFloat(m[1]);
+  });
+  return {
+    lines: modifiedLines,
+    carbFactorOverrides: carbFactorOverrides,
+  };
+}
+
 exports.tokenize = tokenize;
 exports.joinLine = joinLine;
 exports.clumpFractions = clumpFractions;
@@ -245,3 +263,4 @@ exports.displayIngredient = displayIngredient;
 exports.smartJoin = smartJoin;
 exports.import_data = import_data;
 exports.export_data = export_data;
+exports.extractCarbFactorOverrides = extractCarbFactorOverrides;

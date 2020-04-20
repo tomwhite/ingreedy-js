@@ -237,3 +237,16 @@ laid	I6	L8	NoCAP	NoPAREN
     );
   });
 });
+
+describe("extractCarbFactorOverrides", function () {
+  it("should recognize carb overrides if specified", function () {
+    const lines = ["2 onions", "100 grams freekeh [60.2]", "100g potatoes"];
+    const ret = tagger.extractCarbFactorOverrides(lines);
+    assert.deepEqual(ret.lines, [
+      "2 onions",
+      "100 grams freekeh",
+      "100g potatoes",
+    ]);
+    assert.deepEqual(ret.carbFactorOverrides, [null, 60.2, null]);
+  });
+});

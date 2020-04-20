@@ -83,6 +83,18 @@ describe("calculateCarbsInFood", function () {
       assert.equal(result.reasonText, 'Food not found: "zoh"');
     });
   });
+  describe("unknown food with carb factor override", function () {
+    const result = measures.calculateCarbsInFood(
+      { qty: "50", unit: "gram", name: "zoh", carbFactorOverride: 50 },
+      true
+    );
+    it("should succeed", function () {
+      assert.equal(result.success, true);
+    });
+    it("should have carbs", function () {
+      assert.equal(result.carbs, 25);
+    });
+  });
   describe("zero carb food doesn't need qty or unit", function () {
     const result = measures.calculateCarbsInFood({ name: "beef" }, true);
     it("should succeed", function () {
@@ -123,6 +135,18 @@ describe("calculateCarbsInFood", function () {
     });
     it("should have carbs", function () {
       assert.equal(result.carbs, 80.9);
+    });
+  });
+  describe("carb factor override takes precendence", function () {
+    const result = measures.calculateCarbsInFood(
+      { qty: "50", unit: "gram", name: "flour", carbFactorOverride: 70 },
+      true
+    );
+    it("should succeed", function () {
+      assert.equal(result.success, true);
+    });
+    it("should have carbs", function () {
+      assert.equal(result.carbs, 35);
     });
   });
   describe("fractional qty", function () {

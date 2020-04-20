@@ -173,7 +173,17 @@ function updateNutrients() {
 }
 
 function parseIngredients(lines) {
-  return tagger.import_data(crfTest(tagger.export_data(lines))); // eslint-disable-line no-undef
+  const linesWithCarbOverrides = tagger.extractCarbFactorOverrides(lines);
+  const modifiedLines = linesWithCarbOverrides.lines;
+  const carbFactorOverrides = linesWithCarbOverrides.carbFactorOverrides;
+  // eslint-disable-next-line no-undef
+  const result = tagger.import_data(crfTest(tagger.export_data(modifiedLines)));
+  for (let i = 0; i < carbFactorOverrides.length; i++) {
+    if (carbFactorOverrides[i] != null) {
+      result[i]["carbFactorOverride"] = carbFactorOverrides[i];
+    }
+  }
+  return result;
 }
 
 function updateIngredientsFromSelectedBlocks(ctx, blocks, selectedBlocks) {

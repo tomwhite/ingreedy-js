@@ -63,16 +63,26 @@ function calculateCarbsInFood(food, fallbackToSearch) {
       reasonText: "Food not specified",
     };
   }
-  const resolvedFood = foodsearch.lookupFood(food["name"], fallbackToSearch);
+  let resolvedFood = foodsearch.lookupFood(food["name"], fallbackToSearch);
   if (resolvedFood == null) {
-    return {
-      ...food,
-      success: false,
-      outcome: Outcome.FOOD_NOT_FOUND,
-      reasonText: 'Food not found: "' + food["name"] + '"',
-    };
+    if ("carbFactorOverride" in food) {
+      resolvedFood = {
+        name: '"' + food["name"] + '"',
+      };
+    } else {
+      return {
+        ...food,
+        success: false,
+        outcome: Outcome.FOOD_NOT_FOUND,
+        reasonText: 'Food not found: "' + food["name"] + '"',
+      };
+    }
   }
-  let carbsPer100gStr = resolvedFood["carbs"];
+  // get the carb factor from i) the override (if defined), or ii) the resolved food
+  const carbsPer100gStr =
+    "carbFactorOverride" in food
+      ? food["carbFactorOverride"]
+      : resolvedFood["carbs"];
   if (
     carbsPer100gStr === 0 ||
     carbsPer100gStr === "0" ||
