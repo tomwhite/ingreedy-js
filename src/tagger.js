@@ -160,14 +160,14 @@ function import_data(lines) {
     } else if (line[0] == "#") {
       continue;
     } else {
-      columns = line.trim().split("\t");
-      token = columns[0].trim();
+      const columns = line.trim().split("\t");
+      let token = columns[0].trim();
 
       token = unclump(token);
 
-      tag_confidence = columns[columns.length - 1].split("/", 2);
-      tag = tag_confidence[0];
-      confidence = tag_confidence[1];
+      let tag_confidence = columns[columns.length - 1].split("/", 2);
+      let tag = tag_confidence[0];
+      let confidence = tag_confidence[1];
       tag = tag.replace(/^[BI]\-/, "").toLowerCase();
 
       if (prevTag != tag) {
