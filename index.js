@@ -88,6 +88,13 @@ if (key != null && fileInput != null) {
   showResultsContainer();
 }
 
+function manualEntry() {
+  hideFileInput();
+  hideScannedImage();
+  showResultsContainer();
+  textArea.focus();
+}
+
 function hideFileInput() {
   document.getElementById("scan_container").style.display = "none";
 }
@@ -213,4 +220,5 @@ function drawBoundingBoxes(ctx, blocks, selectedBlocks) {
   });
 }
 
-module.exports = { updateNutrients: updateNutrients };
+exports.updateNutrients = updateNutrients;
+exports.manualEntry = manualEntry;
