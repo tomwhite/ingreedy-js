@@ -26,8 +26,12 @@ function normalize(name) {
   return hits[0].ref;
 }
 
+function escapeLunrSpecialCharacters(str) {
+  return str.replace(/([:^~+-])/g, "\\$1");
+}
+
 function search(name) {
-  const hits = idx.search(name);
+  const hits = idx.search(escapeLunrSpecialCharacters(name));
   if (hits.length == 0) {
     return null;
   }
@@ -67,3 +71,4 @@ function lookupFood(name, fallbackToSearch) {
 
 exports.normalize = normalize;
 exports.lookupFood = lookupFood;
+exports.search = search;

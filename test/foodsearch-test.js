@@ -42,3 +42,24 @@ describe("lookupFood", function () {
     });
   });
 });
+
+describe("search", function () {
+  describe("match", function () {
+    const food = foodsearch.search("cheese");
+    it("should have search term in name", function () {
+      assert.equal(food.name.toLowerCase().includes("cheese"), true);
+    });
+  });
+  describe("no match", function () {
+    const food = foodsearch.search("zoh");
+    it("should return null", function () {
+      assert.equal(food, null);
+    });
+  });
+  describe("special lunr characters", function () {
+    const food = foodsearch.search("cheese pickle:"); // : is a special character in lunr
+    it("should have search term in name", function () {
+      assert.equal(food.name.toLowerCase().includes("cheese"), true);
+    });
+  });
+});
