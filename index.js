@@ -10,83 +10,6 @@ const key = urlParams.get("key"); // need a key for OCR
 let selectedBlocks = [];
 
 const fileInput = document.getElementById("file-input");
-if (key != null && fileInput != null) {
-  showFileInput();
-  fileInput.onchange = function (e) {
-    loadImage(
-      e.target.files[0],
-      function (img) {
-        const dataUrl = img.toDataURL("image/png");
-        const canvas = document.getElementById("imgbox").appendChild(img);
-        const ctx = canvas.getContext("2d");
-        canvas.className = "center-fit";
-        const base64Img = dataUrl.replace("data:image/png;base64,", "");
-        ocr.makeVisionRequest(base64Img, key, function (response) {
-          hideFileInput();
-          showResultsContainer();
-
-          const blocks = ocr.getBlocks(response);
-
-          // Add listener to toggle blocks
-          canvas.addEventListener("click", (event) => {
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = event.clientX - rect.left;
-            const mouseY = event.clientY - rect.top;
-            const canvasX = (mouseX * canvas.width) / canvas.clientWidth;
-            const canvasY = (mouseY * canvas.height) / canvas.clientHeight;
-            blocks.forEach((block) => {
-              const vertices = block["boundingBox"]["vertices"];
-              // construct a path to see if user has clicked on it, but don't render it
-              const box = new Path2D();
-              box.moveTo(vertices[0].x, vertices[0].y);
-              for (let i = 1; i < vertices.length; i++) {
-                box.lineTo(vertices[i].x, vertices[i].y);
-              }
-              box.closePath();
-              if (ctx.isPointInPath(box, canvasX, canvasY)) {
-                const index = selectedBlocks.indexOf(block);
-                if (index >= 0) {
-                  // remove block
-                  selectedBlocks.splice(index, 1);
-                } else {
-                  // add block
-                  // We want selected blocks to be in same order as blocks...
-                  const selectedBlocksCopy = selectedBlocks.slice();
-                  selectedBlocksCopy.push(block);
-                  selectedBlocks = [];
-                  blocks.forEach((block) => {
-                    if (selectedBlocksCopy.includes(block)) {
-                      selectedBlocks.push(block);
-                    }
-                  });
-                }
-              }
-              updateIngredientsFromSelectedBlocks(ctx, blocks, selectedBlocks);
-            });
-          });
-
-          // servings
-          const servings = recipe.getServingsFromPage(response);
-          if (!isNaN(servings)) {
-            document.getElementById("servings").value = servings;
-          }
-
-          // ingredients
-          selectedBlocks = recipe.getIngredientsBlocksFromPage(response);
-          updateIngredientsFromSelectedBlocks(ctx, blocks, selectedBlocks);
-        });
-      },
-      {
-        maxWidth: 1024,
-        maxHeight: 768,
-        canvas: true,
-      }
-    );
-  };
-} else {
-  hideScannedImage();
-  showResultsContainer();
-}
 
 function manualEntry() {
   hideFileInput();
@@ -220,5 +143,94 @@ function drawBoundingBoxes(ctx, blocks, selectedBlocks) {
   });
 }
 
+function switchToDesktop() {
+  window.location.href = window.location.href.replace("i.html", "index.html");
+}
+
+function switchToMobile() {
+  window.location.href = window.location.href
+    .replace("/?", "/i.html?")
+    .replace("index.html", "i.html");
+}
+
+if (key != null && fileInput != null) {
+  showFileInput();
+  fileInput.onchange = function (e) {
+    loadImage(
+      e.target.files[0],
+      function (img) {
+        const dataUrl = img.toDataURL("image/png");
+        const canvas = document.getElementById("imgbox").appendChild(img);
+        const ctx = canvas.getContext("2d");
+        canvas.className = "center-fit";
+        const base64Img = dataUrl.replace("data:image/png;base64,", "");
+        ocr.makeVisionRequest(base64Img, key, function (response) {
+          hideFileInput();
+          showResultsContainer();
+
+          const blocks = ocr.getBlocks(response);
+
+          // Add listener to toggle blocks
+          canvas.addEventListener("click", (event) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+            const canvasX = (mouseX * canvas.width) / canvas.clientWidth;
+            const canvasY = (mouseY * canvas.height) / canvas.clientHeight;
+            blocks.forEach((block) => {
+              const vertices = block["boundingBox"]["vertices"];
+              // construct a path to see if user has clicked on it, but don't render it
+              const box = new Path2D();
+              box.moveTo(vertices[0].x, vertices[0].y);
+              for (let i = 1; i < vertices.length; i++) {
+                box.lineTo(vertices[i].x, vertices[i].y);
+              }
+              box.closePath();
+              if (ctx.isPointInPath(box, canvasX, canvasY)) {
+                const index = selectedBlocks.indexOf(block);
+                if (index >= 0) {
+                  // remove block
+                  selectedBlocks.splice(index, 1);
+                } else {
+                  // add block
+                  // We want selected blocks to be in same order as blocks...
+                  const selectedBlocksCopy = selectedBlocks.slice();
+                  selectedBlocksCopy.push(block);
+                  selectedBlocks = [];
+                  blocks.forEach((block) => {
+                    if (selectedBlocksCopy.includes(block)) {
+                      selectedBlocks.push(block);
+                    }
+                  });
+                }
+              }
+              updateIngredientsFromSelectedBlocks(ctx, blocks, selectedBlocks);
+            });
+          });
+
+          // servings
+          const servings = recipe.getServingsFromPage(response);
+          if (!isNaN(servings)) {
+            document.getElementById("servings").value = servings;
+          }
+
+          // ingredients
+          selectedBlocks = recipe.getIngredientsBlocksFromPage(response);
+          updateIngredientsFromSelectedBlocks(ctx, blocks, selectedBlocks);
+        });
+      },
+      {
+        maxWidth: 1024,
+        maxHeight: 768,
+        canvas: true,
+      }
+    );
+  };
+} else {
+  manualEntry();
+}
+
 exports.updateNutrients = updateNutrients;
 exports.manualEntry = manualEntry;
+exports.switchToDesktop = switchToDesktop;
+exports.switchToMobile = switchToMobile;
