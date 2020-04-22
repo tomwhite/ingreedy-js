@@ -1,10 +1,10 @@
-var ocr = require("./ocr.js");
+const ocr = require("./ocr.js");
 
 function getServings(text) {
-  const re = /serves:?\s+(\d+)/i;
+  const re = /(serves|^for):?\s+(\d+)/i;
   const matches = text.match(re);
   if (matches) {
-    return matches[1];
+    return matches[2];
   }
   return NaN;
 }
@@ -42,15 +42,17 @@ function getIngredientsBlocksFromPage(response) {
 }
 
 function getIngredientsTextFromBlocks(blocks) {
-  const text = blocks
-    .map((block) => ocr.getTextFromBlock(block).trim())
-    .reduce((acc, cur) => acc + "\n" + cur, "");
-  return text
-    .trim()
-    .split("\n")
-    .filter((line) => !line.match(/serves:?\s+(\d+).*/i))
-    .map((line) => fixFractions(line))
-    .join("\n");
+  return (
+    blocks
+      .map((block) => ocr.getTextFromBlock(block).trim())
+      .reduce((acc, cur) => acc + "\n" + cur, "")
+      .trim()
+      .split("\n")
+      // TODO: don't filter out whole line as it may have some ingredients, see IMG_0328.JPG
+      .filter((line) => !line.match(/serves:?\s+(\d+).*/i))
+      .map((line) => fixFractions(line))
+      .join("\n")
+  );
 }
 
 exports.getServings = getServings;

@@ -20,6 +20,9 @@ describe("getServings", function () {
   it("should parse range", function () {
     assert.equal(recipe.getServings("Serves 4-6"), 4);
   });
+  it("should parse 'for'", function () {
+    assert.equal(recipe.getServings("For 4-6"), 4);
+  });
   it("should return NaN for unrelated text", function () {
     assert.equal(
       isNaN(
@@ -52,8 +55,8 @@ describe("getServingsFromPage", function () {
   it("should return NaN if number of servings not shown, in page response0221", function () {
     assert.equal(isNaN(recipe.getServingsFromPage(response0221)), true);
   });
-  it('should return NaN since "For 5-6" is not interpreted as a serving size, in page response0222', function () {
-    assert.equal(isNaN(recipe.getServingsFromPage(response0222)), true);
+  it("should find in page response0222", function () {
+    assert.equal(recipe.getServingsFromPage(response0222), 5);
   });
 });
 
