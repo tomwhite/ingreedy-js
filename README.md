@@ -13,6 +13,11 @@ an ingredient is not recognized, or if you want to add or remove ingredients.
 
 The app will try to detect the number of servings - but you can override that too.
 
+If a food is not recognized, then as a fallback you can append the carb factor of the food in square brackets
+at the end of the line.
+For example, "200g freekeh [60]" tells Ingreedy that freekeh has 60g of carbs per 100g, so there will be 120g of carbs for that line.
+You can typically find the carb factor of a food by searching on Google for _"[food] carbs per 100g"_.
+
 ## How it works
 
 This project is an extension and follow on from my original Ingreedy project that I wrote
@@ -23,7 +28,8 @@ add new foods to the database.
 Ingreedy-js is quicker to use, but less fully-featured, and is ideal to get a rough estimate of the carb count for a recipe.
 
 The app is a web application written in HTML and Javascript. Apart from an API call to Google's Vision API,
-the whole app runs locally in a browser on a phone or on a laptop.
+the whole app runs locally in a browser on a phone or on a laptop. If you don't have a API key then the app falls back
+to manual mode where you have to type in the ingredients list.
 
 ### Image capture
 
@@ -56,13 +62,13 @@ do this, because the ingredients are spread across different panels:
 ![images/IMG_0222.JPG](images/IMG_0222.JPG)
 
 There may also be separate ingredients lists for different components of a recipe (e.g. for a cake and its icing).
-For these cases the best workaround at present is to take separate photos and add up the carb counts manually.
+For this reason, the user can select the blocks used to construct the ingredients list, by clicking or tapping on them.
+The blocks highlighted in green are the ones being used.
 
 In the future, it would be nice to investigate an improvement that either uses a heuristic to find
 blocks that contain ingredients (one possibility would be to look for lines that start with a number,
 but some recipes have numbered lists for their directions), or a machine learning procedure to classify blocks
-as "ingredient list" or "not ingredient list". Another alternative would be to allow the use to select the blocks
-to include.
+as "ingredient list" or "not ingredient list".
 
 #### Servings detection
 
@@ -105,11 +111,16 @@ match "Flour, wheat, white, plain, soft" and not, say, "Flour, rice".
 To solve this problem we construct a _food map_ from names to food entries. The food map is constructed by taking the
 NYT ingredient dataset, extracting all of the unique food names, and manually mapping them to food entries in a database.
 In practice, we restricted to a dataset where each food name appeared at least 10 times. This gave a dataset of 1080
-food names, which was not too onerous to manually go through to produce mappings. We used the UK
-[Composition of foods integrated dataset (CoFID)](https://www.gov.uk/government/publications/composition-of-foods-integrated-dataset-cofid).
+food names, which was not too onerous to manually go through to produce mappings.
+
+Three food databases are used, in priority order:
+* The UK [Composition of foods integrated dataset (CoFID)](https://www.gov.uk/government/publications/composition-of-foods-integrated-dataset-cofid), by McCance and Widdowson
+* The [Australian Food Composition Database](https://www.foodstandards.gov.au/science/monitoringnutrients/afcd/Pages/default.aspx)
+* The US [FoodData Central](https://fdc.nal.usda.gov/)
 
 In practice, not all foods appear in the food map, since there is a long tail of very unusual foods. To address this,
-we use text search against the food database. The intuition is as follows: if the food appears in the long tail then it is rare
+we use text search against the food database (currently just the UK one).
+The intuition is as follows: if the food appears in the long tail then it is rare
 and is likely to have only a single entry in the database. Even if there is more than one entry, they are unlikely to
 be very different nutritionally. We use [lunr](https://lunrjs.com/) for the Javascript search implementation.
 
@@ -125,8 +136,8 @@ like "500" and a unit like "grams" so we know that's 500g of the ingredient. But
 specific ("tsp") to the vague ("handful"). Sometimes a recipe just specifies a number of a certain foodstuff, as in
 "5 onions", so we need a database of typical weights for common foods.
 
-The current implementation uses a small set of rules to interpret measures. Both to map units to weights (e.g. it knows
-a teaspoon is 5g), and to store common food weights (e.g. it knows an onion is typically 130g).
+The current implementation uses a small set of rules to interpret measures, based on data from the Australian Food Composition Database.
+Both to map units to weights (e.g. it knows a teaspoon is 5g), and to store common food weights (e.g. it knows an onion is typically 130g).
 
 #### A complication: split lines
 
@@ -209,6 +220,35 @@ Run the tests with
 
 ```bash
 npm test
+```
+
+### Command line tools
+
+You can run Ingreedy from the command-line as well as the browser.
+
+```bash
+node tools/ingreedy.js <file>
+```
+
+where <file> is a text file containing ingredients lines, or a JSON OCR response from the Google Vision API.
+To get the latter, run a command like the following:
+
+```bash
+node tools/ocr.js images/IMG_0096.JPG data/ocr-responses <KEY>
+```
+
+You can also run Ingreedy in batch mode across a bunch of OCR responses using commands like this:
+
+```bash
+node tools/find-outcomes.js data/ocr-responses "unit not found"
+```
+
+This is useful for finding systemic problems, like units that are not recognised in this case.
+
+There is also a script for measuring the proportion of ingredients lines that Ingreedy can parse (not necessarily correctly!):
+
+```bash
+./measure-success.sh
 ```
 
 ### Building CRF++ with Emscripten
