@@ -174,7 +174,14 @@ for improvement here.
 
 ### How to run
 
-Run a local server with
+Install and run a local server with
+
+```bash
+npm install http-server -g
+http-server
+```
+
+or, if you don't have npm:
 
 ```bash
 python -m http.server 8080
